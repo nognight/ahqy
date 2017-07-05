@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.njhh.ahqy.dao.impl.mapper.UserShoppingCartMapper">
+
+    <resultMap id="AllColumnMap" type="com.njhh.ahqy.entity.UserShoppingCart">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="type" property="type"/>
+        <result column="goods_ids" property="goodsIds"/>
+        <result column="total_price" property="totalPrice"/>
+        <result column="discount_type" property="discountType"/>
+        <result column="discount_price" property="discountPrice"/>
+    </resultMap>
+
+    <sql id="all_column">
+        `id`,
+        `user_id`,
+        `type`,
+        `goods_ids`,
+        `total_price`,
+        `discount_type`,
+        `discount_price`
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO t_user_shopping_cart (
+            `id`,
+            `user_id`,
+            `type`,
+            `goods_ids`,
+            `total_price`,
+            `discount_type`,
+            `discount_price`
+        ) VALUES (
+            #{pojo.id},
+            #{pojo.userId},
+            #{pojo.type},
+            #{pojo.goodsIds},
+            #{pojo.totalPrice},
+            #{pojo.discountType},
+            #{pojo.discountPrice}
+        )
+    </insert>
+
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO t_user_shopping_cart
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null"> `id`,</if>
+            <if test="pojo.userId!=null"> `user_id`,</if>
+            <if test="pojo.type!=null"> `type`,</if>
+            <if test="pojo.goodsIds!=null"> `goods_ids`,</if>
+            <if test="pojo.totalPrice!=null"> `total_price`,</if>
+            <if test="pojo.discountType!=null"> `discount_type`,</if>
+            <if test="pojo.discountPrice!=null"> `discount_price`,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null">#{pojo.id},</if>
+            <if test="pojo.userId!=null">#{pojo.userId},</if>
+            <if test="pojo.type!=null">#{pojo.type},</if>
+            <if test="pojo.goodsIds!=null">#{pojo.goodsIds},</if>
+            <if test="pojo.totalPrice!=null">#{pojo.totalPrice},</if>
+            <if test="pojo.discountType!=null">#{pojo.discountType},</if>
+            <if test="pojo.discountPrice!=null">#{pojo.discountPrice},</if>
+        </trim>
+    </insert>
+
+    <insert id="insertList">
+        INSERT INTO t_user_shopping_cart (
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.id},
+            #{pojo.userId},
+            #{pojo.type},
+            #{pojo.goodsIds},
+            #{pojo.totalPrice},
+            #{pojo.discountType},
+            #{pojo.discountPrice}
+            )
+        </foreach>
+    </insert>
+
+    <update id="update">
+        UPDATE t_user_shopping_cart
+        <set>
+            <if test="pojo.id != null"> `id` = #{pojo.id}, </if>
+            <if test="pojo.userId != null"> `user_id` = #{pojo.userId}, </if>
+            <if test="pojo.type != null"> `type` = #{pojo.type}, </if>
+            <if test="pojo.goodsIds != null"> `goods_ids` = #{pojo.goodsIds}, </if>
+            <if test="pojo.totalPrice != null"> `total_price` = #{pojo.totalPrice}, </if>
+            <if test="pojo.discountType != null"> `discount_type` = #{pojo.discountType}, </if>
+            <if test="pojo.discountPrice != null"> `discount_price` = #{pojo.discountPrice} </if>
+        </set>
+        WHERE id = #{pojo.id}
+    </update>
+
+    <select id="getCart" resultMap="AllColumnMap">
+        SELECT * FROM t_user_shopping_cart
+        WHERE user_id = #{userId}
+    </select>
+</mapper>
+

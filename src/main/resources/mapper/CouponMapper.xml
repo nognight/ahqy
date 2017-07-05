@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.njhh.ahqy.dao.impl.mapper.CouponMapper">
+
+    <resultMap id="AllColumnMap" type="com.njhh.ahqy.entity.Coupon">
+        <result column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="status" property="status"/>
+        <result column="is_transferable" property="isTransferable"/>
+        <result column="is_purchasable" property="isPurchasable"/>
+        <result column="retail_price" property="retailPrice"/>
+        <result column="retail_type" property="retailType"/>
+        <result column="online_date" property="onlineDate"/>
+        <result column="offline_date" property="offlineDate"/>
+        <result column="pic_url" property="picUrl"/>
+        <result column="product_ids" property="productIds"/>
+        <result column="pay_type" property="payType"/>
+        <result column="net_type" property="netType"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="all_column">
+        `id`,
+        `type`,
+        `name`,
+        `description`,
+        `status`,
+        `is_transferable`,
+        `is_purchasable`,
+        `retail_price`,
+        `retail_type`,
+        `online_date`,
+        `offline_date`,
+        `pic_url`,
+        `product_ids`,
+        `pay_type`,
+        `net_type`
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO t_coupon (
+            `id`,
+            `type`,
+            `name`,
+            `description`,
+            `status`,
+            `is_transferable`,
+            `is_purchasable`,
+            `retail_price`,
+            `retail_type`,
+            `online_date`,
+            `offline_date`,
+            `pic_url`,
+            `product_ids`,
+            `pay_type`,
+            `net_type`
+        ) VALUES (
+            #{pojo.id},
+            #{pojo.type},
+            #{pojo.name},
+            #{pojo.description},
+            #{pojo.status},
+            #{pojo.isTransferable},
+            #{pojo.isPurchasable},
+            #{pojo.retailPrice},
+            #{pojo.retailType},
+            #{pojo.onlineDate},
+            #{pojo.offlineDate},
+            #{pojo.picUrl},
+            #{pojo.productIds},
+            #{pojo.payType},
+            #{pojo.netType}
+        )
+    </insert>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO t_coupon
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null"> `id`,</if>
+            <if test="pojo.type!=null"> `type`,</if>
+            <if test="pojo.name!=null"> `name`,</if>
+            <if test="pojo.description!=null"> `description`,</if>
+            <if test="pojo.status!=null"> `status`,</if>
+            <if test="pojo.isTransferable!=null"> `is_transferable`,</if>
+            <if test="pojo.isPurchasable!=null"> `is_purchasable`,</if>
+            <if test="pojo.retailPrice!=null"> `retail_price`,</if>
+            <if test="pojo.retailType!=null"> `retail_type`,</if>
+            <if test="pojo.onlineDate!=null"> `online_date`,</if>
+            <if test="pojo.offlineDate!=null"> `offline_date`,</if>
+            <if test="pojo.picUrl!=null"> `pic_url`,</if>
+            <if test="pojo.productIds!=null"> `product_ids`,</if>
+            <if test="pojo.payType!=null"> `pay_type`,</if>
+            <if test="pojo.netType!=null"> `net_type`,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null">#{pojo.id},</if>
+            <if test="pojo.type!=null">#{pojo.type},</if>
+            <if test="pojo.name!=null">#{pojo.name},</if>
+            <if test="pojo.description!=null">#{pojo.description},</if>
+            <if test="pojo.status!=null">#{pojo.status},</if>
+            <if test="pojo.isTransferable!=null">#{pojo.isTransferable},</if>
+            <if test="pojo.isPurchasable!=null">#{pojo.isPurchasable},</if>
+            <if test="pojo.retailPrice!=null">#{pojo.retailPrice},</if>
+            <if test="pojo.retailType!=null">#{pojo.retailType},</if>
+            <if test="pojo.onlineDate!=null">#{pojo.onlineDate},</if>
+            <if test="pojo.offlineDate!=null">#{pojo.offlineDate},</if>
+            <if test="pojo.picUrl!=null">#{pojo.picUrl},</if>
+            <if test="pojo.productIds!=null">#{pojo.productIds},</if>
+            <if test="pojo.payType!=null">#{pojo.payType},</if>
+            <if test="pojo.netType!=null">#{pojo.netType},</if>
+        </trim>
+    </insert>
+
+    <insert id="insertList">
+        INSERT INTO t_coupon (
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.id},
+            #{pojo.type},
+            #{pojo.name},
+            #{pojo.description},
+            #{pojo.status},
+            #{pojo.isTransferable},
+            #{pojo.isPurchasable},
+            #{pojo.retailPrice},
+            #{pojo.retailType},
+            #{pojo.onlineDate},
+            #{pojo.offlineDate},
+            #{pojo.picUrl},
+            #{pojo.productIds},
+            #{pojo.payType},
+            #{pojo.netType}
+            )
+        </foreach>
+    </insert>
+
+    <update id="update">
+        UPDATE t_coupon
+        <set>
+            <if test="pojo.id != null"> `id` = #{pojo.id}, </if>
+            <if test="pojo.type != null"> `type` = #{pojo.type}, </if>
+            <if test="pojo.name != null"> `name` = #{pojo.name}, </if>
+            <if test="pojo.description != null"> `description` = #{pojo.description}, </if>
+            <if test="pojo.status != null"> `status` = #{pojo.status}, </if>
+            <if test="pojo.isTransferable != null"> `is_transferable` = #{pojo.isTransferable}, </if>
+            <if test="pojo.isPurchasable != null"> `is_purchasable` = #{pojo.isPurchasable}, </if>
+            <if test="pojo.retailPrice != null"> `retail_price` = #{pojo.retailPrice}, </if>
+            <if test="pojo.retailType != null"> `retail_type` = #{pojo.retailType}, </if>
+            <if test="pojo.onlineDate != null"> `online_date` = #{pojo.onlineDate}, </if>
+            <if test="pojo.offlineDate != null"> `offline_date` = #{pojo.offlineDate}, </if>
+            <if test="pojo.picUrl != null"> `pic_url` = #{pojo.picUrl}, </if>
+            <if test="pojo.productIds != null"> `product_ids` = #{pojo.productIds}, </if>
+            <if test="pojo.payType != null"> `pay_type` = #{pojo.payType}, </if>
+            <if test="pojo.netType != null"> `net_type` = #{pojo.netType} </if>
+        </set>
+        WHERE id = #{pojo.id}
+    </update>
+
+    <select id="getCouponList" resultMap="AllColumnMap">
+        SELECT * FROM t_coupon
+            where status = ${pojo.status}
+        AND online_date &lt; now()
+        AND offline_date &gt; now()
+        ORDER BY online_date DESC
+    </select>
+</mapper>
+

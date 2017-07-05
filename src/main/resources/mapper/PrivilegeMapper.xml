@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.njhh.ahqy.dao.impl.mapper.PrivilegeMapper">
+
+    <resultMap id="AllColumnMap" type="com.njhh.ahqy.entity.Privilege">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="status" property="status"/>
+        <result column="online_date" property="onlineDate"/>
+        <result column="offline_date" property="offlineDate"/>
+        <result column="pic_url" property="picUrl"/>
+        <result column="type" property="type"/>
+        <result column="coupon_ids" property="couponIds"/>
+        <result column="product_ids" property="productIds"/>
+        <result column="net_type" property="netType"/>
+        <result column="pay_type" property="payType"/>
+        <result column="discount_type" property="discountType"/>
+        <result column="discount_price" property="discountPrice"/>
+        <result column="gift_type" property="giftType"/>
+        <result column="gift_id" property="giftId"/>
+    </resultMap>
+
+
+    <sql id="all_column">
+        `id`,
+        `name`,
+        `description`,
+        `status`,
+        `online_date`,
+        `offline_date`,
+        `pic_url`,
+        `type`,
+        `coupon_ids`,
+        `product_ids`,
+        `net_type`,
+        `pay_type`,
+        `discount_type`,
+        `discount_price`,
+        `gift_type`,
+        `gift_id`
+    </sql>
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO privilege (
+            `id`,
+            `name`,
+            `description`,
+            `status`,
+            `online_date`,
+            `offline_date`,
+            `pic_url`,
+            `type`,
+            `coupon_ids`,
+            `product_ids`,
+            `net_type`,
+            `pay_type`,
+            `discount_type`,
+            `discount_price`,
+            `gift_type`,
+            `gift_id`
+        ) VALUES (
+            #{pojo.id},
+            #{pojo.name},
+            #{pojo.description},
+            #{pojo.status},
+            #{pojo.onlineDate},
+            #{pojo.offlineDate},
+            #{pojo.picUrl},
+            #{pojo.type},
+            #{pojo.couponIds},
+            #{pojo.productIds},
+            #{pojo.netType},
+            #{pojo.payType},
+            #{pojo.discountType},
+            #{pojo.discountPrice},
+            #{pojo.giftType},
+            #{pojo.giftId}
+        )
+    </insert>
+
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO privilege
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null"> `id`,</if>
+            <if test="pojo.name!=null"> `name`,</if>
+            <if test="pojo.description!=null"> `description`,</if>
+            <if test="pojo.status!=null"> `status`,</if>
+            <if test="pojo.onlineDate!=null"> `online_date`,</if>
+            <if test="pojo.offlineDate!=null"> `offline_date`,</if>
+            <if test="pojo.picUrl!=null"> `pic_url`,</if>
+            <if test="pojo.type!=null"> `type`,</if>
+            <if test="pojo.couponIds!=null"> `coupon_ids`,</if>
+            <if test="pojo.productIds!=null"> `product_ids`,</if>
+            <if test="pojo.netType!=null"> `net_type`,</if>
+            <if test="pojo.payType!=null"> `pay_type`,</if>
+            <if test="pojo.discountType!=null"> `discount_type`,</if>
+            <if test="pojo.discountPrice!=null"> `discount_price`,</if>
+            <if test="pojo.giftType!=null"> `gift_type`,</if>
+            <if test="pojo.giftId!=null"> `gift_id`,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null">#{pojo.id},</if>
+            <if test="pojo.name!=null">#{pojo.name},</if>
+            <if test="pojo.description!=null">#{pojo.description},</if>
+            <if test="pojo.status!=null">#{pojo.status},</if>
+            <if test="pojo.onlineDate!=null">#{pojo.onlineDate},</if>
+            <if test="pojo.offlineDate!=null">#{pojo.offlineDate},</if>
+            <if test="pojo.picUrl!=null">#{pojo.picUrl},</if>
+            <if test="pojo.type!=null">#{pojo.type},</if>
+            <if test="pojo.couponIds!=null">#{pojo.couponIds},</if>
+            <if test="pojo.productIds!=null">#{pojo.productIds},</if>
+            <if test="pojo.netType!=null">#{pojo.netType},</if>
+            <if test="pojo.payType!=null">#{pojo.payType},</if>
+            <if test="pojo.discountType!=null">#{pojo.discountType},</if>
+            <if test="pojo.discountPrice!=null">#{pojo.discountPrice},</if>
+            <if test="pojo.giftType!=null">#{pojo.giftType},</if>
+            <if test="pojo.giftId!=null">#{pojo.giftId},</if>
+        </trim>
+    </insert>
+
+
+    <insert id="insertList">
+        INSERT INTO privilege (
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.id},
+            #{pojo.name},
+            #{pojo.description},
+            #{pojo.status},
+            #{pojo.onlineDate},
+            #{pojo.offlineDate},
+            #{pojo.picUrl},
+            #{pojo.type},
+            #{pojo.couponIds},
+            #{pojo.productIds},
+            #{pojo.netType},
+            #{pojo.payType},
+            #{pojo.discountType},
+            #{pojo.discountPrice},
+            #{pojo.giftType},
+            #{pojo.giftId}
+            )
+        </foreach>
+    </insert>
+
+
+    <update id="update">
+        UPDATE privilege
+        <set>
+            <if test="pojo.id != null"> `id` = #{pojo.id}, </if>
+            <if test="pojo.name != null"> `name` = #{pojo.name}, </if>
+            <if test="pojo.description != null"> `description` = #{pojo.description}, </if>
+            <if test="pojo.status != null"> `status` = #{pojo.status}, </if>
+            <if test="pojo.onlineDate != null"> `online_date` = #{pojo.onlineDate}, </if>
+            <if test="pojo.offlineDate != null"> `offline_date` = #{pojo.offlineDate}, </if>
+            <if test="pojo.picUrl != null"> `pic_url` = #{pojo.picUrl}, </if>
+            <if test="pojo.type != null"> `type` = #{pojo.type}, </if>
+            <if test="pojo.couponIds != null"> `coupon_ids` = #{pojo.couponIds}, </if>
+            <if test="pojo.productIds != null"> `product_ids` = #{pojo.productIds}, </if>
+            <if test="pojo.netType != null"> `net_type` = #{pojo.netType}, </if>
+            <if test="pojo.payType != null"> `pay_type` = #{pojo.payType}, </if>
+            <if test="pojo.discountType != null"> `discount_type` = #{pojo.discountType}, </if>
+            <if test="pojo.discountPrice != null"> `discount_price` = #{pojo.discountPrice}, </if>
+            <if test="pojo.giftType != null"> `gift_type` = #{pojo.giftType}, </if>
+            <if test="pojo.giftId != null"> `gift_id` = #{pojo.giftId} </if>
+        </set>
+        WHERE id = #{pojo.id}
+    </update>
+
+    <select id="getPrivilege" resultMap="AllColumnMap">
+         SELECT * from t_privilege
+        where id = ${pojo.id}
+    </select>
+
+    <select id="getPrivilegeList" resultMap="AllColumnMap">
+        SELECT * from t_privilege
+        where status = ${pojo.status}
+        AND online_date &lt; now()
+        AND offline_date &gt; now()
+        <if test="pojo.payType != 0">
+            AND pay_type = ${pojo.payType}
+        </if>
+        <if test="pojo.netType == 0">
+            AND net_type = ${pojo.netType}
+        </if>
+        ORDER by online_date  DESC
+
+    </select>
+</mapper>
+

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.njhh.ahqy.dao.impl.mapper.UserCouponMapper">
+
+    <resultMap id="AllColumnMap" type="com.njhh.ahqy.entity.UserCoupon">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="coupon_id" property="couponId"/>
+        <result column="status" property="status"/>
+        <result column="get_time" property="getTime"/>
+        <result column="start_time" property="startTime"/>
+        <result column="expire_time" property="expireTime"/>
+        <result column="used_time" property="usedTime"/>
+    </resultMap>
+
+
+    <sql id="all_column">
+        `id`,
+        `user_id`,
+        `coupon_id`,
+        `status`,
+        `get_time`,
+        `start_time`,
+        `expire_time`,
+        `used_time`
+    </sql>
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO t_user_coupon (
+            `id`,
+            `user_id`,
+            `coupon_id`,
+            `status`,
+            `get_time`,
+            `start_time`,
+            `expire_time`,
+            `used_time`
+        ) VALUES (
+            #{pojo.id},
+            #{pojo.userId},
+            #{pojo.couponId},
+            #{pojo.status},
+            #{pojo.getTime},
+            #{pojo.startTime},
+            #{pojo.expireTime},
+            #{pojo.usedTime}
+        )
+    </insert>
+
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO t_user_coupon
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null"> `id`,</if>
+            <if test="pojo.userId!=null"> `user_id`,</if>
+            <if test="pojo.couponId!=null"> `coupon_id`,</if>
+            <if test="pojo.status!=null"> `status`,</if>
+            <if test="pojo.getTime!=null"> `get_time`,</if>
+            <if test="pojo.startTime!=null"> `start_time`,</if>
+            <if test="pojo.expireTime!=null"> `expire_time`,</if>
+            <if test="pojo.usedTime!=null"> `used_time`,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null">#{pojo.id},</if>
+            <if test="pojo.userId!=null">#{pojo.userId},</if>
+            <if test="pojo.couponId!=null">#{pojo.couponId},</if>
+            <if test="pojo.status!=null">#{pojo.status},</if>
+            <if test="pojo.getTime!=null">#{pojo.getTime},</if>
+            <if test="pojo.startTime!=null">#{pojo.startTime},</if>
+            <if test="pojo.expireTime!=null">#{pojo.expireTime},</if>
+            <if test="pojo.usedTime!=null">#{pojo.usedTime},</if>
+        </trim>
+    </insert>
+
+
+    <insert id="insertList">
+        INSERT INTO t_user_coupon (
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.id},
+            #{pojo.userId},
+            #{pojo.couponId},
+            #{pojo.status},
+            #{pojo.getTime},
+            #{pojo.startTime},
+            #{pojo.expireTime},
+            #{pojo.usedTime}
+            )
+        </foreach>
+    </insert>
+
+
+    <update id="update">
+        UPDATE t_user_coupon
+        <set>
+            <if test="pojo.id != null"> `id` = #{pojo.id}, </if>
+            <if test="pojo.userId != null"> `user_id` = #{pojo.userId}, </if>
+            <if test="pojo.couponId != null"> `coupon_id` = #{pojo.couponId}, </if>
+            <if test="pojo.status != null"> `status` = #{pojo.status}, </if>
+            <if test="pojo.getTime != null"> `get_time` = #{pojo.getTime}, </if>
+            <if test="pojo.startTime != null"> `start_time` = #{pojo.startTime}, </if>
+            <if test="pojo.expireTime != null"> `expire_time` = #{pojo.expireTime}, </if>
+            <if test="pojo.usedTime != null"> `used_time` = #{pojo.usedTime} </if>
+        </set>
+        WHERE id = #{pojo.id}
+    </update>
+
+
+    <select id="getUserCouponList" resultMap="AllColumnMap">
+        SELECT * from t_user_coupon where id = #{userId}
+    </select>
+</mapper>
+
