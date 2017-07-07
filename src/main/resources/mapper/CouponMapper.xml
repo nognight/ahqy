@@ -20,7 +20,6 @@
         <result column="net_type" property="netType"/>
     </resultMap>
 
-    <!--auto generated Code-->
     <sql id="all_column">
         `id`,
         `type`,

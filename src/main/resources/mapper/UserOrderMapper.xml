@@ -35,9 +35,8 @@
         `message`
     </sql>
 
-    <!--auto generated Code-->
     <insert id="insert" useGeneratedKeys="true" keyProperty="pojo.id">
-        INSERT INTO user_order (
+        INSERT INTO t_user_order (
             `id`,
             `user_id`,
             `phone_num`,
@@ -68,9 +67,8 @@
         )
     </insert>
 
-    <!--auto generated Code-->
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="pojo.id">
-        INSERT INTO user_order
+        INSERT INTO t_user_order
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="pojo.id!=null"> `id`,</if>
             <if test="pojo.userId!=null"> `user_id`,</if>
@@ -104,9 +102,9 @@
         </trim>
     </insert>
 
-    <!--auto generated Code-->
+
     <insert id="insertList">
-        INSERT INTO user_order (
+        INSERT INTO t_user_order (
         <include refid="all_column"/>
         )VALUES
         <foreach collection="pojos" item="pojo" index="index" separator=",">
@@ -128,9 +126,9 @@
         </foreach>
     </insert>
 
-    <!--auto generated Code-->
+
     <update id="update">
-        UPDATE user_order
+        UPDATE t_user_order
         <set>
             <if test="pojo.id != null"> `id` = #{pojo.id}, </if>
             <if test="pojo.userId != null"> `user_id` = #{pojo.userId}, </if>

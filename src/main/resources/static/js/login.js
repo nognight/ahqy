@@ -1,30 +1,4 @@
-$(function () {
-    $('#doc-my-tabs').tabs();
-});
 
-
-$("button.banding").click(function (e) {
-
-    $.ajax({
-        url: "/chat/bind",
-        type: "POST",
-        data: {
-            "action": 2,
-            "phone": $("#phone").val(),
-            "wexinCode": wexinCode,
-            "verCode": $("#valid").val()
-        },
-        success: function (obj) {
-            if (obj.first == 'y') {
-                alert(obj.msg);
-                window.location.href = "/chat/bind/bind4.jsp?wexinCode=" + wexinCode + "&phone=" + $("#phone").val();
-            } else {
-                $(".ok-message").removeClass('hide').addClass('active');
-                $("#tip").html(obj.msg);
-            }
-        }
-    });
-});
 
 
 var clickCount = 0;
@@ -45,15 +19,10 @@ function getAuth(node) {
         url: "./api/loginCode?phoneNum=" + $("#phone").val(),
         type: "get",
         success: function (obj) {
-            if (obj.issuccess) {
-                $(".ok-message").removeClass('hide').addClass('active');
-                $("#tip").html(obj.msg);
-            } else {
-                $this.html('点击发送验证码').addClass('active');
-                clearInterval(time);
-                $(".ok-message").removeClass('hide').addClass('active');
-                $("#tip").html(obj.msg);
-            }
+    
+
+
+
         }
     });
 
@@ -71,7 +40,7 @@ $("span.getAuth").on("click", function () {
 
 var timer = {
     node: null,
-    count: 60,
+    count: 30,
     start: function () {
         if (this.count > 0) {
             $("span.getAuth").addClass("unClick");
@@ -86,7 +55,7 @@ var timer = {
                 getAuth(this);
             });
             this.node.innerHTML = "重新获取";
-            this.count = 60;
+            this.count = 30;
         }
     },
     init: function (node) {
@@ -95,6 +64,8 @@ var timer = {
         this.start();
     }
 };
+
+
 
 $(".getAuthPic").click(function (e) {
     changeImg();

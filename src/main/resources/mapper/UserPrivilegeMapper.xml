@@ -13,7 +13,6 @@
         <result column="used_time" property="usedTime"/>
     </resultMap>
 
-    <!--auto generated Code-->
     <sql id="all_column">
         `id`,
         `user_id`,
@@ -106,5 +105,15 @@
         </set>
         WHERE id = #{pojo.id}
     </update>
+
+
+    <select id="getUserPrivilegeList" resultMap="AllColumnMap">
+        SELECT * from t_user_privilege
+        WHERE  user_id = #{pojo.userId}
+        <if test="pojo.expireTime != null">
+        AND expire_time &gt; #{pojo.expireTime}
+        </if>
+        ORDER by start_time DESC
+    </select>
 </mapper>
 

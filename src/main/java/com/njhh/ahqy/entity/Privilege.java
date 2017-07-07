@@ -14,7 +14,8 @@ public class Privilege {
     private Date onlineDate;
     private Date offlineDate;
     private String picUrl;
-    private Integer type;//权益类型，1是买卡券，2是订购送，3是首月0元  4是满减
+    private Integer type;//权益类型
+    private Integer category;//种类，即类型的子分类
     private String couponIds;//如果是卡券 卡券id | 分割 多个就是组合订购
     private String productIds;//如果是流量包  产品id | 分割
     private Integer netType;
@@ -88,6 +89,14 @@ public class Privilege {
         this.type = type;
     }
 
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
+    }
+
     public String getCouponIds() {
         return couponIds;
     }
@@ -150,28 +159,5 @@ public class Privilege {
 
     public void setGiftId(String giftId) {
         this.giftId = giftId;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("Privilege{");
-        sb.append("id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", status=").append(status);
-        sb.append(", onlineDate=").append(onlineDate);
-        sb.append(", offlineDate=").append(offlineDate);
-        sb.append(", picUrl='").append(picUrl).append('\'');
-        sb.append(", type=").append(type);
-        sb.append(", couponIds='").append(couponIds).append('\'');
-        sb.append(", productIds='").append(productIds).append('\'');
-        sb.append(", netType=").append(netType);
-        sb.append(", payType=").append(payType);
-        sb.append(", discountType=").append(discountType);
-        sb.append(", discountPrice='").append(discountPrice).append('\'');
-        sb.append(", giftType=").append(giftType);
-        sb.append(", giftId='").append(giftId).append('\'');
-        sb.append('}');
-        return sb.toString();
     }
 }

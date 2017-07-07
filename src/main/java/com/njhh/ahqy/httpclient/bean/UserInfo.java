@@ -107,4 +107,21 @@ public class UserInfo {
     public void setBrand(String brand) {
         this.brand = brand;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("UserInfo{");
+        sb.append("phone='").append(phone).append('\'');
+        sb.append(", prop=").append(prop);
+        sb.append(", serviceType='").append(serviceType).append('\'');
+        sb.append(", netType=").append(netType);
+        sb.append(", feeType=").append(feeType);
+        sb.append(", cityCode='").append(cityCode).append('\'');
+        sb.append(", isGroup=").append(isGroup);
+        sb.append(", isVip=").append(isVip);
+        sb.append(", vipLevel=").append(vipLevel);
+        sb.append(", brand='").append(brand).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

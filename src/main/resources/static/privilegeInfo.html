@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html class="no-js">
 
 <head>
@@ -14,16 +13,15 @@
     <meta name="renderer" content="webkit">
 
     <!-- No Baidu Siteapp-->
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
 
-
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
 
 
     <!-- Tile icon for Win8 (144x144 + tile color) -->
@@ -32,68 +30,103 @@
 
     <!-- Amaze UI CSS -->
     <link rel="stylesheet" href="./lib/assets/css/amazeui.min.css">
-
-
     <link rel="stylesheet" href="./css/privilegeInfo.css">
 </head>
 
 <body>
-<div class="userInfo">
+    <div class="userInfo">
 
-    <div>
+        <div>
 
-        <div class="head">
-            <img src="./images/privilegeInfoTitle.gif">
+            <div class="head">
+                <img src="./images/privilegeHomeTitle.png">
 
-
-        </div>
-
-        <div class="body">
-
-            <div class="privilegeName">
-                asda
 
             </div>
 
-            <div class="productList">
-                asdasd
-            </div>
+            <div class="body">
 
+                <div class="privilegeName">
 
-            <div class="authCode am-input-group">
-                <input type="text" class="am-form-field leftRadius">
-                <span class="am-input-group-label rightRadius getAuth">获得验证码</span>
-            </div>
+                    视频包特权
 
-
-            <div class="tip">
-
-            </div>
-
-
-        </div>
-
-
-        <div class="foot">
-
-            <img src="./images/privilegeHomeFoot.gif">
-
-        </div>
-
-
-        <div class="am-modal am-modal-no-btn" tabindex="-1" id="mymodal">
-            <div class="am-modal-dialog">
-                <div class="am-modal-hd">友情提示
-                    <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
                 </div>
-                <div class="am-modal-bd">
-                    Modal 内容。
+
+                <div class="productList">
+
+                    <div>
+                        订购产品
+                    </div>
+                    <table>
+                        <tr>
+                            <th>产品</th>
+                            <th>资费</th>
+                        </tr>
+                        <tr>
+                            <td>腾讯视频包月包</td>
+                            <td>10元/月</td>
+                        </tr>
+                        <tr>
+                            <td>200M国内流量包</td>
+                            <td>10元/月</td>
+                        </tr>
+                    </table>
+                    <div>
+                        赠送产品
+                    </div>
+                    <table>
+                        <tr>
+                            <th>产品</th>
+                            <th>资费</th>
+                        </tr>
+                        <tr>
+                            <td>200M省内流量包</td>
+                            <td>0元</td>
+                        </tr>
+                    </table>
+                </div>
+
+
+                <div class="authCode am-input-group">
+                    <input type="text" class="am-form-field leftRadius">
+                    <span class="am-input-group-label rightRadius getAuth">获得验证码</span>
+                </div>
+                 <button class="am-btn orderBtn leftRadius rightRadius">确认订购</button>
+
+
+                <div class="tip">
+
+                    <p>订购说明：</p>
+                    啊实打实大苏打
+                    <br> 啊实打实大苏打
+                    <br> 啊实打实大苏打
+                    <br> 啊实打实大苏打
+                    <br> 啊实打实大苏打
+                </div>
+
+
+            </div>
+
+
+            <div class="foot">
+
+                <img src="./images/privilegeHomeFoot.png">
+
+            </div>
+
+
+            <div class="am-modal am-modal-no-btn" tabindex="-1" id="mymodal">
+                <div class="am-modal-dialog">
+                    <div class="am-modal-hd">友情提示
+                        <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+                    </div>
+                    <div class="am-modal-bd">
+                        Modal 内容。
+                    </div>
                 </div>
             </div>
-        </div>
 
-
-        <!--[if lt IE 9]>
+            <!--[if lt IE 9]>
         <script src="//libs.useso.com/js/jquery/1.11.1/jquery.min.js"></script>
         <script src="//cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
         <script src="/js/polyfill/rem.min.js"></script>
@@ -101,11 +134,12 @@
         <script src="//cdn.amazeui.org/amazeui/2.1.0/js/amazeui.legacy.min.js"></script>
         <![endif]-->
 
-        <!--[if (gte IE 9)|!(IE)]><!-->
-        <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
-        <script src="./lib/assets/js/amazeui.min.js"></script>
-        <script src="./js/privilegeInfo.js"></script>
-        <!--<![endif]-->
+            <!--[if (gte IE 9)|!(IE)]><!-->
+            <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+            <script src="./lib/assets/js/amazeui.min.js"></script>
+            <script src="./js/privilegeInfo.js"></script>
+            <script src="./js/common.js"></script>
+            <!--<![endif]-->
 </body>
 
 </html>

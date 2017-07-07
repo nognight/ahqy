@@ -8,9 +8,23 @@ body {
     width: 100%;
 }
 
-.order > img {
+.order>img {
     width: 80%;
     margin-left: 10%;
+}
+.type{
+    display: block;
+    height: 100px;
+    padding: 20px;
+    background: url('../images/typeBtn.png') no-repeat center;
+    background-size: 100%;
+}
+
+.type>div{
+    display: block;
+    width: 25%;
+    height: 100%;
+    float: left;
 }
 
 .center .imgDiv {

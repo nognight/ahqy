@@ -105,9 +105,9 @@ public class OrderThread implements Runnable {
         logger.info("run" + user.getPhoneNum());
 
         int count = productList.size();
-        int countTemp = -1;
+        int countTemp = 0;
         int callbackCode = 0;
-        String callbackMsg;
+
 
 
         try {
@@ -118,6 +118,7 @@ public class OrderThread implements Runnable {
                 logger.info("OrderStart + phoneNum" + user.getPhoneNum() + " product " + product.toString());
                 UserOrder userOrder = new UserOrder();
                 userOrder.setCode(product.getCode());
+                userOrder.setPhoneNum(user.getPhoneNum());
                 userOrder.setProductId(product.getId());
                 userOrder.setUserId(user.getId());
                 userOrder.setStartTime(new Date());
@@ -137,7 +138,7 @@ public class OrderThread implements Runnable {
                         .append("&")
                         .append(InCommParam.SUB_TYPE).append("=").append(subType)
                         .append("&")
-                        .append(InCommParam.REGION).append("=").append(userDao.getUserRegion(user))
+                        .append(InCommParam.REGION).append("=").append(userDao.getUserRegion(user).getCity())
                         .append("&p=").append(AhqyConst.INCOMM_REQ_PRIO_HIGH)
                         .append("&")
                         .append(InCommParam.ORDER_CHANNEL).append("=").append(product.getSource());
@@ -158,7 +159,8 @@ public class OrderThread implements Runnable {
                     logger.info(s);
                 } catch (Exception e) {
                     logger.warn(e.getMessage());
-
+                    countTemp = -1;
+                    break;
                 }
 
                 GateWayApi gateWayApi = (GateWayApi) JacksonUtil.returnObject(s, GateWayApi.class);
@@ -240,7 +242,7 @@ public class OrderThread implements Runnable {
             SmsRecord smsRecord = new SmsRecord();
             smsRecord.setSendDate(new Date());
             smsRecord.setPhoneNum(user.getPhoneNum());
-            smsRecord.setSmsNum("");
+            smsRecord.setSmsNum("10015888");
             smsRecord.setMsg(content.toString());
             smsRecord.setStatus(-1);
 
@@ -251,7 +253,6 @@ public class OrderThread implements Runnable {
                 e.printStackTrace();
             }
             smsRecordDao.addRecord(smsRecord);
-            smsRecord.getId();
 
         } catch (Exception e) {
             logger.warn(e.getMessage());
@@ -262,12 +263,9 @@ public class OrderThread implements Runnable {
         if (AhqyConst.ORDER_PRIVILEGE == type) {
             PrivilegeCallback privilegeCallback = (PrivilegeCallback) orderCallback;
             privilegeCallback.setResultCode(callbackCode);
-
-            logger.info("privilegeCallback : " + privilegeCallback.getPrivilegeId());
             privilegeCallback.checkOrder();
 
         }
-        //回掉方法orderCallback
 
 
     }

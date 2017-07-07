@@ -12,6 +12,7 @@ CREATE TABLE `t_user`(
     `pay_type` INT (4) NOT NULL DEFAULT -1 COMMENT 'payType',
     `city_code` INT (4) NOT NULL DEFAULT -1 COMMENT 'cityCode',
     `state` INT (4) NOT NULL DEFAULT -1 COMMENT '账号状态 -1是停用  0是启用一般会员',
+    `last_login` DATETIME NOT NULL DEFAULT '1000-01-01 00:00:00' COMMENT 'last_login',
     INDEX(channel),
     INDEX(net_type),
     INDEX(pay_type),

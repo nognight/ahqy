@@ -220,7 +220,6 @@
         AND online_date &lt; now()
         AND offline_date &gt; now()
 
-
         ORDER BY online_date DESC
 </select>
 

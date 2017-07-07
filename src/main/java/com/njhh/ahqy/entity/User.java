@@ -1,11 +1,13 @@
 package com.njhh.ahqy.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by HiWin10 on 2017/6/14.
  */
 public class User implements Serializable {
+    private static final long serialVersionUID = -4653417620297446816L ;
     private Integer id;
     private String phoneNum;
     private String name;
@@ -16,6 +18,7 @@ public class User implements Serializable {
     private Integer payType;
     private Integer cityCode;
     private Integer state;//账号状态 -1是停用  0是启用一般会员 1是1级 2是2级依次类推
+    private Date lastLogin;//最近登陆
 
     public Integer getState() {
         return state;
@@ -97,9 +100,17 @@ public class User implements Serializable {
         this.cityCode = cityCode;
     }
 
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("user{");
+        final StringBuilder sb = new StringBuilder("User{");
         sb.append("id=").append(id);
         sb.append(", phoneNum='").append(phoneNum).append('\'');
         sb.append(", name='").append(name).append('\'');
@@ -110,6 +121,7 @@ public class User implements Serializable {
         sb.append(", payType=").append(payType);
         sb.append(", cityCode=").append(cityCode);
         sb.append(", state=").append(state);
+        sb.append(", lastLogin=").append(lastLogin);
         sb.append('}');
         return sb.toString();
     }

@@ -1,22 +1,41 @@
 package com.njhh.ahqy.service.thread.OrderCallback;
 
+import com.njhh.ahqy.dao.UserPrivilegeDao;
+import com.njhh.ahqy.entity.Privilege;
+import com.njhh.ahqy.entity.UserPrivilege;
 import com.njhh.ahqy.sms.SmsClient;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Date;
 
 /**
  * Created by HiWin10 on 2017/7/2.
  */
 
 public class PrivilegeCallback extends OrderCallback {
-    private int privilegeId;
+    private UserPrivilege userPrivilege;
+    private Privilege privilege;
     private int userId;
     private String phoneNum;
 
-    public int getPrivilegeId() {
-        return privilegeId;
+    @Autowired
+    private UserPrivilegeDao userPrivilegeDao;
+
+
+    public UserPrivilege getUserPrivilege() {
+        return userPrivilege;
     }
 
-    public void setPrivilegeId(int privilegeId) {
-        this.privilegeId = privilegeId;
+    public void setUserPrivilege(UserPrivilege userPrivilege) {
+        this.userPrivilege = userPrivilege;
+    }
+
+    public Privilege getPrivilege() {
+        return privilege;
+    }
+
+    public void setPrivilege(Privilege privilege) {
+        this.privilege = privilege;
     }
 
     public int getUserId() {
@@ -37,9 +56,14 @@ public class PrivilegeCallback extends OrderCallback {
 
     public void checkOrder(){
 
+        // TODO: 2017/7/5 根据订购结果进行回掉
+        userPrivilege.setStatus(1);
+        userPrivilege.setStartTime(new Date());
+        userPrivilege.setUsedTime(new Date());
+        userPrivilegeDao.updatePrivilege(userPrivilege);
 
-        StringBuilder content = new StringBuilder("您本次订购的权益");
-        content.append("成功，以收到的短信为准——安徽权益");
-        SmsClient.getInstance().sendSms(phoneNum, content.toString());
+
+
+
     }
 }

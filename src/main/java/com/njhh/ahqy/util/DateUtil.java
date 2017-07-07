@@ -1,6 +1,7 @@
 package com.njhh.ahqy.util;
 
 
+import com.sun.jmx.snmp.Timestamp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -102,6 +103,48 @@ public  class DateUtil {
         Calendar srcCal = Calendar.getInstance();
         srcCal.setTime(src);
         return srcCal.get(Calendar.DAY_OF_YEAR);
+    }
+
+    /**
+     * 每月第几天
+     * @param src
+     * @return
+     */
+    public static int dayOfMonth(Date src) {
+
+        Calendar srcCal = Calendar.getInstance();
+        srcCal.setTime(src);
+        return srcCal.get(Calendar.DAY_OF_MONTH);
+    }
+
+
+    /**
+     * 时间差
+     * @param src
+     * @param dis
+     * @return
+     */
+    public static long getLongDiff(Date src ,Date dis) {
+
+        Long longSrc = src.getTime();
+        Long longDis = dis.getTime();
+
+
+        return Math.abs(longDis-longSrc);
+    }
+
+    /**
+     * 时间差天数
+     * @param src
+     * @param dis
+     * @return
+     */
+    public static   int getDayDiff(Date src ,Date dis) {
+
+        Long longSrc = src.getTime();
+        Long longDis = dis.getTime();
+        Long temp = Math.abs(longDis-longSrc)/86400;
+        return  temp.intValue();
     }
 
 

@@ -16,8 +16,8 @@ import com.njhh.ahqy.httpclient.bean.GateWayApi;
 import com.njhh.ahqy.httpclient.bean.UserInfo;
 import com.njhh.ahqy.service.LoginService;
 import com.njhh.ahqy.sms.SmsClient;
+import com.njhh.ahqy.util.DateUtil;
 import com.njhh.ahqy.util.JacksonUtil;
-import org.apache.ibatis.jdbc.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,7 +65,18 @@ public class LoginServiceImpl implements LoginService {
                 return ResultCode.DB_EXCEPTION;
             }
             if (null != user) {
-                logger.info("not null");
+                int day = DateUtil.getDayDiff(user.getLastLogin(), new Date());
+                if (day > 2) {
+                    UserInfo userInfo = getUserInfo(phoneNum);
+                    if (1 == userInfo.getProp()) {  // 2G/3G 后付费
+                        userInfo.setFeeType(USER_TYPE_POST);
+                    } else if (2 == userInfo.getProp()) {  // 2G/3G 预付费
+                        userInfo.setFeeType(USER_TYPE_PRE);
+                    }
+                    user.setNetType(userInfo.getNetType());
+                    user.setPayType(userInfo.getFeeType());
+                    userDao.updateUser(user);
+                }
                 if (!user.getWeCode().equals(weCode)) {
                     user.setWeCode(weCode);
                     userDao.updateUser(user);
@@ -77,8 +89,9 @@ public class LoginServiceImpl implements LoginService {
                 } else if (2 == userInfo.getProp()) {  // 2G/3G 预付费
                     userInfo.setFeeType(USER_TYPE_PRE);
                 }
-
+                user = new User();
                 user.setName(phoneNum);
+                user.setPhoneNum(phoneNum);
                 user.setPasswd("");
                 user.setWeCode(weCode);
                 user.setChannel(AhqyConst.CHANNEL_WX);
@@ -86,6 +99,7 @@ public class LoginServiceImpl implements LoginService {
                 user.setPayType(userInfo.getFeeType());
                 user.setCityCode(Integer.valueOf(userInfo.getCityCode()));
                 user.setState(0);
+                user.setLastLogin(new Date());
                 httpSession.setAttribute("user", user);
                 userDao.addUser(user);
 
@@ -100,13 +114,13 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public int webLogin(String phoneNum, String authCode, String time, String sign, HttpSession httpSession) {
-        if(null == authCode){
+        if (null == authCode) {
             return ResultCode.ERROR;
         }
-        if(!"debug123".equals(authCode)){
-            if(!authCode.equals(cacheDao.getAuthCode(AhqyConst.AUTHCODE_LOGIN, 0, 0, phoneNum, "")) ){
+        if (!"debug123".equals(authCode)) {
+            if (!authCode.equals(cacheDao.getAuthCode(AhqyConst.AUTHCODE_LOGIN, 0, 0, phoneNum, ""))) {
 
-            }else {
+            } else {
 
             }
         }
@@ -121,7 +135,8 @@ public class LoginServiceImpl implements LoginService {
             logger.warn("Exception" + e.getMessage());
             return ResultCode.DB_EXCEPTION;
         }
-        if(null != user){
+        if (null != user) {
+
             httpSession.setAttribute("user", user);
             return ResultCode.SUCCESS;
         }
@@ -132,20 +147,28 @@ public class LoginServiceImpl implements LoginService {
         } else if (2 == userInfo.getProp()) {  // 2G/3G 预付费
             userInfo.setFeeType(USER_TYPE_PRE);
         }
-        user.setName(phoneNum);
-        user.setPasswd("");
-        user.setWeCode("");
-        user.setChannel(AhqyConst.CHANNEL_WEB);
-        user.setNetType(userInfo.getNetType());
-        user.setPayType(userInfo.getFeeType());
-        user.setCityCode(Integer.valueOf(userInfo.getCityCode()));
-        user.setState(0);
-        userDao.addUser(user);
 
+        try {
+            user = new User();
+            user.setName(phoneNum);
+            user.setPhoneNum(phoneNum);
+            user.setPasswd("");
+            user.setWeCode("");
+            user.setChannel(AhqyConst.CHANNEL_WEB);
+            user.setNetType(userInfo.getNetType());
+            user.setPayType(userInfo.getFeeType());
+            user.setCityCode(Integer.valueOf(userInfo.getCityCode()));
+            user.setState(0);
+            user.setLastLogin(new Date());
+            userDao.addUser(user);
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+
+        }
 
         httpSession.setAttribute("user", user);
 
-        return  ResultCode.SUCCESS;
+        return ResultCode.SUCCESS;
     }
 
     @Override
@@ -161,7 +184,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public int loginCode(String phoneNum) {
-        if(null == phoneNum || "".equals(phoneNum)){
+        if (null == phoneNum || "".equals(phoneNum)) {
             return ResultCode.ERROR;
         }
         try {
@@ -176,12 +199,6 @@ public class LoginServiceImpl implements LoginService {
         }
         return ResultCode.ERROR;
     }
-
-
-
-
-
-
 
 
     /**
@@ -226,7 +243,6 @@ public class LoginServiceImpl implements LoginService {
                     HttpConstants.Method.HTTP_METHOD_GET,
                     headers,
                     null);
-
             logger.info(s);
         } catch (Exception e) {
             logger.warn(e.getMessage());

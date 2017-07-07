@@ -36,10 +36,23 @@ public class AhqyConst {
     public static final int CHANNEL_NET = 3;
 
 
-    //1是买卡券，2是订购送   ，4是首月0元  5是满减
-    public static final int PRIVILEGE_TYPE_KQ = 1;
-    public static final int PRIVILEGE_TYPE_DGS = 2;
+    /**
+     * PRIVILEGE_TYPE
+     */
+
+    //订购送
+    public static final int PRIVILEGE_TYPE_DGS = 1;
+
+
+
+    //首页免费
     public static final int PRIVILEGE_TYPE_SYMF= 4;
+
+
+
+
+
+
 
 
     //获取验证码类型

@@ -4,11 +4,11 @@ body {
     margin: 0px auto;
 }
 
-.head > img {
+.head>img {
     width: 100%;
 }
 
-.foot > img {
+.foot>img {
     width: 100%;
 }
 
@@ -30,5 +30,46 @@ body {
 span.getAuth {
     color: #fff;
     background-color: #49cdf2;
+}
 
+div.tip {
+    background-color: #fafafa;
+    opacity: 0.5;
+    border-radius: 25px;
+    width: 80%;
+    margin: 10px auto;
+    padding: 20px 10px;
+}
+
+div.privilegeName {
+    color: #fafafa;
+    font-weight: 500;
+    font-size: 20px;
+    text-align: center;
+    width: 80%;
+    margin: 10px auto;
+}
+
+div.productList {
+    color: #fafafa;
+    width: 80%;
+    margin: 10px auto;
+}
+.productList>div{
+    font-weight: 600;
+    background-color: #fafafa;
+    color: #000;
+    font-size: 18px;
+     border-radius: 10px;
+     padding: 0 10px;
+
+}
+button.orderBtn{
+    width: 80%;
+    margin: 10px 10%;
+    background-color: orange;
+    color: #fafafa;
+}
+.productList>table {
+    width: 100%;
 }

@@ -14,7 +14,7 @@ CREATE TABLE `t_user_order`(
     `back_code` VARCHAR (50) COMMENT 'backCode',
     `start_time` DATETIME COMMENT 'startTime',
     `expire_time` DATETIME COMMENT 'expireTime',
-    `message` VARCHAR (200) COMMENT 'message',
+    `message` VARCHAR (500) COMMENT 'message',
     INDEX(user_id),
     INDEX(product_id),
     INDEX(state),

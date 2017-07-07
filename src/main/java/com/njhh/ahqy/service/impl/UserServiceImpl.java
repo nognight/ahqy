@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
 
 
         // TODO: 2017/6/30 批量订购有失败的处理逻辑
-        List<Product> productlist = new ArrayList<>();
+        List<Product> productList = new ArrayList<>();
         User user = (User) httpSession.getAttribute(SESSION_USER);
 
         List<String> orderedCodeList = getUserOrdered(user);
@@ -117,17 +117,16 @@ public class UserServiceImpl implements UserService {
                 if(orderedCodeList.contains(product.getCode())){
 
                 }
-                productlist.add(product);
+                productList.add(product);
             }
         }
-
-
-        logger.info(productlist.toString());
+        logger.info(productList.toString());
         orderThread.setUser(user);
-        orderThread.setProductList(productlist);
+        orderThread.setProductList(productList);
         orderThread.setOrderCallback(orderCallback);
         orderThread.setType(type);
-        orderThread.setSubType(AhqyConst.SUBTYPE_ORDER);
+        orderThread.setSubType(AhqyConst.SUBTYPE_UNORDER);
+        //orderThread.setSubType(AhqyConst.SUBTYPE_ORDER);
         orderThread.setSmsCode(smsCode);
 
         Thread thread = new Thread(orderThread);
@@ -166,7 +165,7 @@ public class UserServiceImpl implements UserService {
                 .append("?")
                 .append(InCommParam.USER_NUMBER).append("=").append(user.getPhoneNum())
                 .append("&")
-                .append(InCommParam.REGION).append("=").append(userDao.getUserRegion(user))
+                .append(InCommParam.REGION).append("=").append(userDao.getUserRegion(user).getCity())
                 .append("&p=").append(AhqyConst.INCOMM_REQ_PRIO_HIGH)
                 .append("&netType=").append(user.getNetType());
 
