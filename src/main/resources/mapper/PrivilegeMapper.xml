@@ -194,11 +194,11 @@
         <if test="pojo.payType != null">
             AND pay_type = ${pojo.payType}
         </if>
-        <if test="pojo.netType != null">
-            AND net_type = ${pojo.netType}
-        </if>
         <if test="pojo.type != null">
-            AND net_type = ${pojo.netType}
+            AND type = ${pojo.type}
+        </if>
+        <if test="pojo.category != null">
+            AND category = ${pojo.category}
         </if>
         <if test="pojo.netType != null">
             AND net_type = ${pojo.netType}

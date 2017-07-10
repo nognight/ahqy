@@ -72,6 +72,10 @@ $(".getAuthPic").click(function (e) {
 
 });
 
+$(document).ready(function () {
+      $('#doc-my-tabs').tabs();
+});
+
 
 // 刷新图片
 function changeImg() {

@@ -15,7 +15,7 @@ CREATE TABLE `t_product`(
     `retail_type` INT (4) NOT NULL DEFAULT -1 COMMENT '//售价类型，0是包月,1是半年，2是包天''',
     `source` INT (4) NOT NULL DEFAULT -1 COMMENT '来源平台，当前定义: -1 表示未知平台, 1 安徽BSS平台（xyl）, 2 信息化接口, 3 总台智能客服接口, 4 科大讯飞4G半年包，5 AOPSP接口 ，6融合订购接口''',
     `supplier_id` INT (4) NOT NULL DEFAULT -1 COMMENT '供应商标识',
-    `support_band` INT (4) NOT NULL DEFAULT -1 COMMENT '支持品牌',
+    `support_band` VARCHAR (50) NOT NULL DEFAULT '' COMMENT '支持品牌',
     `is_unsubscribe` INT (4) NOT NULL DEFAULT -1 COMMENT '能否退订',
     `is_repeatable` INT (4) NOT NULL DEFAULT -1 COMMENT '能否重复订购 0为可以 其他值不能',
     `pay_type` INT (4) NOT NULL DEFAULT -1 COMMENT '计费类型, -1 为未知，0表示通用，1 为预付费，2 为后付费''',

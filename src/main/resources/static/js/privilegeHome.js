@@ -23,3 +23,8 @@ $('.center').slick({
         }
     }]
 });
+
+
+$(document).ready(function () {
+    $('div.type').animate({width:'100%'});
+});

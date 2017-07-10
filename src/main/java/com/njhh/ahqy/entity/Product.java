@@ -21,7 +21,7 @@ public class Product {
     private Integer retailType;//售价类型，0是包月,1是半年，2是包天'
     private Integer source;//来源平台，当前定义: -1 表示未知平台, 1 安徽BSS平台（xyl）, 2 信息化接口, 3 总台智能客服接口, 4 科大讯飞4G半年包，5 AOPSP接口 ，6融合订购接口'
     private Integer supplierId;//供应商标识
-    private Integer supportBand;//支持品牌
+    private String supportBand;//支持品牌
     private Integer isUnsubscribe;//能否退订
     private Integer isRepeatable;//能否重复订购 0为可以 其他值不能
     private Integer payType;//计费类型, -1 为未知，0表示通用，1 为预付费，2 为后付费'
@@ -141,11 +141,11 @@ public class Product {
         this.supplierId = supplierId;
     }
 
-    public Integer getSupportBand() {
+    public String getSupportBand() {
         return supportBand;
     }
 
-    public void setSupportBand(Integer supportBand) {
+    public void setSupportBand(String supportBand) {
         this.supportBand = supportBand;
     }
 
@@ -214,7 +214,7 @@ public class Product {
         sb.append(", retailType=").append(retailType);
         sb.append(", source=").append(source);
         sb.append(", supplierId=").append(supplierId);
-        sb.append(", supportBand=").append(supportBand);
+        sb.append(", supportBand='").append(supportBand).append('\'');
         sb.append(", isUnsubscribe=").append(isUnsubscribe);
         sb.append(", isRepeatable=").append(isRepeatable);
         sb.append(", payType=").append(payType);
