@@ -21,10 +21,6 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductDao productDao;
 
-    @Override
-    public Product getProduct(int id) {
-        return null;
-    }
 
     @Override
     public List<Product> getProductList(int type, HttpSession httpSession) {
@@ -32,5 +28,11 @@ public class ProductServiceImpl implements ProductService {
         product.setType(type);
         product.setStatus(1);
         return productDao.getProductList(product);
+    }
+    @Override
+    public Product  getProductInfo(int id ,HttpSession httpSession){
+        Product product = new Product();
+        product.setId(id);
+        return productDao.getProductById(product);
     }
 }

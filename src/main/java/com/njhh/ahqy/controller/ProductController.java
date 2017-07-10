@@ -28,4 +28,14 @@ public class ProductController {
         apiBean.setRet(0);
         return apiBean;
     }
+
+    @RequestMapping("/api/product/getInfo")
+    private ApiBean getProductInfo(HttpSession httpSession,
+                                   @RequestParam(value = "id", defaultValue = "0")int id){
+
+        ApiBean apiBean = new ApiBean();
+        apiBean.setContent(new ObjBean(productService.getProductInfo(id,httpSession)));
+        apiBean.setRet(0);
+        return apiBean;
+    }
 }

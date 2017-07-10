@@ -67,7 +67,8 @@ public class CacheDaoImpl implements CacheDao {
         key.append(":");
         key.append(remark);
 
-        String value = stringRedisTemplate.opsForValue().get(key);
+
+        String value = stringRedisTemplate.opsForValue().get(key.toString());
         return  value;
 
     }

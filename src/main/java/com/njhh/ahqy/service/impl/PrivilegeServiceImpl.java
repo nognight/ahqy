@@ -45,13 +45,12 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     private UserPrivilegeDao userPrivilegeDao;
 
     @Override
-    public List<Privilege> getPrivilegeList(int id,int type,int category, HttpSession httpSession) {
+    public List<Privilege> getPrivilegeList(int type,int category, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
         if (null == user) {
             return null;
         }
         Privilege privilege = new Privilege();
-        privilege.setId(id);
         privilege.setStatus(0);
         privilege.setType(type);
         privilege.setCategory(category);
@@ -150,7 +149,6 @@ public class PrivilegeServiceImpl implements PrivilegeService {
             smsRecord.setStatus(0);
             SmsClient.getInstance().sendSms(user.getPhoneNum(), content.toString());
             smsRecordDao.addRecord(smsRecord);
-            SmsClient.getInstance().sendSms(user.getPhoneNum(), content.toString());
 
 
             UserPrivilege userPrivilege = new UserPrivilege();

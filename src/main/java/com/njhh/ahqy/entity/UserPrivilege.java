@@ -82,7 +82,7 @@ public class UserPrivilege {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("UserPrivilegeDao{");
+        final StringBuilder sb = new StringBuilder("UserPrivilege{");
         sb.append("id=").append(id);
         sb.append(", userId=").append(userId);
         sb.append(", privilegeId=").append(privilegeId);

@@ -7,18 +7,18 @@ import com.njhh.ahqy.common.AhqyConst;
 import com.njhh.ahqy.dao.SmsRecordDao;
 import com.njhh.ahqy.dao.UserDao;
 import com.njhh.ahqy.dao.UserOrderDao;
-import com.njhh.ahqy.entity.Product;
-import com.njhh.ahqy.entity.SmsRecord;
-import com.njhh.ahqy.entity.User;
-import com.njhh.ahqy.entity.UserOrder;
+import com.njhh.ahqy.dao.UserPrivilegeDao;
+import com.njhh.ahqy.entity.*;
 import com.njhh.ahqy.httpclient.HttpConstants;
 import com.njhh.ahqy.httpclient.RestHttpClient;
 import com.njhh.ahqy.httpclient.bean.GateWayApi;
 import com.njhh.ahqy.httpclient.bean.ProductOrderResp;
+import com.njhh.ahqy.service.UserService;
 import com.njhh.ahqy.service.thread.OrderCallback.OrderCallback;
 import com.njhh.ahqy.service.thread.OrderCallback.PrivilegeCallback;
 import com.njhh.ahqy.sms.SmsClient;
 import com.njhh.ahqy.util.JacksonUtil;
+import com.njhh.ahqy.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +44,10 @@ public class OrderThread implements Runnable {
     private UserOrderDao userOrderDao;
     @Autowired
     private SmsRecordDao smsRecordDao;
+    @Autowired
+    private UserPrivilegeDao userPrivilegeDao;
+    @Autowired
+    private UserService userService;
 
     private OrderCallback orderCallback;
     private int type;
@@ -261,9 +265,27 @@ public class OrderThread implements Runnable {
 
         // TODO: 2017/7/2  权益订购订购后回掉
         if (AhqyConst.ORDER_PRIVILEGE == type) {
-            PrivilegeCallback privilegeCallback = (PrivilegeCallback) orderCallback;
-            privilegeCallback.setResultCode(callbackCode);
-            privilegeCallback.checkOrder();
+            // TODO: 2017/7/5 根据订购结果进行回掉
+
+            PrivilegeCallback privilegeCallback = (PrivilegeCallback)orderCallback;
+            UserPrivilege userPrivilege =  privilegeCallback.getUserPrivilege();
+
+            userPrivilege.setStatus(1);
+            userPrivilege.setStartTime(new Date());
+            userPrivilege.setUsedTime(new Date());
+            userPrivilegeDao.updatePrivilege(userPrivilege);
+
+            Privilege privilege = privilegeCallback.getPrivilege();
+            if(2 == privilege.getGiftType()){
+
+                String[] productIds = StringUtil.splitBy(privilege.getProductIds());
+                userService.orderProducts(productIds,user,AhqyConst.ORDER_WITHCODES,AhqyConst.AUTHCODE_WITHOUT);
+
+            }
+            if(0 == privilege.getGiftType()){
+
+            }
+
         }
 
 
