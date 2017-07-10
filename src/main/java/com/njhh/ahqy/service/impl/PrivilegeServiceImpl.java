@@ -45,18 +45,29 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     private UserPrivilegeDao userPrivilegeDao;
 
     @Override
-    public List<Privilege> getPrivilegeList(int type,int category, HttpSession httpSession) {
+    public List<Privilege> getPrivilegeList(int id,int type,int category, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
         if (null == user) {
             return null;
         }
         Privilege privilege = new Privilege();
+        privilege.setId(id);
         privilege.setStatus(0);
         privilege.setType(type);
         privilege.setCategory(category);
         privilege.setNetType(user.getNetType());
         privilege.setPayType(user.getPayType());
         return privilegeDao.getPrivilegeList(privilege);
+    }
+    @Override
+    public Privilege getPrivilegeInfo(int id , HttpSession httpSession){
+        User user = (User) httpSession.getAttribute("user");
+        if (null == user) {
+            return null;
+        }
+        Privilege privilege = new Privilege();
+        privilege.setId(id);
+        return privilegeDao.getPrivilege(privilege);
     }
 
     @Override
@@ -106,7 +117,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         }
 
         User user = (User) httpSession.getAttribute("user");
-        if (!"debug123".equals(authCode)) {
+        if (!AhqyConst.AUTHCODE_WITHOUT.equals(authCode)) {
             if (!authCode.equals(cacheDao.getAuthCode(AhqyConst.AUTHCODE_PRIVILEGE, id, user.getId(), user.getPhoneNum(), ""))) {
                 return ResultCode.AUTHCODE_ERROR;
             }
@@ -152,36 +163,13 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 
 
             PrivilegeCallback privilegeCallback = new PrivilegeCallback();
-            privilegeCallback.setUserId(user.getId());
+            privilegeCallback.setUser(user);
             privilegeCallback.setPrivilege(privilege);
             privilegeCallback.setUserPrivilege(userPrivilege);
             privilegeCallback.setPhoneNum(user.getPhoneNum());
 
             userService.orderProducts(productIds, httpSession, privilegeCallback, AhqyConst.ORDER_PRIVILEGE, authCode);
 
-
-            // TODO: 2017/7/2 线程查订购情况，在进行处理
-
-//            if(1 == gitType){
-//
-//                //加卡券
-//                for(String giftId : giftIds){
-//                    userService.addUserCoupon(Integer.valueOf(giftId), httpSession);
-//                }
-//
-//            }
-//            if(2 == gitType){
-//                //加订产品
-//                // TODO: 2017/7/2 线程查订购订购
-//
-//                Boolean flag = false;
-//                // TODO: 2017/6/28 订购 然后判断回调
-//
-//                if(flag){
-//                    // TODO: 2017/6/28 增加用户卡券
-//                }
-//
-//            }
         }
         //首月免费
         if (AhqyConst.PRIVILEGE_TYPE_SYMF == privilege.getType()) {

@@ -62,6 +62,9 @@ public class AhqyConst {
     public static final String AUTHCODE_INTENT = "intent";
     public static final String AUTHCODE_COUPON = "coupon";
 
+    //无需验证码
+    public static final String AUTHCODE_WITHOUT="debug123";
+
 
 //session里放用户信息
 
@@ -86,6 +89,8 @@ public class AhqyConst {
 
     //业务订购类型
     public static final int ORDER_PRIVILEGE = 1;
+    //业务订购类型多code产品
+    public static final int ORDER_WITHCODES = 9;
 
     // 返回 KEY
     public static final String K_RET = "ret";

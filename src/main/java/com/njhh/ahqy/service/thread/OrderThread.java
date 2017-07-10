@@ -264,7 +264,6 @@ public class OrderThread implements Runnable {
             PrivilegeCallback privilegeCallback = (PrivilegeCallback) orderCallback;
             privilegeCallback.setResultCode(callbackCode);
             privilegeCallback.checkOrder();
-
         }
 
 

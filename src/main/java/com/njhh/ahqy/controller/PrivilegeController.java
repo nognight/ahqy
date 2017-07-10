@@ -23,11 +23,21 @@ public class PrivilegeController {
 
     @RequestMapping("/api/privilege/getList")
     private ApiBean getPrivilegeList(HttpSession httpSession,
+                                     int id,
                                      int type,
                                      int category) {
         ApiBean apiBean = new ApiBean();
         apiBean.setRet(0);
-        apiBean.setContent(new ObjBean(privilegeService.getPrivilegeList(type,category,httpSession)));
+        apiBean.setContent(new ObjBean(privilegeService.getPrivilegeList(id,type,category,httpSession)));
+        return apiBean;
+
+    }
+    @RequestMapping("/api/privilege/getInfo")
+    private ApiBean getPrivilegeList(HttpSession httpSession,
+                                     int id) {
+        ApiBean apiBean = new ApiBean();
+        apiBean.setRet(0);
+        apiBean.setContent(new ObjBean(privilegeService.getPrivilegeInfo(id,httpSession)));
         return apiBean;
 
     }

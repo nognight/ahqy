@@ -20,6 +20,7 @@ import com.njhh.ahqy.service.thread.OrderCallback.OrderCallback;
 import com.njhh.ahqy.service.thread.OrderThread;
 import com.njhh.ahqy.sms.SmsClient;
 import com.njhh.ahqy.util.JacksonUtil;
+import com.njhh.ahqy.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,25 +108,13 @@ public class UserServiceImpl implements UserService {
         // TODO: 2017/6/30 批量订购有失败的处理逻辑
         List<Product> productList = new ArrayList<>();
         User user = (User) httpSession.getAttribute(SESSION_USER);
-
-        List<String> orderedCodeList = getUserOrdered(user);
-        if(null != orderedCodeList){
-            Product product = new Product();
-            for (String productId : productIds) {
-                product.setId(Integer.valueOf(productId));
-                product = productDao.getProductById(product);
-                if(orderedCodeList.contains(product.getCode())){
-
-                }
-                productList.add(product);
-            }
-        }
+        productList = getProductList(productIds,user);
         logger.info(productList.toString());
         orderThread.setUser(user);
         orderThread.setProductList(productList);
         orderThread.setOrderCallback(orderCallback);
         orderThread.setType(type);
-        orderThread.setSubType(AhqyConst.SUBTYPE_UNORDER);
+        orderThread.setSubType(AhqyConst.SUBTYPE_ORDER);
         //orderThread.setSubType(AhqyConst.SUBTYPE_ORDER);
         orderThread.setSmsCode(smsCode);
 
@@ -135,6 +124,33 @@ public class UserServiceImpl implements UserService {
 
         return 0;
     }
+
+
+
+    @Override
+    public int orderProducts(String[] productIds , User user ,int type,String smsCode) {
+
+
+        // TODO: 2017/6/30 批量订购有失败的处理逻辑
+        List<Product> productList = new ArrayList<>();
+
+        productList = getProductList(productIds,user);
+        logger.info(productList.toString());
+        orderThread.setUser(user);
+        orderThread.setProductList(productList);
+        orderThread.setOrderCallback(null);
+        orderThread.setType(type);
+        orderThread.setSubType(AhqyConst.SUBTYPE_ORDER);
+        //orderThread.setSubType(AhqyConst.SUBTYPE_ORDER);
+        orderThread.setSmsCode(smsCode);
+
+        Thread thread = new Thread(orderThread);
+        thread.start();
+        logger.info("StartOrderThread:" + thread.getId());
+
+        return 0;
+    }
+
 
 
     @Override
@@ -207,5 +223,38 @@ public class UserServiceImpl implements UserService {
         return null;
 
 
+    }
+
+    private List getProductList(String[] productIds , User user){
+        List<Product> productList = new ArrayList<>();
+
+        List<String> orderedCodeList = getUserOrdered(user);
+        if(null != orderedCodeList){
+            Product product = new Product();
+            for (String productId : productIds) {
+                product.setId(Integer.valueOf(productId));
+                product = productDao.getProductById(product);
+                if(orderedCodeList.contains(product.getCode())){
+                    logger.info("已经订购product.getCode()"+product.getCode());
+                }
+                //多个code的
+                if(0 == product.getHasCodes()){
+                    String[] codes = StringUtil.splitBy(product.getCodes());
+                    for(String code : codes){
+                        if(orderedCodeList.contains(code)){
+                            logger.info("已经订购codes"+product.getCode());
+                        }else {
+                            product.setCode(code);
+                            break;
+                        }
+                    }
+                }
+                if(!"".equals(product.getCode())){
+                    productList.add(product);
+                }
+            }
+            return productList;
+        }
+        return productList;
     }
 }

@@ -6,7 +6,7 @@ CREATE TABLE `t_product`(
     `type` INT (4) NOT NULL DEFAULT -1 COMMENT '产品类型，定义 1省内包月 2国内包月 3半年包 4闲时 5sp 6日包 7加油包 8首月0',
     `status` INT (4) NOT NULL DEFAULT -1 COMMENT '//状态。0生效',
     `name` VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'name',
-    `description` VARCHAR (200) NOT NULL DEFAULT '' COMMENT 'description',
+    `description` VARCHAR (1000) NOT NULL DEFAULT '' COMMENT 'description',
     `memo` VARCHAR (1000) NOT NULL DEFAULT '' COMMENT 'memo',
     `online_date` DATETIME NOT NULL DEFAULT '1000-01-01 00:00:00' COMMENT 'onlineDate',
     `offline_date` DATETIME NOT NULL DEFAULT '1000-01-01 00:00:00' COMMENT 'offlineDate',

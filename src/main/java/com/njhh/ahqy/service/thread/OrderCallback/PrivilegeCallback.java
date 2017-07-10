@@ -1,9 +1,17 @@
 package com.njhh.ahqy.service.thread.OrderCallback;
 
+import com.njhh.ahqy.common.AhqyConst;
+import com.njhh.ahqy.dao.PrivilegeDao;
+import com.njhh.ahqy.dao.ProductDao;
 import com.njhh.ahqy.dao.UserPrivilegeDao;
 import com.njhh.ahqy.entity.Privilege;
+import com.njhh.ahqy.entity.Product;
+import com.njhh.ahqy.entity.User;
 import com.njhh.ahqy.entity.UserPrivilege;
+import com.njhh.ahqy.service.UserService;
+import com.njhh.ahqy.service.thread.OrderThread;
 import com.njhh.ahqy.sms.SmsClient;
+import com.njhh.ahqy.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -15,11 +23,18 @@ import java.util.Date;
 public class PrivilegeCallback extends OrderCallback {
     private UserPrivilege userPrivilege;
     private Privilege privilege;
-    private int userId;
+    private User user;
     private String phoneNum;
 
     @Autowired
     private UserPrivilegeDao userPrivilegeDao;
+    @Autowired
+    private OrderThread orderThread;
+    @Autowired
+    private ProductDao productDao;
+    @Autowired
+    private UserService userService;
+
 
 
     public UserPrivilege getUserPrivilege() {
@@ -38,12 +53,12 @@ public class PrivilegeCallback extends OrderCallback {
         this.privilege = privilege;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getPhoneNum() {
@@ -61,6 +76,18 @@ public class PrivilegeCallback extends OrderCallback {
         userPrivilege.setStartTime(new Date());
         userPrivilege.setUsedTime(new Date());
         userPrivilegeDao.updatePrivilege(userPrivilege);
+        if(0 == privilege.getGiftType()){
+
+            orderThread.setSmsCode(AhqyConst.AUTHCODE_WITHOUT);
+            orderThread.setSubType(AhqyConst.SUBTYPE_ORDER);
+
+            String[] productIds = StringUtil.splitBy(privilege.getProductIds());
+            userService.orderProducts(productIds,user,AhqyConst.ORDER_WITHCODES,AhqyConst.AUTHCODE_WITHOUT);
+
+        }
+        if(0 == privilege.getGiftType()){
+
+        }
 
 
 
