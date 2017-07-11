@@ -25,7 +25,7 @@ public class Product {
     private Integer isUnsubscribe;//能否退订
     private Integer isRepeatable;//能否重复订购 0为可以 其他值不能
     private Integer payType;//计费类型, -1 为未知，0表示通用，1 为预付费，2 为后付费'
-    private Integer netType;//-1 表示未知,0表示通用， 1 表示针对 2G 网络, 2 表示针对 3G, 3 表示针对 4G',
+    private Integer netType;//-1 表示未知,0表示23G通用， 1 表示针对 2G 网络, 2 表示针对 3G, 3 表示针对 4G,
     private Integer hasCodes;//是否拥有多个code，0表示多个
     private String codes;//多个code | 分割  常见于加油包
 

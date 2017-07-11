@@ -19,7 +19,7 @@ CREATE TABLE `t_product`(
     `is_unsubscribe` INT (4) NOT NULL DEFAULT -1 COMMENT '能否退订',
     `is_repeatable` INT (4) NOT NULL DEFAULT -1 COMMENT '能否重复订购 0为可以 其他值不能',
     `pay_type` INT (4) NOT NULL DEFAULT -1 COMMENT '计费类型, -1 为未知，0表示通用，1 为预付费，2 为后付费''',
-    `net_type` INT (4) NOT NULL DEFAULT -1 COMMENT '-1 表示未知,0表示通用， 1 表示针对 2G 网络, 2 表示针对 3G, 3 表示针对 4G,',
+    `net_type` INT (4) NOT NULL DEFAULT -1 COMMENT '-1 表示未知,0表示23G通用， 1 表示针对 2G 网络, 2 表示针对 3G, 3 表示针对 4G,',
     `has_codes` INT (4) NOT NULL DEFAULT -1 COMMENT '是否拥有多个code，0表示多个',
     `codes` VARCHAR (200) NOT NULL DEFAULT '' COMMENT '多个code | 分割  常见于加油包',
     PRIMARY KEY (`id`)

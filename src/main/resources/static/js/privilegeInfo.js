@@ -56,7 +56,76 @@ var timer = {
     }
 };
 
+
+
+
+$('.orderBtn').click(function (e) {
+
+    if (null !== $('input.authCode').val()) {
+        $.ajax({
+            type: "get",
+            url: "api/privilege/use?id=" + id + "&authCode=" + $('input.authCode').val(),
+            success: function (response) {
+                console.log(response);
+                if (0 == response.ret) {
+                    content = response.content;
+
+                    if (10 == content.ret) {
+                        $('.am-modal-bd').text('短信验证码错误');
+
+                        $('#mymodal').modal();
+                    } else {
+                        $('.am-modal-bd').text('请等待短信返回结果通知');
+
+                        $('#mymodal').modal();
+                    }
+
+
+                }
+
+
+
+
+            }
+        });
+    } else {
+        $('.am-modal-bd').text('请输入验证码');
+
+        $('#mymodal').modal();
+
+
+    }
+
+});
+
+
+
 $(document).ready(function () {
+
+
+    $.ajax({
+        type: "get",
+        url: "api/user/getInfo",
+        success: function (response) {
+            if (0 == response.ret) {
+                content = response.content;
+                object = content.object;
+
+                if (3 == object.netType) {
+                    $('.am-modal-bd').text('4G用户尽请期待！');
+                    $('#mymodal').modal();
+                    window.setTimeout(function () {
+                        window.history.go(-1);
+                    }, 2000);
+
+
+                }
+
+            }
+
+        }
+    });
+
 
     id = GetQueryString("id");
 
@@ -103,7 +172,7 @@ $(document).ready(function () {
                                     content = response.content;
                                     object = content.object;
 
-                                    $('.giftTable').append(' <tr><td>' + object.name + '</td><td>' + object.retailPrice + '元/月</td></tr>');
+                                    $('.giftTable').append(' <tr><td>' + object.name + '</td><td>' + object.retailPrice + '元</td></tr>');
 
                                 }
                             }
