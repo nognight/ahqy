@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by HiWin10 on 2017/6/30.
@@ -111,7 +112,7 @@ public class OrderThread implements Runnable {
         int count = productList.size();
         int countTemp = 0;
         int callbackCode = 0;
-
+        Map<String, Integer> orderMap = new HashMap<>();
 
 
         try {
@@ -161,6 +162,9 @@ public class OrderThread implements Runnable {
                             null);
 
                     logger.info(s);
+                    if (null == s) {
+                        return;
+                    }
                 } catch (Exception e) {
                     logger.warn(e.getMessage());
                     countTemp = -1;
@@ -185,19 +189,22 @@ public class OrderThread implements Runnable {
                 }
                 ProductOrderResp productOrderResp = (ProductOrderResp) JacksonUtil.returnObject(jsonOrderResp, ProductOrderResp.class);
 
-                if(null != productOrderResp){
+                if (null != productOrderResp) {
 
                     userOrder.setState(2);
 
-                    if("0000".equals(productOrderResp.getRespCode())){
-                        countTemp = countTemp+1;
+                    if ("0000".equals(productOrderResp.getRespCode())) {
+                        countTemp = countTemp + 1;
+                        orderMap.put(userOrder.getCode(), 0);
+                    } else {
+                        orderMap.put(userOrder.getCode(), 1);
                     }
                     userOrder.setBackCode(productOrderResp.getRespCode());
                     userOrder.setMessage(productOrderResp.getRespDesc());
                     userOrder.setBackTime(new Date());
                     userOrder.setStartTime(productOrderResp.getActiveDate());
 
-                }else {
+                } else {
                     userOrder.setState(9);
                 }
                 userOrderDao.updateUserOrder(userOrder);
@@ -207,37 +214,36 @@ public class OrderThread implements Runnable {
             // TODO: 2017/7/2 判断订购结果
 
 
-
-            if(count == countTemp){
+            if (count == countTemp) {
                 //批量订购都成功
-                callbackCode=0;
+                callbackCode = 0;
 
 
-            }else if(0==countTemp){
+            } else if (0 == countTemp) {
                 //全失败
-                callbackCode=-1;
+                callbackCode = -1;
 
-            }else if(-1==countTemp){
+            } else if (-1 == countTemp) {
                 //系统错误
-                callbackCode=-2;
+                callbackCode = -2;
 
-            }else {
+            } else {
                 //批量部分成功
-                callbackCode=1;
+                callbackCode = 1;
             }
 
 
             StringBuilder content = new StringBuilder("您本次订购的");
-            if(0 == callbackCode){
+            if (0 == callbackCode) {
                 content.append("全部产品订购成功。");
 
-            }else if(-1 ==callbackCode){
+            } else if (-1 == callbackCode) {
                 content.append("产品订购失败。我们将及时为您处理。");
 
-            }else if( -2 == callbackCode){
+            } else if (-2 == callbackCode) {
                 content.append("过程中发生系统错误，请稍后再试。");
 
-            }else if( 1 == callbackCode){
+            } else if (1 == callbackCode) {
                 content.append("部分产品订购成功，我们将及时为您处理。");
 
             }
@@ -253,7 +259,7 @@ public class OrderThread implements Runnable {
             try {
                 SmsClient.getInstance().sendSms(user.getPhoneNum(), content.toString());
                 smsRecord.setStatus(0);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             smsRecordDao.addRecord(smsRecord);
@@ -263,28 +269,42 @@ public class OrderThread implements Runnable {
 
         }
 
-        // TODO: 2017/7/2  权益订购订购后回掉
         if (AhqyConst.ORDER_PRIVILEGE == type) {
-            // TODO: 2017/7/5 根据订购结果进行回掉
 
-            PrivilegeCallback privilegeCallback = (PrivilegeCallback)orderCallback;
-            UserPrivilege userPrivilege =  privilegeCallback.getUserPrivilege();
-
-            userPrivilege.setStatus(1);
+            PrivilegeCallback privilegeCallback = (PrivilegeCallback) orderCallback;
+            UserPrivilege userPrivilege = privilegeCallback.getUserPrivilege();
+            userPrivilege.setStatus(-2);            //设置为增加权益失败
+            if (-1 == callbackCode) {
+                userPrivilege.setStatus(0);//设置为可用
+            }
             userPrivilege.setStartTime(new Date());
-            userPrivilege.setUsedTime(new Date());
+
+            userPrivilege.setRemark("权益产品订购结果：" + orderMap.toString());
             userPrivilegeDao.updatePrivilege(userPrivilege);
 
-            Privilege privilege = privilegeCallback.getPrivilege();
-            if(2 == privilege.getGiftType()){
+            if (0 == userPrivilege.getStatus()) {
+                Privilege privilege = privilegeCallback.getPrivilege();
+                if (2 == privilege.getGiftType()) {
 
-                String[] productIds = StringUtil.splitBy(privilege.getProductIds());
-                userService.orderProducts(productIds,user,AhqyConst.ORDER_WITHCODES,AhqyConst.AUTHCODE_WITHOUT);
+                    String[] giftIds = StringUtil.splitBy(privilege.getGiftId());
+                    logger.info("giftIds"+ giftIds);
+                    userService.orderProducts(giftIds, user, privilegeCallback, AhqyConst.ORDER_PRIVILEGE_CALLBACK, AhqyConst.AUTHCODE_WITHOUT);
 
+                }
+                if (0 == privilege.getGiftType()) {
+
+                }
             }
-            if(0 == privilege.getGiftType()){
-
+        } else if (AhqyConst.ORDER_PRIVILEGE_CALLBACK == type) {
+            PrivilegeCallback privilegeCallback = (PrivilegeCallback) orderCallback;
+            UserPrivilege userPrivilege = privilegeCallback.getUserPrivilege();
+            userPrivilege.setStatus(2);//设置为使用失败
+            if (0 == callbackCode) {
+                userPrivilege.setStatus(1);//设置为已经使用
             }
+            userPrivilege.setUsedTime(new Date());
+            userPrivilege.setRemark("权益产品使用结果：" + orderMap.toString());
+            userPrivilegeDao.updatePrivilege(userPrivilege);
 
         }
 

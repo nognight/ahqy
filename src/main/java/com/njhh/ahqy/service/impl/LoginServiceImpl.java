@@ -56,6 +56,12 @@ public class LoginServiceImpl implements LoginService {
             logger.info(map.toString());
             User user = new User();
             String phoneNum = map.get("phone").toString();
+            if(null == phoneNum || "".equals(phoneNum)){
+
+                logger.info("微信未绑定号码");
+                return ResultCode.ERROR;
+
+            }
             user.setPhoneNum(phoneNum);
             user.setName(phoneNum);
             try {

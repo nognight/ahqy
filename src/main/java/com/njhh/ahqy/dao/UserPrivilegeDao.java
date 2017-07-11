@@ -9,7 +9,7 @@ import java.util.List;
  * Created by HiWin10 on 2017/6/28.
  */
 public interface UserPrivilegeDao {
-    List<Privilege> getUserPrivilegeList(UserPrivilege userPrivilege);
+    List<UserPrivilege> getUserPrivilegeList(UserPrivilege userPrivilege);
 
     int addUserPrivilege(UserPrivilege userPrivilege);
 

@@ -10,11 +10,12 @@ public class UserPrivilege {
     private Integer id;
     private Integer userId;
     private Integer privilegeId;
-    private Integer status;//-1 失效 0可用 1已经使用
+    private Integer status;//-2增加权益失败  -1 失效 0可用 1已经使用 2使用失败
     private Date getTime;
     private Date startTime;
     private Date expireTime;
     private Date usedTime;
+    private String remark; //备注
 
     public Integer getId() {
         return id;
@@ -80,6 +81,14 @@ public class UserPrivilege {
         this.usedTime = usedTime;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("UserPrivilege{");
@@ -91,6 +100,7 @@ public class UserPrivilege {
         sb.append(", startTime=").append(startTime);
         sb.append(", expireTime=").append(expireTime);
         sb.append(", usedTime=").append(usedTime);
+        sb.append(", remark='").append(remark).append('\'');
         sb.append('}');
         return sb.toString();
     }

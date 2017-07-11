@@ -45,7 +45,7 @@ public class AhqyConst {
 
 
 
-    //首页免费
+    //首月免费
     public static final int PRIVILEGE_TYPE_SYMF= 4;
 
 
@@ -89,8 +89,8 @@ public class AhqyConst {
 
     //业务订购类型
     public static final int ORDER_PRIVILEGE = 1;
-    //业务订购类型多code产品
-    public static final int ORDER_WITHCODES = 9;
+    //业务订购类型权益回调订购
+    public static final int ORDER_PRIVILEGE_CALLBACK = 2;
 
     // 返回 KEY
     public static final String K_RET = "ret";

@@ -70,7 +70,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     }
 
     @Override
-    public List<Privilege> getUserPrivilegeList(HttpSession httpSession) {
+    public List<UserPrivilege> getUserPrivilegeList(HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
         if (null == user) {
             return null;
@@ -156,6 +156,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
             userPrivilege.setUserId(user.getId());
             userPrivilege.setGetTime(new Date());
             userPrivilege.setStatus(-1);
+            userPrivilege.setRemark("开始使用权益");
 
             userPrivilegeDao.addUserPrivilege(userPrivilege);
 

@@ -102,20 +102,27 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public int orderProducts(String[] productIds, HttpSession httpSession, OrderCallback orderCallback, int type ,String smsCode) {
+    public int orderProducts(String[] productIds, HttpSession httpSession, OrderCallback orderCallback, int type, String smsCode) {
 
+        if (0 == productIds.length) {
+            logger.warn("无产品id");
+            return 0;
+        }
 
-        // TODO: 2017/6/30 批量订购有失败的处理逻辑
         List<Product> productList = new ArrayList<>();
         User user = (User) httpSession.getAttribute(SESSION_USER);
-        productList = getProductList(productIds,user);
+        productList = getProductList(productIds, user);
         logger.info(productList.toString());
+        if (0 == productList.size()) {
+            logger.warn("无产品id");
+            return 0;
+        }
         orderThread.setUser(user);
         orderThread.setProductList(productList);
         orderThread.setOrderCallback(orderCallback);
         orderThread.setType(type);
+
         orderThread.setSubType(AhqyConst.SUBTYPE_ORDER);
-        //orderThread.setSubType(AhqyConst.SUBTYPE_ORDER);
         orderThread.setSmsCode(smsCode);
 
         Thread thread = new Thread(orderThread);
@@ -124,24 +131,32 @@ public class UserServiceImpl implements UserService {
 
         return 0;
     }
-
 
 
     @Override
-    public int orderProducts(String[] productIds , User user ,int type,String smsCode) {
+    public int orderProducts(String[] productIds, User user, OrderCallback orderCallback, int type, String smsCode) {
 
 
-        // TODO: 2017/6/30 批量订购有失败的处理逻辑
+        if (0 == productIds.length) {
+            logger.warn("无产品id");
+            return 0;
+        }
+
         List<Product> productList = new ArrayList<>();
 
-        productList = getProductList(productIds,user);
+        productList = getProductList(productIds, user);
         logger.info(productList.toString());
+
+        if (0 == productList.size()) {
+            logger.warn("无产品id");
+            return 0;
+        }
         orderThread.setUser(user);
         orderThread.setProductList(productList);
-        orderThread.setOrderCallback(null);
+        orderThread.setOrderCallback(orderCallback);
         orderThread.setType(type);
+
         orderThread.setSubType(AhqyConst.SUBTYPE_ORDER);
-        //orderThread.setSubType(AhqyConst.SUBTYPE_ORDER);
         orderThread.setSmsCode(smsCode);
 
         Thread thread = new Thread(orderThread);
@@ -150,7 +165,6 @@ public class UserServiceImpl implements UserService {
 
         return 0;
     }
-
 
 
     @Override
@@ -225,31 +239,31 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    private List getProductList(String[] productIds , User user){
+    private List<Product> getProductList(String[] productIds, User user) {
         List<Product> productList = new ArrayList<>();
 
         List<String> orderedCodeList = getUserOrdered(user);
-        if(null != orderedCodeList){
+        if (null != orderedCodeList) {
             Product product = new Product();
             for (String productId : productIds) {
                 product.setId(Integer.valueOf(productId));
                 product = productDao.getProductById(product);
-                if(orderedCodeList.contains(product.getCode())){
-                    logger.info("已经订购product.getCode()"+product.getCode());
+                if (orderedCodeList.contains(product.getCode())) {
+                    logger.info("已经订购product.getCode()" + product.getCode());
                 }
                 //多个code的
-                if(0 == product.getHasCodes()){
+                if (0 == product.getHasCodes()) {
                     String[] codes = StringUtil.splitBy(product.getCodes());
-                    for(String code : codes){
-                        if(orderedCodeList.contains(code)){
-                            logger.info("已经订购codes"+product.getCode());
-                        }else {
+                    for (String code : codes) {
+                        if (orderedCodeList.contains(code)) {
+                            logger.info("已经订购codes" + product.getCode());
+                        } else {
                             product.setCode(code);
                             break;
                         }
                     }
                 }
-                if(!"".equals(product.getCode())){
+                if (!"".equals(product.getCode())) {
                     productList.add(product);
                 }
             }

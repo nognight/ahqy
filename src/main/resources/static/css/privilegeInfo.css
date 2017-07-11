@@ -33,8 +33,9 @@ span.getAuth {
 }
 
 div.tip {
-    background-color: #fafafa;
-    opacity: 0.5;
+    background-color: #292956;
+    color: #ededed;
+    opacity: 0.8;
     border-radius: 25px;
     width: 80%;
     margin: 10px auto;
@@ -72,4 +73,9 @@ button.orderBtn{
 }
 .productList>table {
     width: 100%;
+}
+
+b{
+    font-weight: 600;
+    color: #fa1;
 }

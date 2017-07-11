@@ -1,6 +1,7 @@
 package com.njhh.ahqy.service;
 
 import com.njhh.ahqy.entity.Privilege;
+import com.njhh.ahqy.entity.UserPrivilege;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 public interface PrivilegeService {
     List<Privilege> getPrivilegeList(int type ,int category ,HttpSession httpSession);
     Privilege getPrivilegeInfo(int id , HttpSession httpSession);
-    List<Privilege> getUserPrivilegeList(HttpSession httpSession);
+    List<UserPrivilege> getUserPrivilegeList(HttpSession httpSession);
 
     int usePrivilege(int id, String authCode ,HttpSession httpSession);
 

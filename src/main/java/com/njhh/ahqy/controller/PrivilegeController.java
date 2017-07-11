@@ -31,6 +31,20 @@ public class PrivilegeController {
         return apiBean;
 
     }
+
+
+
+    @RequestMapping("/api/privilege/getUserList")
+    private ApiBean getUserList(HttpSession httpSession,
+                                     int type) {
+        ApiBean apiBean = new ApiBean();
+        apiBean.setRet(0);
+        apiBean.setContent(new ObjBean(privilegeService.getUserPrivilegeList(httpSession)));
+        return apiBean;
+
+    }
+
+
     @RequestMapping("/api/privilege/getInfo")
     private ApiBean getPrivilegeList(HttpSession httpSession,
                                      int id) {

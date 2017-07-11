@@ -50,7 +50,7 @@ public interface UserService {
      */
     int orderProducts(String[] ids , HttpSession httpSession, OrderCallback orderCallback ,int type,String smsCode);
 
-    int orderProducts(String[] ids , User user ,int type,String smsCode);
+    int orderProducts(String[] ids , User user ,OrderCallback orderCallback,int type,String smsCode);
 
 
     /**

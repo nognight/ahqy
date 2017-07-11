@@ -41,9 +41,8 @@ public class UserPrivilegeDaoImpl implements UserPrivilegeDao{
     }
 
     @Override
-    public  List<Privilege> getUserPrivilegeList(UserPrivilege userPrivilege){
-        userPrivilegeMapper.getUserPrivilegeList(userPrivilege);
-        return null;
+    public  List<UserPrivilege> getUserPrivilegeList(UserPrivilege userPrivilege){
+        return  userPrivilegeMapper.getUserPrivilegeList(userPrivilege);
     }
 
     @Override

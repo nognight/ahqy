@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.njhh.ahqy.dao.impl.mapper.UserPrivilegeMapper">
-    <!--auto generated Code-->
+
     <resultMap id="AllColumnMap" type="com.njhh.ahqy.entity.UserPrivilege">
         <result column="id" property="id"/>
         <result column="user_id" property="userId"/>
@@ -11,6 +11,7 @@
         <result column="start_time" property="startTime"/>
         <result column="expire_time" property="expireTime"/>
         <result column="used_time" property="usedTime"/>
+        <result column="remark" property="remark"/>
     </resultMap>
 
     <sql id="all_column">
@@ -21,7 +22,8 @@
         `get_time`,
         `start_time`,
         `expire_time`,
-        `used_time`
+        `used_time`,
+        `remark`
     </sql>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="pojo.id">
@@ -33,7 +35,8 @@
             `get_time`,
             `start_time`,
             `expire_time`,
-            `used_time`
+            `used_time`,
+            `remark`
         ) VALUES (
             #{pojo.id},
             #{pojo.userId},
@@ -42,9 +45,11 @@
             #{pojo.getTime},
             #{pojo.startTime},
             #{pojo.expireTime},
-            #{pojo.usedTime}
+            #{pojo.usedTime},
+            #{pojo.remark}
         )
     </insert>
+
 
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="pojo.id">
         INSERT INTO t_user_privilege
@@ -57,6 +62,7 @@
             <if test="pojo.startTime!=null"> `start_time`,</if>
             <if test="pojo.expireTime!=null"> `expire_time`,</if>
             <if test="pojo.usedTime!=null"> `used_time`,</if>
+            <if test="pojo.remark!=null"> `remark`,</if>
         </trim>
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -68,9 +74,9 @@
             <if test="pojo.startTime!=null">#{pojo.startTime},</if>
             <if test="pojo.expireTime!=null">#{pojo.expireTime},</if>
             <if test="pojo.usedTime!=null">#{pojo.usedTime},</if>
+            <if test="pojo.remark!=null">#{pojo.remark},</if>
         </trim>
     </insert>
-
 
     <insert id="insertList">
         INSERT INTO t_user_privilege (
@@ -85,7 +91,8 @@
             #{pojo.getTime},
             #{pojo.startTime},
             #{pojo.expireTime},
-            #{pojo.usedTime}
+            #{pojo.usedTime},
+            #{pojo.remark}
             )
         </foreach>
     </insert>
@@ -101,7 +108,8 @@
             <if test="pojo.getTime != null"> `get_time` = #{pojo.getTime}, </if>
             <if test="pojo.startTime != null"> `start_time` = #{pojo.startTime}, </if>
             <if test="pojo.expireTime != null"> `expire_time` = #{pojo.expireTime}, </if>
-            <if test="pojo.usedTime != null"> `used_time` = #{pojo.usedTime} </if>
+            <if test="pojo.usedTime != null"> `used_time` = #{pojo.usedTime}, </if>
+            <if test="pojo.remark != null"> `remark` = #{pojo.remark} </if>
         </set>
         WHERE id = #{pojo.id}
     </update>

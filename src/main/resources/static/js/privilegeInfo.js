@@ -112,11 +112,11 @@ $(document).ready(function () {
                 object = content.object;
 
                 if (3 == object.netType) {
-                    $('.am-modal-bd').text('4G用户尽请期待！');
+                    $('.am-modal-bd').text('4G用户敬请期待！');
                     $('#mymodal').modal();
-                    window.setTimeout(function () {
-                        window.history.go(-1);
-                    }, 2000);
+                    // window.setTimeout(function () {
+                    //     window.history.go(-1);
+                    // }, 2000);
 
 
                 }
@@ -152,6 +152,7 @@ $(document).ready(function () {
                                 object = content.object;
 
                                 $('.orderTable').append(' <tr><td>' + object.name + '</td><td>' + object.retailPrice + '元/月</td></tr>');
+                                $('.tip').append(object.description);
 
                             }
                         }

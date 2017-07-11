@@ -1,5 +1,6 @@
 var weCode;
 var type;
+var currentPhoneNum;
 
 $('.center').slick({
     centerMode: true,
@@ -29,14 +30,28 @@ $('.center').slick({
 
 
 $(document).ready(function () {
-    $('div.type').animate({width:'100%'});
-    weCode= GetQueryString("weCode");
-     type= GetQueryString("type");
+    $('div.type').animate({
+        width: '100%'
+    });
+    weCode = GetQueryString("weCode");
+    type = GetQueryString("type");
+
     $.ajax({
         type: "get",
-        url: "api/login?type="+ type +"&weCode="+ weCode,
+        url: "api/login?type=" + type + "&weCode=" + weCode,
         success: function (response) {
             console.log(response);
+            if (0 == response.ret) {
+
+                getCurrentUser();
+
+
+            }
         }
     });
+
+
+
+
+
 });
