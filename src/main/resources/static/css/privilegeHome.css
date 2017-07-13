@@ -4,23 +4,24 @@ body {
     margin: 0px auto;
 }
 
-.head>img {
-    width: 100%;
+.head{
+   background: url('../images/privilegeHomeTitle.png') no-repeat center;
+   background-size: 100%;
+   padding-top: 130px;
+
 }
 
 
-.order>img {
-    width: 80%;
-    margin-left: 10%;
-}
 
 .type {
     display: block;
-    height: 100px;
-    padding: 20px;
+    margin: 0 auto;
+    height: 60px;
+    padding: 0px;
     background: url('../images/typeBtn.png') no-repeat center;
     background-size: 100%;
     width: 0%;
+
 }
 
 .type>div {
@@ -34,6 +35,11 @@ body {
     width: 100%;
     height: 100%;
     display: block;
+}
+
+.order>img {
+    width: 80%;
+    margin-left: 10%;
 }
 
 .center .imgDiv {
@@ -57,3 +63,21 @@ body {
 .foot>img {
     width: 100%;
 }
+
+
+
+
+
+
+
+
+
+
+
+/*.slick-dots li button{
+    color: #000;
+    font-size: 14px;
+}
+.slick-dots li button:before{
+    font-size: 90px;
+}*/

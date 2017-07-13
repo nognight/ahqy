@@ -56,26 +56,77 @@ div.productList {
     width: 80%;
     margin: 10px auto;
 }
-.productList>div{
+
+.productList>div {
     font-weight: 600;
     background-color: #fafafa;
     color: #000;
     font-size: 18px;
-     border-radius: 10px;
-     padding: 0 10px;
-
+    border-radius: 10px;
+    padding: 0 10px;
 }
-button.orderBtn{
+
+button.orderBtn {
     width: 80%;
     margin: 10px 10%;
     background-color: orange;
     color: #fafafa;
 }
+
 .productList>table {
     width: 100%;
 }
 
-b{
-    font-weight: 600;
-    color: #fa1;
+div.discount {
+    width: 80%;
+    margin: 10px auto;
+    height: 90px;
+    display: block;
+    padding: 5px;
+    background: url('../images/discountBg2.png') no-repeat center top;
+    background-size: 100% 100%;
+    text-align: center;
+    color: #333;
+}
+
+div.price {
+    text-align: right;
+    color: #fafafa;
+    width: 80%;
+    margin: 10px auto;
+}
+
+div.discount>div:nth-child(1) {
+    float: left;
+    width: 75%;
+}
+
+div.discount>div:nth-child(2) {
+    float: left;
+    height: 80px;
+    width: 25%;
+    font-size: 20px;
+    line-height: 70px;
+}
+
+div.discount>div:nth-child(2)>img {
+    width: 60px;
+    height: auto;
+    margin-left: -20px;
+}
+
+div.discount>div:nth-child(1)>div:nth-child(1) {
+    width: 100%;
+    height: 40px;
+    font-size: 20px;
+    line-height: 40px;
+     font-weight: 800;
+}
+
+div.discount>div:nth-child(1)>div:nth-child(2) {
+    width: 100%;
+    height: 40px;
+    font-size: 20px;
+    line-height: 40px;
+    font-weight: 800;
 }

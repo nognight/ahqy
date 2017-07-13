@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
 
         Thread thread = new Thread(orderThread);
         thread.start();
-        logger.info("StartOrderThread:" + thread.getId());
+        logger.info("StartOrderThread:" + thread.getId() + "  phoneNum:"+user.getPhoneNum());
 
         return 0;
     }
@@ -161,7 +161,7 @@ public class UserServiceImpl implements UserService {
 
         Thread thread = new Thread(orderThread);
         thread.start();
-        logger.info("StartOrderThread:" + thread.getId());
+        logger.info("StartOrderThread:" + thread.getId() + "  phoneNum:"+user.getPhoneNum());
 
         return 0;
     }
@@ -207,6 +207,7 @@ public class UserServiceImpl implements UserService {
 
 
         try {
+            logger.info("getUserOrdered :" + sbufUrl.toString());
             s = restHttpClient.getHttpResponse(sbufUrl.toString(),
                     HttpConstants.Method.HTTP_METHOD_GET,
                     headers,
@@ -249,16 +250,18 @@ public class UserServiceImpl implements UserService {
                 product.setId(Integer.valueOf(productId));
                 product = productDao.getProductById(product);
                 if (orderedCodeList.contains(product.getCode())) {
-                    logger.info("已经订购product.getCode()" + product.getCode());
+                    logger.info("已经订购code:" + product.getCode());
                 }
                 //多个code的
                 if (0 == product.getHasCodes()) {
                     String[] codes = StringUtil.splitBy(product.getCodes());
                     for (String code : codes) {
                         if (orderedCodeList.contains(code)) {
-                            logger.info("已经订购codes" + product.getCode());
+                            logger.info("已经订购codes:" + code);
                         } else {
                             product.setCode(code);
+                            //预定的code 视为已定，防止重复code
+                            orderedCodeList.add(code);
                             break;
                         }
                     }

@@ -93,7 +93,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
             SmsRecord smsRecord = new SmsRecord();
             smsRecord.setSendDate(new Date());
             smsRecord.setPhoneNum(user.getPhoneNum());
-            smsRecord.setSmsNum("");
+            smsRecord.setSmsNum("10015888");
             smsRecord.setMsg(content.toString());
             smsRecord.setStatus(0);
             SmsClient.getInstance().sendSms(user.getPhoneNum(), content.toString());
@@ -126,6 +126,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         Privilege privilege = new Privilege();
         privilege.setId(id);
         privilege = privilegeDao.getPrivilege(privilege);
+        logger.info("usePrivilege  phoneNumber:" + user.getPhoneNum()  +"privilege:" +  privilege.toString());
 
         if (null == privilege) {
             return ResultCode.DB_NOTFOUND;
@@ -134,7 +135,6 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         //订购送
         if (AhqyConst.PRIVILEGE_TYPE_DGS == privilege.getType()) {
             String[] productIds = StringUtil.splitBy(privilege.getProductIds());
-            logger.info(productIds.toString());
             int gitType = privilege.getGiftType();//礼物类型 1是卡券，2是产品
             String[] giftIds = StringUtil.splitBy(privilege.getGiftId());
 
@@ -144,7 +144,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
             SmsRecord smsRecord = new SmsRecord();
             smsRecord.setSendDate(new Date());
             smsRecord.setPhoneNum(user.getPhoneNum());
-            smsRecord.setSmsNum("");
+            smsRecord.setSmsNum("10015888");
             smsRecord.setMsg(content.toString());
             smsRecord.setStatus(0);
             SmsClient.getInstance().sendSms(user.getPhoneNum(), content.toString());
@@ -156,7 +156,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
             userPrivilege.setUserId(user.getId());
             userPrivilege.setGetTime(new Date());
             userPrivilege.setStatus(-1);
-            userPrivilege.setRemark("开始使用权益");
+            userPrivilege.setRemark("prililege:start:");
 
             userPrivilegeDao.addUserPrivilege(userPrivilege);
 

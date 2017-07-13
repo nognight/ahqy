@@ -125,9 +125,7 @@ public class LoginServiceImpl implements LoginService {
         }
         if (!"debug123".equals(authCode)) {
             if (!authCode.equals(cacheDao.getAuthCode(AhqyConst.AUTHCODE_LOGIN, 0, 0, phoneNum, ""))) {
-
-            } else {
-
+                return ResultCode.ERROR;
             }
         }
 

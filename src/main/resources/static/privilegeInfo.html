@@ -31,12 +31,11 @@
     <!-- Amaze UI CSS -->
     <link rel="stylesheet" href="./lib/assets/css/amazeui.min.css">
     <link rel="stylesheet" href="./css/privilegeInfo.css">
+        <link rel="stylesheet" href="./css/common.css">
 </head>
 
 <body>
-    <div class="userInfo">
 
-        <div>
 
             <div class="head">
                 <img src="./images/privilegeHomeTitle.png">
@@ -63,7 +62,7 @@
                             <th>资费</th>
                         </tr>
                     </table>
-                    <div>
+                    <div class="giftTitle">
                         赠送产品
                     </div>
                     <table class="giftTable">
@@ -74,9 +73,29 @@
                     </table>
                 </div>
 
+                <div class="discount">
+
+                    <div>
+                        <div>
+                            安徽权益订购
+                        </div>
+                        <div>
+                            <b>0</b>元优惠券
+                        </div>
+                    </div>
+                    <div>
+                    <img src="./images/clickToGet.png" alt="">
+                    </div>
+                    
+                </div>
+
+                <div class = "price">
+                    共计：<b>0</b>元
+                </div>
+
 
                 <div class="authCode am-input-group">
-                    <input type="text" class="am-form-field leftRadius authCode">
+                    <input type="text" class="am-form-field leftRadius authCode" placeholder="输入短信验证码">
                     <span class="am-input-group-label rightRadius getAuth">获得验证码</span>
                 </div>
                  <button class="am-btn orderBtn leftRadius rightRadius">确认订购</button>

@@ -107,20 +107,17 @@ public class OrderThread implements Runnable {
     }
 
     public void run() {
-        logger.info("run" + user.getPhoneNum());
 
         int count = productList.size();
         int countTemp = 0;
-        int callbackCode = 0;
+        int callbackCode = -2;
         Map<String, Integer> orderMap = new HashMap<>();
 
-
         try {
-            logger.info("OrderThread + phoneNum" + user.getPhoneNum());
 
             for (Product product : productList) {
 
-                logger.info("OrderStart + phoneNum" + user.getPhoneNum() + " product " + product.toString());
+                logger.info("OrderStart phoneNum:" + user.getPhoneNum() + "  product:" + product.getCode() + " | " + product.getName());
                 UserOrder userOrder = new UserOrder();
                 userOrder.setCode(product.getCode());
                 userOrder.setPhoneNum(user.getPhoneNum());
@@ -156,11 +153,11 @@ public class OrderThread implements Runnable {
 
 
                 try {
+                    logger.info("orderProduct:" + sbufUrl.toString());
                     s = restHttpClient.getHttpResponse(sbufUrl.toString(),
                             HttpConstants.Method.HTTP_METHOD_GET,
                             headers,
                             null);
-
                     logger.info(s);
                     if (null == s) {
                         return;
@@ -202,7 +199,7 @@ public class OrderThread implements Runnable {
                     userOrder.setBackCode(productOrderResp.getRespCode());
                     userOrder.setMessage(productOrderResp.getRespDesc());
                     userOrder.setBackTime(new Date());
-                    userOrder.setStartTime(productOrderResp.getActiveDate());
+                    userOrder.setStartTime(new Date());
 
                 } else {
                     userOrder.setState(9);
@@ -274,28 +271,43 @@ public class OrderThread implements Runnable {
             PrivilegeCallback privilegeCallback = (PrivilegeCallback) orderCallback;
             UserPrivilege userPrivilege = privilegeCallback.getUserPrivilege();
             userPrivilege.setStatus(-2);            //设置为增加权益失败
-            if (-1 == callbackCode) {
+            if (0 == callbackCode) {
                 userPrivilege.setStatus(0);//设置为可用
             }
             userPrivilege.setStartTime(new Date());
 
-            userPrivilege.setRemark("权益产品订购结果：" + orderMap.toString());
+            userPrivilege.setRemark(userPrivilege.getRemark() + " orderResult：" + orderMap.toString());
             userPrivilegeDao.updatePrivilege(userPrivilege);
 
             if (0 == userPrivilege.getStatus()) {
                 Privilege privilege = privilegeCallback.getPrivilege();
-                if (2 == privilege.getGiftType()) {
+
+
+                //无赠品
+                if (-1 == privilege.getGiftType()) {
+                    logger.info("privilegeGift : no gift");
+
+
+
+                }
+                //赠品是流量包
+                else if (2 == privilege.getGiftType()) {
+                    logger.info("privilegeGift :  gift Type is product");
 
                     String[] giftIds = StringUtil.splitBy(privilege.getGiftId());
-                    logger.info("giftIds"+ giftIds);
-                    userService.orderProducts(giftIds, user, privilegeCallback, AhqyConst.ORDER_PRIVILEGE_CALLBACK, AhqyConst.AUTHCODE_WITHOUT);
+                    userService.orderProducts(giftIds, user, privilegeCallback, AhqyConst.ORDER_PRIVILEGE_CALLBACK, AhqyConst.AUTHCODE_PRIVILEGE);
 
                 }
-                if (0 == privilege.getGiftType()) {
+                //赠品是卡券
+                else if (1 == privilege.getGiftType()) {
+                    logger.info("privilegeGift :  gift Type is coupon");
+
 
                 }
+
             }
         } else if (AhqyConst.ORDER_PRIVILEGE_CALLBACK == type) {
+            logger.info("PrivilegeCallback :callbackCode = " + callbackCode);
             PrivilegeCallback privilegeCallback = (PrivilegeCallback) orderCallback;
             UserPrivilege userPrivilege = privilegeCallback.getUserPrivilege();
             userPrivilege.setStatus(2);//设置为使用失败
@@ -303,7 +315,7 @@ public class OrderThread implements Runnable {
                 userPrivilege.setStatus(1);//设置为已经使用
             }
             userPrivilege.setUsedTime(new Date());
-            userPrivilege.setRemark("权益产品使用结果：" + orderMap.toString());
+            userPrivilege.setRemark(userPrivilege.getRemark() + "giftResult：" + orderMap.toString());
             userPrivilegeDao.updatePrivilege(userPrivilege);
 
         }

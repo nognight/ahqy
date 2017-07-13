@@ -1,8 +1,11 @@
 var clickCount = 0;
 var id;
+var productPrice = 0;
+var discountPrice = 0;
+
+
 
 function getAuth(node) {
-
 
     // 获取验证码
 
@@ -12,7 +15,6 @@ function getAuth(node) {
         success: function (obj) {
 
             console.info(obj);
-
 
         }
     });
@@ -100,31 +102,23 @@ $('.orderBtn').click(function (e) {
 
 
 
+
+
+//点击折扣券
+$("div.discount>div:nth-child(2)>img").click(function (e) {
+    $(this).attr("src", "./images/alreadyGet.png");
+    $('div.price>b').text(productPrice);
+
+
+});
+
+
+
 $(document).ready(function () {
 
-
-    $.ajax({
-        type: "get",
-        url: "api/user/getInfo",
-        success: function (response) {
-            if (0 == response.ret) {
-                content = response.content;
-                object = content.object;
-
-                if (3 == object.netType) {
-                    $('.am-modal-bd').text('4G用户敬请期待！');
-                    $('#mymodal').modal();
-                    // window.setTimeout(function () {
-                    //     window.history.go(-1);
-                    // }, 2000);
+    getCurrentUser();
 
 
-                }
-
-            }
-
-        }
-    });
 
 
     id = GetQueryString("id");
@@ -153,13 +147,37 @@ $(document).ready(function () {
 
                                 $('.orderTable').append(' <tr><td>' + object.name + '</td><td>' + object.retailPrice + '元/月</td></tr>');
                                 $('.tip').append(object.description);
+                                productPrice = productPrice + object.retailPrice;
 
                             }
                         }
                     });
                 }
 
+                var interval = window.setInterval(function () {
+                    $('div.price>b').text(productPrice + discountPrice);
+                    $('div.discount>div:nth-child(1)>div:nth-child(2)>b').text(discountPrice);
+
+                }, 300);
+                var timeout = window.setTimeout(function () {
+                    window.clearInterval(interval);
+                }, 1000);
+
+
+
+                $(".privilegeName").text(object.name);
+
+
                 var giftIds = new Array(); //定义一数组 
+                if (undefined == object.giftId || null == object.giftId || "" == object.giftId) {
+                    $("div.discount").css('display', 'none');
+                    $('.giftTable').css('display', 'none');
+                    $('.giftTitle').css('display', 'none');
+
+
+
+                    return;
+                }
                 giftIds = object.giftId.split("|"); //字符分割 
                 if (2 == object.giftType) {
 
@@ -172,19 +190,18 @@ $(document).ready(function () {
                                 if (0 == response.ret) {
                                     content = response.content;
                                     object = content.object;
-
                                     $('.giftTable').append(' <tr><td>' + object.name + '</td><td>' + object.retailPrice + '元</td></tr>');
+                                    discountPrice = discountPrice + object.retailPrice;
 
                                 }
                             }
                         });
                     }
+
                 }
 
 
             }
-
-            $(".privilegeName").text(object.name);
 
 
         }

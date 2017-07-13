@@ -6,12 +6,13 @@ b{
 
 .toolbar{
     position: fixed;
+    display: block;
     max-width: 600px;
     bottom: 0px;
     width: 100%;
     background: url('../images/toolbarBg.png') no-repeat center;
     background-size: 100% 100%;
-    border-radius: 20px;
+    /*border-radius: 20px;*/
     height: 40px;
     font-size: 20px;
     line-height: 40px;
@@ -22,13 +23,13 @@ b{
     padding: 0 20px;
 }
 .toolbar>div:nth-child(1){
-    width: 30%;
+    width: 20%;
     text-align: left;
 }
 .toolbar>div:nth-child(2){
-    width: 40%;
+    width: 60%;
 }
 .toolbar>div:nth-child(3){
-    width: 30%;
+    width: 20%;
     text-align: right;
 }

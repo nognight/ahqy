@@ -1,14 +1,11 @@
-
-
-
 var clickCount = 0;
 
 function getAuth(node) {
 
     var comment_input = $("#phone");
     if (comment_input.val() == "" || (!/^(13[0-9]|14[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$/i.test(comment_input.val()))) {
-        $("#mymodal>div>div.am-modal-bd").text("请输入格式正确的手机号码");//设置提示内容
-        $("#mymodal").modal('toggle');//弹出提示框
+        $("#mymodal>div>div.am-modal-bd").text("请输入格式正确的手机号码"); //设置提示内容
+        $("#mymodal").modal('toggle'); //弹出提示框
         return false;
     }
 
@@ -19,9 +16,8 @@ function getAuth(node) {
         url: "./api/loginCode?phoneNum=" + $("#phone").val(),
         type: "get",
         success: function (obj) {
-    
 
-
+            ///api/login
 
         }
     });
@@ -32,6 +28,34 @@ function getAuth(node) {
     console.log(clickCount);
 }
 
+
+
+
+
+function loginByAuthCode() {
+    $.ajax({
+        type: "get",
+        url: "api/login?type=" + 2 + "&phoneNum=" + $("#phone").val() + "&authCode=" + $("#authCode").val(),
+        success: function (response) {
+            if (0 == response.ret) {
+                content = response.content;
+                if (0 == content.status) {
+                    window.location.href = "privilegeHome.html";
+                } else {
+                    alert(验证码输入错误);
+                }
+
+            } else {
+              
+            }
+
+        }
+    });
+}
+
+$(".loginBtn").click(function (e) {
+    loginByAuthCode();
+});
 
 $("span.getAuth").on("click", function () {
     getAuth(this);
@@ -73,7 +97,7 @@ $(".getAuthPic").click(function (e) {
 });
 
 $(document).ready(function () {
-      $('#doc-my-tabs').tabs();
+    $('#doc-my-tabs').tabs();
 });
 
 

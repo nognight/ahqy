@@ -12,7 +12,7 @@ CREATE TABLE `t_product`(
     `offline_date` DATETIME NOT NULL DEFAULT '1000-01-01 00:00:00' COMMENT 'offlineDate',
     `pic_url` VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'picUrl',
     `retail_price` INT (4) NOT NULL DEFAULT -1 COMMENT '售价',
-    `retail_type` INT (4) NOT NULL DEFAULT -1 COMMENT '//售价类型，0是包月,1是半年，2是包天''',
+    `retail_type` INT (4) NOT NULL DEFAULT -1 COMMENT '//售价类型，0是包月,1是半年，2是包天, -1是0元包''',
     `source` INT (4) NOT NULL DEFAULT -1 COMMENT '来源平台，当前定义: -1 表示未知平台, 1 安徽BSS平台（xyl）, 2 信息化接口, 3 总台智能客服接口, 4 科大讯飞4G半年包，5 AOPSP接口 ，6融合订购接口''',
     `supplier_id` INT (4) NOT NULL DEFAULT -1 COMMENT '供应商标识',
     `support_band` VARCHAR (50) NOT NULL DEFAULT '' COMMENT '支持品牌',

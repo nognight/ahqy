@@ -17,20 +17,72 @@ function GetQueryString(name) {
 
 
 
-function getCurrentUser(){
-        $.ajax({
+function getCurrentUser() {
+    $.ajax({
         type: "get",
         url: "api/user/getInfo",
         success: function (response) {
             console.log(response);
-            if(0 == response.ret){
-                 content = response.content;
+            if (0 == response.ret) {
+                content = response.content;
                 object = content.object;
+                if (null == object) {
+                    //跳登陆
+                    window.location.href = "login.html";
+                }
+
                 currentPhoneNum = object.phoneNum;
 
-                $("body").append('<div class ="toolbar"><div>&lt; </div><div>'+currentPhoneNum+'</div><div><a href="myPrivilege.html">查看信息</a></div></div>');
-
+                $("body").append('<div class ="toolbar"><div>&nbsp;</div><div>' + currentPhoneNum + '</div><div><a href="myPrivilege.html">&nbsp;</a></div></div>');
+                $('.toolbar>div:nth-child(1)').click(function (e) {
+                    history.go(-1);
+                });
             }
         }
     });
 }
+
+
+
+//滚动到顶部监听
+$(window).scroll(function () {
+
+
+    //  $(window).scroll(function() {
+
+        // if ($(document).scrollTop()<=0){
+        //   $('.toolbar').css('display', 'block');
+        // }else{
+        //     $('.toolbar').css('display', 'none');
+        // }
+
+    //     if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
+    //       alert("滚动条已经到达底部为" + $(document).scrollTop());
+    //     }
+    //   });
+
+    // var top1 = $('.foot').offset().top;
+    // console.log(top1);
+    // var gun = $(document).scrollTop();
+    // console.log(gun);
+    // var top = top1 - gun;
+    //  console.log(top);
+    // if (top <= 0) {
+    //     $('.toolbar').css('display', 'none');
+    // } else {
+    //     $('.toolbar').css('display', 'block');
+    // }
+
+    // if (70 >= gun) {
+    //     $('.toolbar').css('display', 'none');
+    // } else {
+    //     $('.toolbar').css('display', 'block');
+    // }
+
+    if ($(document).scrollTop()+10 >= $(document).height() - $(window).height()) {
+        $('.toolbar').css('display', 'block');
+    } else {
+        $('.toolbar').css('display', 'none');
+    }
+
+});

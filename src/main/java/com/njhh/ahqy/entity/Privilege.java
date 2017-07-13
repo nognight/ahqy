@@ -22,7 +22,7 @@ public class Privilege {
     private Integer payType;
     private Integer discountType;//打折类型 1是百分比折扣 2是满减
     private String discountPrice;//折扣价格 90可以是9折，或者90元
-    private Integer giftType;//礼物类型 1是卡券，2是产品
+    private Integer giftType;//礼物类型 1是卡券，2是产品  -1是无礼物赠送
     private String giftId;//礼物Id | 分割
 
     public Integer getId() {
@@ -159,5 +159,29 @@ public class Privilege {
 
     public void setGiftId(String giftId) {
         this.giftId = giftId;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Privilege{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", status=").append(status);
+        sb.append(", onlineDate=").append(onlineDate);
+        sb.append(", offlineDate=").append(offlineDate);
+        sb.append(", picUrl='").append(picUrl).append('\'');
+        sb.append(", type=").append(type);
+        sb.append(", category=").append(category);
+        sb.append(", couponIds='").append(couponIds).append('\'');
+        sb.append(", productIds='").append(productIds).append('\'');
+        sb.append(", netType=").append(netType);
+        sb.append(", payType=").append(payType);
+        sb.append(", discountType=").append(discountType);
+        sb.append(", discountPrice='").append(discountPrice).append('\'');
+        sb.append(", giftType=").append(giftType);
+        sb.append(", giftId='").append(giftId).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

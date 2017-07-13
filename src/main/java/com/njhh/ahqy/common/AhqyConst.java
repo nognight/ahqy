@@ -66,6 +66,7 @@ public class AhqyConst {
     public static final String AUTHCODE_WITHOUT="debug123";
 
 
+
 //session里放用户信息
 
     public static final String  SESSION_USER ="user";

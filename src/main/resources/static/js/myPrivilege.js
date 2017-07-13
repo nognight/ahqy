@@ -22,6 +22,12 @@ $(document).ready(function () {
 });
 
 
+$('.head>div:nth-child(1)').click(function (e) { 
+   history.go(-1);
+    
+});
+
+
 function handHtml(userPrivilegeList) {
     for (var i = 0; i < userPrivilegeList.length; i++) {
 
