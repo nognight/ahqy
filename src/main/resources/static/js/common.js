@@ -50,11 +50,11 @@ $(window).scroll(function () {
 
     //  $(window).scroll(function() {
 
-        // if ($(document).scrollTop()<=0){
-        //   $('.toolbar').css('display', 'block');
-        // }else{
-        //     $('.toolbar').css('display', 'none');
-        // }
+    // if ($(document).scrollTop()<=0){
+    //   $('.toolbar').css('display', 'block');
+    // }else{
+    //     $('.toolbar').css('display', 'none');
+    // }
 
     //     if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
     //       alert("滚动条已经到达底部为" + $(document).scrollTop());
@@ -79,10 +79,27 @@ $(window).scroll(function () {
     //     $('.toolbar').css('display', 'block');
     // }
 
-    if ($(document).scrollTop()+10 >= $(document).height() - $(window).height()) {
+    if ($(document).scrollTop() + 10 >= $(document).height() - $(window).height()) {
         $('.toolbar').css('display', 'block');
     } else {
         $('.toolbar').css('display', 'none');
     }
 
 });
+
+
+/**
+ * 时间戳转时间
+ * @param {*} long 
+ */
+function formatDate(long) {
+
+    var time = new Date(long);
+    var year = time.getFullYear();
+    var month = time.getMonth() + 1;
+    var date = time.getDate();
+    var hour = time.getHours();
+    var minute = time.getMinutes();
+    var second = time.getSeconds();
+    return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+}

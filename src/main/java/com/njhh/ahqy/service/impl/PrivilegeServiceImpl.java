@@ -84,12 +84,21 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 
     @Override
     public int getAuthCode(int id, HttpSession httpSession) {
+        Privilege privilege = new Privilege();
+        privilege.setId(id);
+        privilege = privilegeDao.getPrivilege(privilege);
+        if(null == privilege){
+            return ResultCode.ERROR;
+        }
+
         try {
             User user = (User) httpSession.getAttribute("user");
             String code = cacheDao.sendAuthCode(AhqyConst.AUTHCODE_PRIVILEGE, id, user.getId(), user.getPhoneNum(), "");
-            StringBuilder content = new StringBuilder("您本次使用权益收到的验证码是[");
+            StringBuilder content = new StringBuilder("您本次订购的验证码是[");
             content.append(code);
-            content.append("]五分钟内有效，请妥善保存——安徽权益平台");
+            content.append("]订购的权益是");
+            content.append(privilege.getName());
+            content.append(".五分钟内有效—[“安徽联通”微信公众号权益]");
             SmsRecord smsRecord = new SmsRecord();
             smsRecord.setSendDate(new Date());
             smsRecord.setPhoneNum(user.getPhoneNum());
@@ -138,17 +147,17 @@ public class PrivilegeServiceImpl implements PrivilegeService {
             int gitType = privilege.getGiftType();//礼物类型 1是卡券，2是产品
             String[] giftIds = StringUtil.splitBy(privilege.getGiftId());
 
-            StringBuilder content = new StringBuilder("您本次订购的权益是[");
-            content.append(privilege.getName());
-            content.append("]请等待参加结果，以收到的短信为准——安徽权益");
-            SmsRecord smsRecord = new SmsRecord();
-            smsRecord.setSendDate(new Date());
-            smsRecord.setPhoneNum(user.getPhoneNum());
-            smsRecord.setSmsNum("10015888");
-            smsRecord.setMsg(content.toString());
-            smsRecord.setStatus(0);
-            SmsClient.getInstance().sendSms(user.getPhoneNum(), content.toString());
-            smsRecordDao.addRecord(smsRecord);
+//            StringBuilder content = new StringBuilder("您本次订购的权益是[");
+//            content.append(privilege.getName());
+//            content.append("]请等待参加结果，以收到的短信为准——安徽权益");
+//            SmsRecord smsRecord = new SmsRecord();
+//            smsRecord.setSendDate(new Date());
+//            smsRecord.setPhoneNum(user.getPhoneNum());
+//            smsRecord.setSmsNum("10015888");
+//            smsRecord.setMsg(content.toString());
+//            smsRecord.setStatus(0);
+//            SmsClient.getInstance().sendSms(user.getPhoneNum(), content.toString());
+//            smsRecordDao.addRecord(smsRecord);
 
 
             UserPrivilege userPrivilege = new UserPrivilege();

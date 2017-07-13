@@ -7,13 +7,17 @@ $('.center').slick({
     infinite: true,
     centerPadding: '0px',
     slidesToShow: 3,
-    speed: 500,
+    speed: 300,
+    arrows: false,
     autoplay: true,
-    dots:true,
+    accessibility: false,
+    autoplaySpeed: 1500,
+    mobileFirst: true,
+    swipeToSlide: true,
+    dots: false,
     responsive: [{
         breakpoint: 768,
         settings: {
-            arrows: false,
             centerMode: true,
             centerPadding: '0px',
             slidesToShow: 3
@@ -21,7 +25,6 @@ $('.center').slick({
     }, {
         breakpoint: 480,
         settings: {
-            arrows: false,
             centerMode: true,
             centerPadding: '0px',
             slidesToShow: 3
@@ -53,10 +56,5 @@ $(document).ready(function () {
     } else {
         getCurrentUser();
     }
-
-
-
-
-
 
 });

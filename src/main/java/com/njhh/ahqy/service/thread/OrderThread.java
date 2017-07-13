@@ -117,6 +117,10 @@ public class OrderThread implements Runnable {
 
             for (Product product : productList) {
 
+
+                int resultCode= -2;
+                String resultMsg="";
+
                 logger.info("OrderStart phoneNum:" + user.getPhoneNum() + "  product:" + product.getCode() + " | " + product.getName());
                 UserOrder userOrder = new UserOrder();
                 userOrder.setCode(product.getCode());
@@ -193,18 +197,29 @@ public class OrderThread implements Runnable {
                     if ("0000".equals(productOrderResp.getRespCode())) {
                         countTemp = countTemp + 1;
                         orderMap.put(userOrder.getCode(), 0);
+                        resultCode = 0;
+
+
                     } else {
                         orderMap.put(userOrder.getCode(), 1);
+                        resultCode = 1;
                     }
                     userOrder.setBackCode(productOrderResp.getRespCode());
                     userOrder.setMessage(productOrderResp.getRespDesc());
                     userOrder.setBackTime(new Date());
                     userOrder.setStartTime(new Date());
+                    resultMsg = productOrderResp.getRespDesc();
 
                 } else {
+                    //网关异常
                     userOrder.setState(9);
+                    resultCode = 9;
+                    resultMsg = "订购系统维护";
                 }
                 userOrderDao.updateUserOrder(userOrder);
+
+                sendProductSms(product,resultCode,resultMsg);
+
 
             }
 
@@ -230,36 +245,39 @@ public class OrderThread implements Runnable {
             }
 
 
-            StringBuilder content = new StringBuilder("您本次订购的");
-            if (0 == callbackCode) {
-                content.append("全部产品订购成功。");
+//            //批量短信
+//
+//            StringBuilder content = new StringBuilder("您本次订购的");
+//            if (0 == callbackCode) {
+//                content.append("全部产品订购成功。");
+//
+//            } else if (-1 == callbackCode) {
+//                content.append("产品订购失败。我们将及时为您处理。");
+//
+//            } else if (-2 == callbackCode) {
+//                content.append("过程中发生系统错误，请稍后再试。");
+//
+//            } else if (1 == callbackCode) {
+//                content.append("部分产品订购成功，我们将及时为您处理。");
+//
+//            }
+//
+//
+//            SmsRecord smsRecord = new SmsRecord();
+//            smsRecord.setSendDate(new Date());
+//            smsRecord.setPhoneNum(user.getPhoneNum());
+//            smsRecord.setSmsNum("10015888");
+//            smsRecord.setMsg(content.toString());
+//            smsRecord.setStatus(-1);
+//
+//            try {
+//                SmsClient.getInstance().sendSms(user.getPhoneNum(), content.toString());
+//                smsRecord.setStatus(0);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            smsRecordDao.addRecord(smsRecord);
 
-            } else if (-1 == callbackCode) {
-                content.append("产品订购失败。我们将及时为您处理。");
-
-            } else if (-2 == callbackCode) {
-                content.append("过程中发生系统错误，请稍后再试。");
-
-            } else if (1 == callbackCode) {
-                content.append("部分产品订购成功，我们将及时为您处理。");
-
-            }
-
-
-            SmsRecord smsRecord = new SmsRecord();
-            smsRecord.setSendDate(new Date());
-            smsRecord.setPhoneNum(user.getPhoneNum());
-            smsRecord.setSmsNum("10015888");
-            smsRecord.setMsg(content.toString());
-            smsRecord.setStatus(-1);
-
-            try {
-                SmsClient.getInstance().sendSms(user.getPhoneNum(), content.toString());
-                smsRecord.setStatus(0);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            smsRecordDao.addRecord(smsRecord);
 
         } catch (Exception e) {
             logger.warn(e.getMessage());
@@ -286,7 +304,6 @@ public class OrderThread implements Runnable {
                 //无赠品
                 if (-1 == privilege.getGiftType()) {
                     logger.info("privilegeGift : no gift");
-
 
 
                 }
@@ -341,6 +358,55 @@ public class OrderThread implements Runnable {
                 .append(InCommParam.ORDER_CHANNEL).append("=").append(product.getSource());
 
         return 0;
+
+    }
+
+
+    private void sendProductSms(Product product, int resultCode, String resultMsg) {
+
+
+        StringBuilder content = new StringBuilder();
+
+        //0元赠送型
+        if (-1 == product.getRetailType()) {
+
+            if(0  == resultCode){
+                content.append("尊敬的用户，您已成功获得“安徽联通”微信公众号权益平台赠送的");
+                content.append(product.getName());
+                content.append("有效期到本月底，流量不结转。");
+            }
+
+        //收费
+        } else {
+
+            content.append("您本次订购的");
+            content.append(product.getName());
+            content.append(",订购");
+            if (0 == resultCode) {
+                content.append("成功");
+            } else {
+                content.append("失败。");
+                content.append("原因是：");
+                content.append(resultMsg);
+                logger.info(content.toString());
+            }
+        }
+
+
+        SmsRecord smsRecord = new SmsRecord();
+        smsRecord.setSendDate(new Date());
+        smsRecord.setPhoneNum(user.getPhoneNum());
+        smsRecord.setSmsNum("10015888");
+        smsRecord.setMsg(content.toString());
+        smsRecord.setStatus(-1);
+
+        try {
+            SmsClient.getInstance().sendSms(user.getPhoneNum(), content.toString());
+            smsRecord.setStatus(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        smsRecordDao.addRecord(smsRecord);
 
     }
 }

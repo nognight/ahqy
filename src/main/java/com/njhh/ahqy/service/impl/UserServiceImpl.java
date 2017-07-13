@@ -251,6 +251,9 @@ public class UserServiceImpl implements UserService {
                 product = productDao.getProductById(product);
                 if (orderedCodeList.contains(product.getCode())) {
                     logger.info("已经订购code:" + product.getCode());
+
+                    //单个code的时候已经订购不剔除，网关取判断逻辑。
+//                    break;
                 }
                 //多个code的
                 if (0 == product.getHasCodes()) {
@@ -258,6 +261,7 @@ public class UserServiceImpl implements UserService {
                     for (String code : codes) {
                         if (orderedCodeList.contains(code)) {
                             logger.info("已经订购codes:" + code);
+                            break;
                         } else {
                             product.setCode(code);
                             //预定的code 视为已定，防止重复code

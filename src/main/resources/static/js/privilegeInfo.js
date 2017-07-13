@@ -64,12 +64,15 @@ var timer = {
 $('.orderBtn').click(function (e) {
 
     if (null !== $('input.authCode').val()) {
+
+
         $.ajax({
             type: "get",
             url: "api/privilege/use?id=" + id + "&authCode=" + $('input.authCode').val(),
             success: function (response) {
                 console.log(response);
                 if (0 == response.ret) {
+
                     content = response.content;
 
                     if (10 == content.ret) {
@@ -77,17 +80,14 @@ $('.orderBtn').click(function (e) {
 
                         $('#mymodal').modal();
                     } else {
-                        $('.am-modal-bd').text('请等待短信返回结果通知');
+                        $('.am-modal-bd').text('您已经成功获得特权，参与结果请以短信通知结果为准。');
+                        $('.orderBtn').attr("disabled", "disabled");
+                        $('.orderBtn').text("已经订购");
 
                         $('#mymodal').modal();
                     }
 
-
                 }
-
-
-
-
             }
         });
     } else {
@@ -122,6 +122,34 @@ $(document).ready(function () {
 
 
     id = GetQueryString("id");
+
+
+    $.ajax({
+        type: "get",
+        url: "api/privilege/getUserList?type=0",
+        success: function (response) {
+            if (0 == response.ret) {
+                content = response.content;
+                object = content.object;
+                userPrivilegeList = object;
+                for (var i = 0; i < userPrivilegeList.length; i++) {
+
+                    if (id == userPrivilegeList[i].privilegeId) {
+                        console.info("已经订购");
+                        $('.orderBtn').attr("disabled", "disabled");
+                        $('.orderBtn').text("已经订购");
+
+                    }
+
+
+                }
+            }
+
+        }
+    });
+
+
+
 
     $.ajax({
         type: "get",
@@ -199,7 +227,6 @@ $(document).ready(function () {
                     }
 
                 }
-
 
             }
 

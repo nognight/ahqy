@@ -53,6 +53,11 @@ body {
     line-height: 23px;
     padding-left: 3px
 }
+.equity-card-middle>div:nth-child(1) {
+    font-size: 18px;
+    font-weight: 600;
+}
+
 
 .equity-card-right {
     width: 80px;
@@ -60,8 +65,9 @@ body {
 }
 
 .equity-card-hasget {
-    background: url('../images/equity-card-hasget.png') no-repeat;
-    background-size: 100% 100%;
+    background: url('../images/equity-card-hasget.png') no-repeat left;
+    background-size: 110% 110%;
+
 }
 
 .equity-card-tip {
@@ -85,12 +91,13 @@ body {
     height: 40px;
     font-size: 20px;
     line-height: 40px;
+      border: 1px solid gray;
 }
 
 .head>div {
     float: left;
     text-align: center;
-    background-color: #d2cdcd;
+  
 }
 
 .head>div:nth-child(1) {
