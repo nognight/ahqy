@@ -17,30 +17,75 @@ public class ProductDaoImpl implements ProductDao {
     private ProductMapper productMapper;
 
     public int insert(Product pojo){
-        return productMapper.insert(pojo);
+        try
+        {
+            return productMapper.insert(pojo);
+        } catch (Exception e)
+        {
+            logger.warn("err insert");
+            return -1;
+        }
+        
     }
 
     public int insertSelective(Product pojo){
-        return productMapper.insertSelective(pojo);
+        try
+        {
+            return productMapper.insertSelective(pojo);
+        } catch (Exception e)
+        {
+            logger.warn("err insert");
+            return -1;
+        }
     }
 
     public int insertList(List<Product> pojos){
-        return productMapper.insertList(pojos);
+        try
+        {
+            return productMapper.insertList(pojos);
+        } catch (Exception e)
+        {
+            logger.warn("err insertList");
+            return -1;
+        }  
     }
 
     public int update(Product pojo){
-        return productMapper.update(pojo);
+        try
+        {
+            return productMapper.update(pojo);
+        } catch (Exception e)
+        {
+            logger.warn("err update");
+            return -1;
+        }
     }
 
     @Override
     public Product getProductById(Product product){
-        return  productMapper.getProductById(product);
+        try
+        {
+            return  productMapper.getProductById(product);
+        } 
+        catch (Exception e)
+        {
+            logger.warn("err getProductById");
+            return null;
+        }    
     }
+
     @Override
-    public List<Product> getProductList(Product pojo){
+    public List<Product> getProductList(Product pojo)
+    {
+        try
+        {
+            return productMapper.getProductList(pojo);
+        } catch (Exception e)
+        {
+            logger.warn("err getProductList");
+            return null;
+        }
 
-
-        return productMapper.getProductList(pojo);
     }
 
 }

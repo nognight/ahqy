@@ -18,18 +18,51 @@ public class CheckInDaoImpl{
     private CheckInMapper checkInMapper;
 
     public int insert(CheckIn pojo){
-        return checkInMapper.insert(pojo);
+        try
+        {
+            return checkInMapper.insert(pojo);
+        } catch (Exception e)
+        {
+            logger.warn("err insert");
+            return -1;
+
+        }
+        
     }
 
     public int insertSelective(CheckIn pojo){
-        return checkInMapper.insertSelective(pojo);
+        try
+        {
+            return checkInMapper.insertSelective(pojo);
+        } catch (Exception e)
+        {
+            logger.warn("err insertSelective");
+            return -1;
+
+        }
     }
 
     public int insertList(List<CheckIn> pojos){
-        return checkInMapper.insertList(pojos);
+        try
+        {
+            return checkInMapper.insertList(pojos);
+        } catch (Exception e)
+        {
+            logger.warn("err insertList");
+            return -1;
+        }
+        
     }
 
     public int update(CheckIn pojo){
-        return checkInMapper.update(pojo);
+        try
+        {
+            return checkInMapper.update(pojo);
+        } catch (Exception e)
+        {
+            logger.warn("err update");
+            return -1;
+        }
+       
     }
 }

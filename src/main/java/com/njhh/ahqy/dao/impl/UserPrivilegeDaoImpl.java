@@ -19,35 +19,92 @@ public class UserPrivilegeDaoImpl implements UserPrivilegeDao{
     private UserPrivilegeMapper userPrivilegeMapper;
 
     public int insert(UserPrivilege pojo){
-        return userPrivilegeMapper.insert(pojo);
+        try
+        {
+            return userPrivilegeMapper.insert(pojo);
+        } catch (Exception e)
+        {
+            logger.warn("err insert");
+            return -1;
+        }
+        
     }
 
-    public int insertSelective(UserPrivilege pojo){
-        return userPrivilegeMapper.insertSelective(pojo);
+    public int insertSelective(UserPrivilege pojo) {
+        try {
+            return userPrivilegeMapper.insertSelective(pojo);
+        } catch (Exception e) {
+            logger.warn("err insertSelective");
+            return -1;
+
+        }
     }
 
     public int insertList(List<UserPrivilege> pojos){
-        return userPrivilegeMapper.insertList(pojos);
+        
+        try
+        {
+            return userPrivilegeMapper.insertList(pojos);  
+        } catch (Exception e)
+        {
+            logger.warn("err insertList");
+            return -1;
+        }
+       
     }
 
     public int update(UserPrivilege pojo){
-        return userPrivilegeMapper.update(pojo);
+        
+        try
+        {
+            return userPrivilegeMapper.update(pojo);
+        } catch (Exception e)
+        {
+            logger.warn("err update");
+            return -1;
+        }
+        
     }
 
 
     @Override
     public int addUserPrivilege(UserPrivilege pojo){
-        return userPrivilegeMapper.insert(pojo);
+        
+        try
+        {
+            return userPrivilegeMapper.insert(pojo);
+        } catch (Exception e)
+        {
+            logger.warn("err addUserPrivilege");
+            return -1;
+        }
+       
     }
 
     @Override
     public  List<UserPrivilege> getUserPrivilegeList(UserPrivilege userPrivilege){
-        return  userPrivilegeMapper.getUserPrivilegeList(userPrivilege);
+        
+        try
+        {
+            return  userPrivilegeMapper.getUserPrivilegeList(userPrivilege); 
+        } catch (Exception e)
+        {
+            logger.warn("err getUserPrivilegeList");
+            return null;
+        }
+        
     }
 
     @Override
     public  int updatePrivilege(UserPrivilege userPrivilege){
-
-        return userPrivilegeMapper.update(userPrivilege);
+        try
+        {
+            return userPrivilegeMapper.update(userPrivilege);
+        } catch (Exception e)
+        {
+            logger.warn("err updatePrivilege");
+            return -1;
+        }
+        
     }
 }

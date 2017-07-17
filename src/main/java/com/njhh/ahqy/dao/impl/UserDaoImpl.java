@@ -41,48 +41,96 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int delUser(User user) {
-        return 0;
+        try
+        {
+            return 0;
+        } catch (Exception e)
+        {
+            logger.warn("err delUser");
+            return -1;
+        }
+        
     }
 
     @Override
     public User getUser(User user) {
-        if(null!= user.getPhoneNum()&&!"".equals(user.getPhoneNum())){
-          return   userMapper.getUserByPhoneNum(user.getPhoneNum());
-        }
-        if(null!= user.getId()&&!"".equals(user.getId())){
-            return   userMapper.getUserById(user.getId());
-        }
-        if(null!= user.getName()&&!"".equals(user.getName())){
-            return   userMapper.getUserByName(user.getName());
-        }
+        try
+        {
+            if(null!= user.getPhoneNum()&&!"".equals(user.getPhoneNum())){
+                return   userMapper.getUserByPhoneNum(user.getPhoneNum());
+              }
+              if(null!= user.getId()&&!"".equals(user.getId())){
+                  return   userMapper.getUserById(user.getId());
+              }
+              if(null!= user.getName()&&!"".equals(user.getName())){
+                  return   userMapper.getUserByName(user.getName());
+              }
 
 
-        return null;
+              return null;
+        } catch (Exception e)
+        {
+            logger.warn("err getUser");
+            return null;
+        }
+        
     }
     @Override
     public List<User> getUserList(){
-        return null;
+        try
+        {
+            return null;
+        } catch (Exception e)
+        {
+            logger.warn("err getUserList");
+            return null;
+        }
+       
     }
 
 
     @Override
     public  String getPhoneNumFromWeCode(String weCode){
-        String phoneNum = "";
-        return phoneNum;
+        try
+        {
+            String phoneNum = "";
+            return phoneNum;
+        } catch (Exception e)
+        {
+            logger.warn("err getPhoneNumFromWeCode");
+            return null;
+        }
+       
     }
 
     @Override
     public int updateUser(User user){
-        return userMapper.update(user);
+        try
+        {
+            return userMapper.update(user);
+        } catch (Exception e)
+        {
+            logger.warn("err updateUser");
+            return -1;
+        }
+      
 
     }
 
     @Override
     public Region getUserRegion(User user){
-        String num = user.getPhoneNum().substring(0,7);
-        Region region = new Region();
-        region.setNumSeg(num);
-        return regionMapper.getRegion(region);
+        try
+        {
+            String num = user.getPhoneNum().substring(0,7);
+            Region region = new Region();
+            region.setNumSeg(num);
+            return regionMapper.getRegion(region);
+        } catch (Exception e)
+        {
+            logger.warn("err getUserRegion");
+            return null;
+        }
+       
     }
 
 
@@ -95,18 +143,51 @@ public class UserDaoImpl implements UserDao {
 
 
     public int insert(User pojo){
-        return userMapper.insert(pojo);
+        try
+        {
+            return userMapper.insert(pojo);
+        } catch (Exception e)
+        {
+            logger.warn("err insert");
+            return -1;
+        }
+        
     }
 
     public int insertSelective(User pojo){
-        return userMapper.insertSelective(pojo);
+        try
+        {
+            return userMapper.insertSelective(pojo);
+        } catch (Exception e)
+        {
+            logger.warn("err insertSelective");
+            return -1;
+        }
+        
     }
 
     public int insertList(List<User> pojos){
-        return userMapper.insertList(pojos);
+        try
+        {
+            return userMapper.insertList(pojos);
+        } catch (Exception e)
+        {
+            logger.warn("err insertList");
+            return -1;
+        }
+       
     }
 
-    public int update(User pojo){
-        return userMapper.update(pojo);
+    public int update(User pojo)
+    {
+        try
+        {
+            return userMapper.update(pojo);
+        } catch (Exception e)
+        {
+            logger.warn("err update");
+            return -1;
+        }
+
     }
 }
