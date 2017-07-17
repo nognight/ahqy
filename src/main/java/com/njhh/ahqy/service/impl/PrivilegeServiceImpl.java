@@ -2,14 +2,8 @@ package com.njhh.ahqy.service.impl;
 
 import com.njhh.ahqy.common.AhqyConst;
 import com.njhh.ahqy.common.ResultCode;
-import com.njhh.ahqy.dao.CacheDao;
-import com.njhh.ahqy.dao.PrivilegeDao;
-import com.njhh.ahqy.dao.SmsRecordDao;
-import com.njhh.ahqy.dao.UserPrivilegeDao;
-import com.njhh.ahqy.entity.Privilege;
-import com.njhh.ahqy.entity.SmsRecord;
-import com.njhh.ahqy.entity.User;
-import com.njhh.ahqy.entity.UserPrivilege;
+import com.njhh.ahqy.dao.*;
+import com.njhh.ahqy.entity.*;
 import com.njhh.ahqy.service.PrivilegeService;
 import com.njhh.ahqy.service.UserService;
 import com.njhh.ahqy.service.thread.OrderCallback.PrivilegeCallback;
@@ -33,6 +27,8 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     @Autowired
     private PrivilegeDao privilegeDao;
     @Autowired
+    private PrivilegeAdDao privilegeAdDao;
+    @Autowired
     private CacheDao cacheDao;
 
     @Autowired
@@ -44,8 +40,9 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     @Autowired
     private UserPrivilegeDao userPrivilegeDao;
 
+
     @Override
-    public List<Privilege> getPrivilegeList(int type,int category, HttpSession httpSession) {
+    public List<Privilege> getPrivilegeList(int type, int category, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
         if (null == user) {
             return null;
@@ -58,8 +55,23 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         privilege.setPayType(user.getPayType());
         return privilegeDao.getPrivilegeList(privilege);
     }
+
     @Override
-    public Privilege getPrivilegeInfo(int id , HttpSession httpSession){
+    public List<PrivilegeAd> getPrivilegeAdList(int source, int id, HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+        PrivilegeAd privilegeAd = new PrivilegeAd();
+
+        if (0 != id) {
+            privilegeAd.setId(id);
+        }
+        if (0 != source) {
+            privilegeAd.setSource(source);
+        }
+        return privilegeAdDao.getPrivilegeAdList(privilegeAd);
+    }
+
+    @Override
+    public Privilege getPrivilegeInfo(int id, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
         if (null == user) {
             return null;
@@ -87,7 +99,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         Privilege privilege = new Privilege();
         privilege.setId(id);
         privilege = privilegeDao.getPrivilege(privilege);
-        if(null == privilege){
+        if (null == privilege) {
             return ResultCode.ERROR;
         }
 
@@ -135,7 +147,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         Privilege privilege = new Privilege();
         privilege.setId(id);
         privilege = privilegeDao.getPrivilege(privilege);
-        logger.info("usePrivilege  phoneNumber:" + user.getPhoneNum()  +"privilege:" +  privilege.toString());
+        logger.info("usePrivilege  phoneNumber:" + user.getPhoneNum() + "privilege:" + privilege.toString());
 
         if (null == privilege) {
             return ResultCode.DB_NOTFOUND;

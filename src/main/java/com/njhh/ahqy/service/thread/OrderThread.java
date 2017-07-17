@@ -169,7 +169,7 @@ public class OrderThread implements Runnable {
                 } catch (Exception e) {
                     logger.warn(e.getMessage());
                     countTemp = -1;
-                    break;
+                    continue;
                 }
 
                 GateWayApi gateWayApi = (GateWayApi) JacksonUtil.returnObject(s, GateWayApi.class);
@@ -312,7 +312,12 @@ public class OrderThread implements Runnable {
                     logger.info("privilegeGift :  gift Type is product");
 
                     String[] giftIds = StringUtil.splitBy(privilege.getGiftId());
-                    userService.orderProducts(giftIds, user, privilegeCallback, AhqyConst.ORDER_PRIVILEGE_CALLBACK, AhqyConst.AUTHCODE_PRIVILEGE);
+                    if(null != giftIds || !"".equals(giftIds)){
+                        logger.info("privilegeGift : has gift ");
+                        userService.orderProducts(giftIds, user, privilegeCallback, AhqyConst.ORDER_PRIVILEGE_CALLBACK, AhqyConst.AUTHCODE_PRIVILEGE);
+                    }else {
+                        logger.info("privilegeGift : no gift ");
+                    }
 
                 }
                 //赠品是卡券
@@ -373,7 +378,7 @@ public class OrderThread implements Runnable {
             if(0  == resultCode){
                 content.append("尊敬的用户，您已成功获得“安徽联通”微信公众号权益平台赠送的");
                 content.append(product.getName());
-                content.append("有效期到本月底，流量不结转。");
+                content.append(",有效期到本月底，流量不结转。");
             }
 
         //收费
@@ -387,7 +392,8 @@ public class OrderThread implements Runnable {
             } else {
                 content.append("失败。");
                 content.append("原因是：");
-                content.append(resultMsg);
+
+                content.append(StringUtil.handOrderMsg(resultMsg));
                 logger.info(content.toString());
             }
         }

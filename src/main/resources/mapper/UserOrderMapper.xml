@@ -8,6 +8,7 @@
         <result column="phone_num" property="phoneNum"/>
         <result column="product_id" property="productId"/>
         <result column="code" property="code"/>
+        <result column="sub_type" property="subType"/>
         <result column="sms_code" property="smsCode"/>
         <result column="state" property="state"/>
         <result column="order_time" property="orderTime"/>
@@ -25,6 +26,7 @@
         `phone_num`,
         `product_id`,
         `code`,
+        `sub_type`,
         `sms_code`,
         `state`,
         `order_time`,
@@ -42,6 +44,7 @@
             `phone_num`,
             `product_id`,
             `code`,
+            `sub_type`,
             `sms_code`,
             `state`,
             `order_time`,
@@ -56,6 +59,7 @@
             #{pojo.phoneNum},
             #{pojo.productId},
             #{pojo.code},
+            #{pojo.subType},
             #{pojo.smsCode},
             #{pojo.state},
             #{pojo.orderTime},
@@ -70,19 +74,20 @@
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="pojo.id">
         INSERT INTO t_user_order
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="pojo.id!=null"> `id`,</if>
-            <if test="pojo.userId!=null"> `user_id`,</if>
-            <if test="pojo.phoneNum!=null"> `phone_num`,</if>
-            <if test="pojo.productId!=null"> `product_id`,</if>
-            <if test="pojo.code!=null"> `code`,</if>
-            <if test="pojo.smsCode!=null"> `sms_code`,</if>
-            <if test="pojo.state!=null"> `state`,</if>
-            <if test="pojo.orderTime!=null"> `order_time`,</if>
-            <if test="pojo.backTime!=null"> `back_time`,</if>
-            <if test="pojo.backCode!=null"> `back_code`,</if>
-            <if test="pojo.startTime!=null"> `start_time`,</if>
-            <if test="pojo.expireTime!=null"> `expire_time`,</if>
-            <if test="pojo.message!=null"> `message`,</if>
+            <if test="pojo.id!=null">`id`,</if>
+            <if test="pojo.userId!=null">`user_id`,</if>
+            <if test="pojo.phoneNum!=null">`phone_num`,</if>
+            <if test="pojo.productId!=null">`product_id`,</if>
+            <if test="pojo.code!=null">`code`,</if>
+            <if test="pojo.subType!=null">`sub_type`,</if>
+            <if test="pojo.smsCode!=null">`sms_code`,</if>
+            <if test="pojo.state!=null">`state`,</if>
+            <if test="pojo.orderTime!=null">`order_time`,</if>
+            <if test="pojo.backTime!=null">`back_time`,</if>
+            <if test="pojo.backCode!=null">`back_code`,</if>
+            <if test="pojo.startTime!=null">`start_time`,</if>
+            <if test="pojo.expireTime!=null">`expire_time`,</if>
+            <if test="pojo.message!=null">`message`,</if>
         </trim>
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -91,6 +96,7 @@
             <if test="pojo.phoneNum!=null">#{pojo.phoneNum},</if>
             <if test="pojo.productId!=null">#{pojo.productId},</if>
             <if test="pojo.code!=null">#{pojo.code},</if>
+            <if test="pojo.subType!=null">#{pojo.subType},</if>
             <if test="pojo.smsCode!=null">#{pojo.smsCode},</if>
             <if test="pojo.state!=null">#{pojo.state},</if>
             <if test="pojo.orderTime!=null">#{pojo.orderTime},</if>
@@ -114,6 +120,7 @@
             #{pojo.phoneNum},
             #{pojo.productId},
             #{pojo.code},
+            #{pojo.subType},
             #{pojo.smsCode},
             #{pojo.state},
             #{pojo.orderTime},
@@ -130,19 +137,20 @@
     <update id="update">
         UPDATE t_user_order
         <set>
-            <if test="pojo.id != null"> `id` = #{pojo.id}, </if>
-            <if test="pojo.userId != null"> `user_id` = #{pojo.userId}, </if>
-            <if test="pojo.phoneNum != null"> `phone_num` = #{pojo.phoneNum}, </if>
-            <if test="pojo.productId != null"> `product_id` = #{pojo.productId}, </if>
-            <if test="pojo.code != null"> `code` = #{pojo.code}, </if>
-            <if test="pojo.smsCode != null"> `sms_code` = #{pojo.smsCode}, </if>
-            <if test="pojo.state != null"> `state` = #{pojo.state}, </if>
-            <if test="pojo.orderTime != null"> `order_time` = #{pojo.orderTime}, </if>
-            <if test="pojo.backTime != null"> `back_time` = #{pojo.backTime}, </if>
-            <if test="pojo.backCode != null"> `back_code` = #{pojo.backCode}, </if>
-            <if test="pojo.startTime != null"> `start_time` = #{pojo.startTime}, </if>
-            <if test="pojo.expireTime != null"> `expire_time` = #{pojo.expireTime}, </if>
-            <if test="pojo.message != null"> `message` = #{pojo.message} </if>
+            <if test="pojo.id != null">`id` = #{pojo.id},</if>
+            <if test="pojo.userId != null">`user_id` = #{pojo.userId},</if>
+            <if test="pojo.phoneNum != null">`phone_num` = #{pojo.phoneNum},</if>
+            <if test="pojo.productId != null">`product_id` = #{pojo.productId},</if>
+            <if test="pojo.code != null">`code` = #{pojo.code},</if>
+            <if test="pojo.subType!=null">`sub_type`= #{pojo.subType},</if>
+            <if test="pojo.smsCode != null">`sms_code` = #{pojo.smsCode},</if>
+            <if test="pojo.state != null">`state` = #{pojo.state},</if>
+            <if test="pojo.orderTime != null">`order_time` = #{pojo.orderTime},</if>
+            <if test="pojo.backTime != null">`back_time` = #{pojo.backTime},</if>
+            <if test="pojo.backCode != null">`back_code` = #{pojo.backCode},</if>
+            <if test="pojo.startTime != null">`start_time` = #{pojo.startTime},</if>
+            <if test="pojo.expireTime != null">`expire_time` = #{pojo.expireTime},</if>
+            <if test="pojo.message != null">`message` = #{pojo.message}</if>
         </set>
         WHERE id = #{pojo.id}
     </update>

@@ -33,10 +33,10 @@ function getCurrentUser() {
 
                 currentPhoneNum = object.phoneNum;
 
-                $("body").append('<div class ="toolbar"><div>&nbsp;</div><div>' + currentPhoneNum + '</div><div><a href="myPrivilege.html">&nbsp;</a></div></div>');
-                $('.toolbar>div:nth-child(1)').click(function (e) {
-                    history.go(-1);
-                });
+                // $("body").append('<div class ="toolbar"><div>&nbsp;</div><div>' + currentPhoneNum + '</div><div><a href="myPrivilege.html">&nbsp;</a></div></div>');
+                // $('.toolbar>div:nth-child(1)').click(function (e) {
+                //     history.go(-1);
+                // });
             }
         }
     });

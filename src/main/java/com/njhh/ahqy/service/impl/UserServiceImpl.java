@@ -261,12 +261,10 @@ public class UserServiceImpl implements UserService {
                     for (String code : codes) {
                         if (orderedCodeList.contains(code)) {
                             logger.info("已经订购codes:" + code);
-                            break;
                         } else {
                             product.setCode(code);
                             //预定的code 视为已定，防止重复code
                             orderedCodeList.add(code);
-                            break;
                         }
                     }
                 }

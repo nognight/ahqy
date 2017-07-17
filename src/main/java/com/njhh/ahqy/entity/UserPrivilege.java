@@ -10,7 +10,7 @@ public class UserPrivilege {
     private Integer id;
     private Integer userId;
     private Integer privilegeId;
-    private Integer status;//-2增加权益失败  -1 失效 0可用 1已经使用 2使用失败
+    private Integer status;//   -2增加权益失败，即订购权益失败   -1失效   0可用,即未赠送   1已经使用即已经赠送   2使用失败，赠送失败
     private Date getTime;
     private Date startTime;
     private Date expireTime;

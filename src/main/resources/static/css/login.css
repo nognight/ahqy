@@ -79,6 +79,7 @@ button.banding {
     width: 100%;
     max-width: 480px;
     bottom: 0%;
+    z-index: -1;
 }
 
 .foot > img {

@@ -18,7 +18,7 @@ body {
     margin: 0 auto;
     height: 60px;
     padding: 0px;
-    background: url('../images/typeBtn.png') no-repeat center;
+    /*background: url('../images/typeBtn.png') no-repeat center;*/
     background-size: 100%;
     width: 0%;
 

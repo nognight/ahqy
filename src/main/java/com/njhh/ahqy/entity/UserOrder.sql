@@ -6,7 +6,7 @@ CREATE TABLE `t_user_order`(
     `phone_num` VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'phoneNum',
     `product_id` INT (11) NOT NULL DEFAULT -1 COMMENT 'productId',
     `code` VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'code',
-    `subType` INT (4) NOT NULL DEFAULT -1 COMMENT 'subType',
+    `sub_type` INT (4) NOT NULL DEFAULT -1 COMMENT 'subType',
     `sms_code` VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'smsCode',
     `state` INT (4) NOT NULL DEFAULT -1 COMMENT 'state',
     `order_time` DATETIME COMMENT 'orderTime',
