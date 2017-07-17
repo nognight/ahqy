@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.njhh.ahqy.dao.impl.mapper.PrivilegeAdMapper">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.njhh.ahqy.entity.PrivilegeAd">
+        <result column="id" property="id"/>
+        <result column="source" property="source"/>
+        <result column="source_name" property="sourceName"/>
+        <result column="ad_name" property="adName"/>
+        <result column="ad_url" property="adUrl"/>
+        <result column="ad_pic" property="adPic"/>
+        <result column="ad_info" property="adInfo"/>
+        <result column="status" property="status"/>
+        <result column="online_date" property="onlineDate"/>
+        <result column="offline_date" property="offlineDate"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="all_column">
+        `id`,
+        `source`,
+        `source_name`,
+        `ad_name`,
+        `ad_url`,
+        `ad_pic`,
+        `ad_info`,
+        `status`,
+        `online_date`,
+        `offline_date`,
+        `remark`
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO t_privilege_ad (
+            `id`,
+            `source`,
+            `source_name`,
+            `ad_name`,
+            `ad_url`,
+            `ad_pic`,
+            `ad_info`,
+            `status`,
+            `online_date`,
+            `offline_date`,
+            `remark`
+        ) VALUES (
+            #{pojo.id},
+            #{pojo.source},
+            #{pojo.sourceName},
+            #{pojo.adName},
+            #{pojo.adUrl},
+            #{pojo.adPic},
+            #{pojo.adInfo},
+            #{pojo.status},
+            #{pojo.onlineDate},
+            #{pojo.offlineDate},
+            #{pojo.remark}
+        )
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO t_privilege_ad
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null">`id`,</if>
+            <if test="pojo.source!=null">`source`,</if>
+            <if test="pojo.sourceName!=null">`source_name`,</if>
+            <if test="pojo.adName!=null">`ad_name`,</if>
+            <if test="pojo.adUrl!=null">`ad_url`,</if>
+            <if test="pojo.adPic!=null">`ad_pic`,</if>
+            <if test="pojo.adInfo!=null">`ad_info`,</if>
+            <if test="pojo.status!=null">`status`,</if>
+            <if test="pojo.onlineDate!=null">`online_date`,</if>
+            <if test="pojo.offlineDate!=null">`offline_date`,</if>
+            <if test="pojo.remark!=null">`remark`,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null">#{pojo.id},</if>
+            <if test="pojo.source!=null">#{pojo.source},</if>
+            <if test="pojo.sourceName!=null">#{pojo.sourceName},</if>
+            <if test="pojo.adName!=null">#{pojo.adName},</if>
+            <if test="pojo.adUrl!=null">#{pojo.adUrl},</if>
+            <if test="pojo.adPic!=null">#{pojo.adPic},</if>
+            <if test="pojo.adInfo!=null">#{pojo.adInfo},</if>
+            <if test="pojo.status!=null">#{pojo.status},</if>
+            <if test="pojo.onlineDate!=null">#{pojo.onlineDate},</if>
+            <if test="pojo.offlineDate!=null">#{pojo.offlineDate},</if>
+            <if test="pojo.remark!=null">#{pojo.remark},</if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO t_privilege_ad (
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.id},
+            #{pojo.source},
+            #{pojo.sourceName},
+            #{pojo.adName},
+            #{pojo.adUrl},
+            #{pojo.adPic},
+            #{pojo.adInfo},
+            #{pojo.status},
+            #{pojo.onlineDate},
+            #{pojo.offlineDate},
+            #{pojo.remark}
+            )
+        </foreach>
+    </insert>
+
+    <update id="update">
+        UPDATE t_privilege_ad
+        <set>
+            <if test="pojo.id != null">`id` = #{pojo.id},</if>
+            <if test="pojo.source != null">`source` = #{pojo.source},</if>
+            <if test="pojo.sourceName != null">`source_name` = #{pojo.sourceName},</if>
+            <if test="pojo.adName != null">`ad_name` = #{pojo.adName},</if>
+            <if test="pojo.adUrl != null">`ad_url` = #{pojo.adUrl},</if>
+            <if test="pojo.adPic != null">`ad_pic` = #{pojo.adPic},</if>
+            <if test="pojo.adInfo != null">`ad_info` = #{pojo.adInfo},</if>
+            <if test="pojo.status != null">`status` = #{pojo.status},</if>
+            <if test="pojo.onlineDate != null">`online_date` = #{pojo.onlineDate},</if>
+            <if test="pojo.offlineDate != null">`offline_date` = #{pojo.offlineDate},</if>
+            <if test="pojo.remark != null">`remark` = #{pojo.remark}</if>
+        </set>
+        WHERE id = #{pojo.id}
+    </update>
+
+
+    <select id="getPrivilegeAdList" resultType="AllColumnMap">
+        SELECT * FROM t_privilege_ad
+        WHERE status = #{pojo.status}
+        AND online_date &lt; now()
+        AND offline_date &gt; now()
+        <if test="pojo.source != null">AND  `source` = #{pojo.source},</if>
+        <if test="pojo.id != null">AND `id` = #{pojo.id},</if>
+    </select>
+</mapper>
+
