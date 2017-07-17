@@ -31,8 +31,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int addUser(User user) {
         try{
-        userMapper.insert(user);
-        return 0;
+        return   userMapper.insert(user);
         }catch (Exception e){
             e.printStackTrace();
             return -1;
