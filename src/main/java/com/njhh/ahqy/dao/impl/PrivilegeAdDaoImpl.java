@@ -12,30 +12,60 @@ import com.njhh.ahqy.dao.impl.mapper.PrivilegeAdMapper;
 
 @Service
 public class PrivilegeAdDaoImpl implements PrivilegeAdDao{
-        private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired(required = false)
     private PrivilegeAdMapper privilegeAdMapper;
 
     public int insert(PrivilegeAd pojo) {
-        return privilegeAdMapper.insert(pojo);
+        try {
+            return privilegeAdMapper.insert(pojo);
+        }catch (Exception e){
+            logger.warn("err insert");
+            return -1;
+        }
+
     }
 
     public int insertSelective(PrivilegeAd pojo) {
-        return privilegeAdMapper.insertSelective(pojo);
+
+        try {
+            return privilegeAdMapper.insertSelective(pojo);
+        }catch (Exception e){
+            logger.warn("err insertSelective");
+            return -1;
+        }
     }
 
     public int insertList(List<PrivilegeAd> pojos) {
-        return privilegeAdMapper.insertList(pojos);
+
+        try{
+            return privilegeAdMapper.insertList(pojos);
+        }catch (Exception e){
+            logger.warn("err insertList");
+            return -1;
+        }
     }
 
     public int update(PrivilegeAd pojo) {
-        return privilegeAdMapper.update(pojo);
+
+        try{
+            return privilegeAdMapper.update(pojo);
+        }catch (Exception e){
+            logger.warn("err update");
+            return -1;
+        }
     }
 
     @Override
     public  List<PrivilegeAd>  getPrivilegeAdList(PrivilegeAd privilegeAd){
-        return  privilegeAdMapper.getPrivilegeAdList(privilegeAd);
+        try{
+            return  privilegeAdMapper.getPrivilegeAdList(privilegeAd);
+        }catch (Exception e){
+            logger.warn("err getPrivilegeAdList" + e.getMessage());
+            return null;
+        }
+
     }
 
 

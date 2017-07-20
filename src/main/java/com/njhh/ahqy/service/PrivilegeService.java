@@ -27,7 +27,7 @@ public interface PrivilegeService {
      * @param httpSession
      * @return
      */
-    List<PrivilegeAd> getPrivilegeAdList(int source ,int id ,HttpSession httpSession);
+    List<PrivilegeAd> getPrivilegeAdList(int type,int source ,int id ,HttpSession httpSession);
 
     /**
      *

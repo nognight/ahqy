@@ -57,7 +57,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     }
 
     @Override
-    public List<PrivilegeAd> getPrivilegeAdList(int source, int id, HttpSession httpSession) {
+    public List<PrivilegeAd> getPrivilegeAdList(int type,int source, int id, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
         PrivilegeAd privilegeAd = new PrivilegeAd();
 
@@ -67,6 +67,10 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         if (0 != source) {
             privilegeAd.setSource(source);
         }
+        if (0 != type) {
+            privilegeAd.setType(type);
+        }
+        privilegeAd.setStatus(0);
         return privilegeAdDao.getPrivilegeAdList(privilegeAd);
     }
 

@@ -9,6 +9,7 @@ public class PrivilegeAd {
     private Integer id;
     private Integer source;
     private String sourceName;
+    private Integer type;
     private String adName;
     private String adUrl;
     private String adPic;
@@ -18,6 +19,13 @@ public class PrivilegeAd {
     private Date offlineDate;
     private String remark;
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
     public Integer getStatus() {
         return status;
@@ -113,6 +121,7 @@ public class PrivilegeAd {
         sb.append("id=").append(id);
         sb.append(", source=").append(source);
         sb.append(", sourceName='").append(sourceName).append('\'');
+        sb.append(", type=").append(type);
         sb.append(", adName='").append(adName).append('\'');
         sb.append(", adUrl='").append(adUrl).append('\'');
         sb.append(", adPic='").append(adPic).append('\'');

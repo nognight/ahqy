@@ -1,5 +1,5 @@
 body {
-    background-color: #000036;
+    background-color: #e4f8ff;
     max-width: 600px;
     margin: 0px auto;
 }
@@ -37,7 +37,7 @@ body {
     display: block;
 }
 
-.order>img {
+.order>a>img {
     width: 80%;
     margin-left: 10%;
 }

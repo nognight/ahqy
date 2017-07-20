@@ -34,11 +34,12 @@ public class PrivilegeController {
 
     @RequestMapping("/api/privilege/getAdList")
     private ApiBean getAdList(HttpSession httpSession,
+                              int type,
                               int source,
                               int id){
         ApiBean apiBean = new ApiBean();
         apiBean.setRet(0);
-        apiBean.setContent(new ObjBean(privilegeService.getPrivilegeAdList(source,id,httpSession)));
+        apiBean.setContent(new ObjBean(privilegeService.getPrivilegeAdList(type,source,id,httpSession)));
         return apiBean;
     }
 

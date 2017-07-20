@@ -97,6 +97,16 @@ $(".getAuthPic").click(function (e) {
 });
 
 $(document).ready(function () {
+
+$.ajax({
+    type: "get",
+    url: "api/logout",
+    success: function (response) {
+        
+    }
+});
+
+
     $('#doc-my-tabs').tabs();
 });
 

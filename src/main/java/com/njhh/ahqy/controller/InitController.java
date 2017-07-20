@@ -29,10 +29,10 @@ public class InitController {
 
 
     @RequestMapping("/api/init")
-    private User init() {
+    private String init() {
         logger.info("test");
-        return initService.getUser();
-
+//        return initService.getUser();
+        return "api ok";
     }
 
     /**
