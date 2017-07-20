@@ -9,7 +9,18 @@ import java.util.List;
  */
 public interface PrivilegeDao {
 
+    /**
+     * 获得权益列表
+     * @param pojo
+     * @return
+     */
     List<Privilege> getPrivilegeList(Privilege pojo);
+
+    /**
+     * 获得单个权益信息
+     * @param pojo
+     * @return
+     */
 
     Privilege getPrivilege(Privilege pojo);
 }

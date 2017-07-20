@@ -14,5 +14,12 @@ import javax.servlet.http.HttpSession;
 public interface InitService {
     User getUser();
 
+    /**
+     * 图形验证码接口
+     * @param type
+     * @param phoneNum
+     * @param session
+     * @return
+     */
     ValidateCode getValidateCode(String type, String phoneNum, HttpSession session);
 }

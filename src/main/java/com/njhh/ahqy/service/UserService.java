@@ -20,8 +20,11 @@ public interface UserService {
     int orderByProductId(int productId, String authCode, HttpSession httpSession);
 
 
-
-
+    /**
+     * 更新用户信息
+     * @param httpSession
+     * @return
+     */
     int updateUser(HttpSession httpSession);
 
     /**

@@ -13,12 +13,34 @@ import java.util.List;
  */
 
 public interface UserDao {
+    /**
+     *
+     * @param user
+     * @return
+     */
     int addUser(User user);
+
+    /**
+     *
+     * @param user
+     * @return
+     */
     int delUser(User user);
     int updateUser(User user);
     User getUser(User user);
     List<User> getUserList();
+
+    /**
+     *
+     * @param weCode
+     * @return
+     */
     String getPhoneNumFromWeCode(String weCode);
 
+    /**
+     * 获得用户归属地
+     * @param user
+     * @return
+     */
     Region getUserRegion(User user);
 }
