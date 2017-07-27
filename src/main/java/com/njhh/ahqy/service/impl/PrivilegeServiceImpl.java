@@ -4,10 +4,12 @@ import com.njhh.ahqy.common.AhqyConst;
 import com.njhh.ahqy.common.ResultCode;
 import com.njhh.ahqy.dao.*;
 import com.njhh.ahqy.entity.*;
+import com.njhh.ahqy.service.LoginService;
 import com.njhh.ahqy.service.PrivilegeService;
 import com.njhh.ahqy.service.UserService;
 import com.njhh.ahqy.service.thread.OrderCallback.PrivilegeCallback;
 import com.njhh.ahqy.sms.SmsClient;
+import com.njhh.ahqy.util.MD5Util;
 import com.njhh.ahqy.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,8 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     @Autowired
     private UserService userService;
     @Autowired
+    private LoginService loginService;
+    @Autowired
     private SmsRecordDao smsRecordDao;
 
 
@@ -57,7 +61,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     }
 
     @Override
-    public List<PrivilegeAd> getPrivilegeAdList(int type,int source, int id, HttpSession httpSession) {
+    public List<PrivilegeAd> getPrivilegeAdList(int type, int source, int id, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
         PrivilegeAd privilegeAd = new PrivilegeAd();
 
@@ -133,15 +137,14 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     }
 
     @Override
-    public int usePrivilege(int id, String authCode, HttpSession httpSession) {
+    public int usePrivilege(int id, String authCode, int source, HttpSession httpSession) {
 
 
         if (null == authCode) {
             return ResultCode.ERROR;
         }
-
         User user = (User) httpSession.getAttribute("user");
-        if (!AhqyConst.AUTHCODE_WITHOUT.equals(authCode)) {
+        if (!AhqyConst.AUTHCODE_WITHOUT.equals(authCode) && !AhqyConst.AUTHCODE_SMS.equals(authCode)) {
             if (!authCode.equals(cacheDao.getAuthCode(AhqyConst.AUTHCODE_PRIVILEGE, id, user.getId(), user.getPhoneNum(), ""))) {
                 return ResultCode.AUTHCODE_ERROR;
             }
@@ -181,6 +184,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
             userPrivilege.setUserId(user.getId());
             userPrivilege.setGetTime(new Date());
             userPrivilege.setStatus(-1);
+            userPrivilege.setSource(source);
             userPrivilege.setRemark("prililege:start:");
 
             userPrivilegeDao.addUserPrivilege(userPrivilege);
@@ -204,5 +208,45 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 
 
         return ResultCode.ERROR;
+    }
+
+    @Override
+    public int usePrivilegeById(String channel, int id, String phoneNum, String timestamp, String sign, HttpSession httpSession) {
+
+
+        // TODO: 2017/7/26 验证签名
+        //签名规则
+        //微信短信订购  MD5（channel+{#id}+{#phoneNum}+{#timestamp}+key）  md5 16位小写  timestamp10位
+        //channel = smsPrivilege   key = sp123456
+        //例如  md5（smsPrivilege123186516144821501054645sp123456）
+
+
+        try {
+            long timeNow = System.currentTimeMillis() / 1000;
+            long time = Long.parseLong(timestamp);
+            //十分钟
+            if (600 < timeNow - time || -600 > timeNow - time) {
+                logger.info("request timestamp is timeout");
+                return ResultCode.ERROR;
+            }
+
+
+        } catch (Exception e) {
+            logger.warn("Exception : " + e.getMessage());
+            return ResultCode.ERROR;
+        }
+
+
+        String key = "sp123456";
+        String authSign = MD5Util.getMD5(channel + id + phoneNum + timestamp + key);
+        if (!authSign.equals(sign)) {
+            logger.info("sign is error , current sign is " + authSign);
+            return ResultCode.ERROR;
+        }
+
+        loginService.webLogin(phoneNum, "debug123", timestamp, sign, httpSession);
+
+        return usePrivilege(id, AhqyConst.AUTHCODE_SMS, 1, httpSession);
+
     }
 }

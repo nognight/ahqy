@@ -53,12 +53,11 @@ public class LoginServiceImpl implements LoginService {
 
             String s = restHttpClient.getHttpResponse("http://192.168.100.28:9090/new/user/getPhoneNum?weCode=" + weCode, HttpConstants.Method.HTTP_METHOD_GET, headers, null);
             Map map = JacksonUtil.returnMap(s);
-            logger.info(map.toString());
+            logger.info(" getNumberFromWeCode "+map.toString());
             User user = new User();
             String phoneNum = map.get("phone").toString();
             if(null == phoneNum || "".equals(phoneNum)){
-
-                logger.info("微信未绑定号码");
+                logger.info("weCode has no Number");
                 return ResultCode.ERROR;
 
             }
@@ -67,7 +66,7 @@ public class LoginServiceImpl implements LoginService {
             try {
                 user = userDao.getUser(user);
             } catch (Exception e) {
-                logger.warn("Exception" + e.getMessage());
+                logger.warn("Exception : " + e.getMessage());
                 return ResultCode.DB_EXCEPTION;
             }
             if (null != user) {
@@ -81,6 +80,7 @@ public class LoginServiceImpl implements LoginService {
                     }
                     user.setNetType(userInfo.getNetType());
                     user.setPayType(userInfo.getFeeType());
+                    user.setLastLogin(new Date());
                     userDao.updateUser(user);
                 }
                 if (!user.getWeCode().equals(weCode)) {
@@ -112,7 +112,7 @@ public class LoginServiceImpl implements LoginService {
             }
             httpSession.setAttribute("user", user);
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            logger.info("Exception : "+e.getMessage());
         }
 
         return 0;
@@ -229,7 +229,6 @@ public class LoginServiceImpl implements LoginService {
         HashMap<String, String> headers = getHeaders();
         User user = new User();
         user.setPhoneNum(phoneNum);
-        logger.info("gateway");
         Region region = userDao.getUserRegion(user);
 
         StringBuffer sbufUrl = new StringBuffer();

@@ -51,7 +51,19 @@ public interface PrivilegeService {
      * @param httpSession
      * @return
      */
-    int usePrivilege(int id, String authCode ,HttpSession httpSession);
+
+    int usePrivilege(int id, String authCode, int source ,HttpSession httpSession);
+
+    /**
+     * 凭id使用权益
+     * @param id
+     * @param phoneNumber
+     * @param timestamp
+     * @param sign
+     * @param httpSession
+     * @return
+     */
+    int usePrivilegeById(String channel,int id, String phoneNumber,String timestamp, String sign ,HttpSession httpSession);
 
     /**
      *
@@ -59,6 +71,7 @@ public interface PrivilegeService {
      * @param httpSession
      * @return
      */
+
     int getAuthCode(int id,HttpSession httpSession);
 
 }

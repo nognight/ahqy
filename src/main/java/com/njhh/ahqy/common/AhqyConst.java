@@ -2,6 +2,7 @@ package com.njhh.ahqy.common;
 
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 定义全局常量
@@ -29,11 +30,20 @@ public class AhqyConst {
     public static final int LOGIN_API = 4;
 
 
-    //用户渠道类型
+    //用户注册渠道类型
 
     public static final int CHANNEL_WX = 1;
     public static final int CHANNEL_WEB = 2;
     public static final int CHANNEL_NET = 3;
+
+
+    //渠道 channel  key
+    private static final Map CHANNEL_KEY;
+    static {
+        CHANNEL_KEY = new HashMap();
+        CHANNEL_KEY.put("smsPrivilege", "sp123456");
+    }
+
 
 
     /**
@@ -50,17 +60,13 @@ public class AhqyConst {
 
 
 
-
-
-
-
-
     //获取验证码类型
     public static final String AUTHCODE_LOGIN = "login";
     public static final String AUTHCODE_PRIVILEGE = "privilege";
     public static final String AUTHCODE_PRODUCT = "product";
     public static final String AUTHCODE_INTENT = "intent";
     public static final String AUTHCODE_COUPON = "coupon";
+    public static final String AUTHCODE_SMS = "sms";
 
     //无需验证码
     public static final String AUTHCODE_WITHOUT="debug123";

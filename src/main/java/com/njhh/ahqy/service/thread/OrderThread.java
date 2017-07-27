@@ -117,7 +117,6 @@ public class OrderThread implements Runnable {
 
             for (Product product : productList) {
 
-
                 int resultCode= -2;
                 String resultMsg="";
 
@@ -196,12 +195,11 @@ public class OrderThread implements Runnable {
 
                     if ("0000".equals(productOrderResp.getRespCode())) {
                         countTemp = countTemp + 1;
-                        orderMap.put(userOrder.getCode(), 0);
+                        orderMap.put(userOrder.getId()+ "=>" + userOrder.getCode(), 0);
                         resultCode = 0;
 
-
                     } else {
-                        orderMap.put(userOrder.getCode(), 1);
+                        orderMap.put(userOrder.getId()+ "=>" +userOrder.getCode(), 1);
                         resultCode = 1;
                     }
                     userOrder.setBackCode(productOrderResp.getRespCode());
@@ -217,9 +215,7 @@ public class OrderThread implements Runnable {
                     resultMsg = "订购系统维护";
                 }
                 userOrderDao.updateUserOrder(userOrder);
-
                 sendProductSms(product,resultCode,resultMsg);
-
 
             }
 
