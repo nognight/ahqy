@@ -30,7 +30,7 @@
 
     <!--auto generated Code-->
     <insert id="insert" useGeneratedKeys="true" keyProperty="pojo.id">
-        INSERT INTO user_privilege (
+        INSERT INTO t_user_privilege (
         `id`,
         `user_id`,
         `privilege_id`,
@@ -57,7 +57,7 @@
 
     <!--auto generated Code-->
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="pojo.id">
-        INSERT INTO user_privilege
+        INSERT INTO t_user_privilege
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="pojo.id!=null"> `id`,</if>
             <if test="pojo.userId!=null"> `user_id`,</if>
@@ -87,7 +87,7 @@
 
     <!--auto generated Code-->
     <insert id="insertList">
-        INSERT INTO user_privilege (
+        INSERT INTO t_user_privilege (
         <include refid="all_column"/>
         )VALUES
         <foreach collection="pojos" item="pojo" index="index" separator=",">
@@ -108,7 +108,7 @@
 
     <!--auto generated Code-->
     <update id="update">
-        UPDATE user_privilege
+        UPDATE t_user_privilege
         <set>
             <if test="pojo.id != null"> `id` = #{pojo.id}, </if>
             <if test="pojo.userId != null"> `user_id` = #{pojo.userId}, </if>

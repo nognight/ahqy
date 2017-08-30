@@ -9,11 +9,13 @@ public class UserCoupon {
     private Integer id;
     private Integer userId;
     private Integer couponId;
-    private Integer status;//-1 失效 0可用 1已经使用
+    private Integer source;//来源
+    private Integer status;//-1 失效 0可用 1已经使用 2未激活
     private Date getTime;
     private Date startTime;
     private Date expireTime;
     private Date usedTime;
+    private String remark;
 
     public Integer getId() {
         return id;
@@ -37,6 +39,14 @@ public class UserCoupon {
 
     public void setCouponId(Integer couponId) {
         this.couponId = couponId;
+    }
+
+    public Integer getSource() {
+        return source;
+    }
+
+    public void setSource(Integer source) {
+        this.source = source;
     }
 
     public Integer getStatus() {
@@ -79,19 +89,27 @@ public class UserCoupon {
         this.usedTime = usedTime;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("UserCouponDao{");
-        sb.append("id=").append(id);
-        sb.append(", userId=").append(userId);
-        sb.append(", couponId=").append(couponId);
-        sb.append(", status=").append(status);
-        sb.append(", getTime=").append(getTime);
-        sb.append(", startTime=").append(startTime);
-        sb.append(", expireTime=").append(expireTime);
-        sb.append(", usedTime=").append(usedTime);
-        sb.append('}');
-        return sb.toString();
+    public String getRemark() {
+        return remark;
     }
 
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "UserCoupon{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", couponId=" + couponId +
+                ", source=" + source +
+                ", status=" + status +
+                ", getTime=" + getTime +
+                ", startTime=" + startTime +
+                ", expireTime=" + expireTime +
+                ", usedTime=" + usedTime +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }

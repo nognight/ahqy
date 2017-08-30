@@ -23,4 +23,7 @@ public interface CouponService {
      * @return
      */
     List<Coupon> getUserCouponList(int type , HttpSession httpSession);
+
+
+
 }

@@ -136,11 +136,6 @@ public class UserDaoImpl implements UserDao {
 
 
 
-
-
-
-
-
     public int insert(User pojo){
         try
         {

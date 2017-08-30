@@ -7,7 +7,9 @@ import java.util.List;
 import com.njhh.ahqy.entity.PrivilegeAd;
 
 @Mapper
-public interface PrivilegeAdMapper {
+public interface
+
+PrivilegeAdMapper {
     int insert(@Param("pojo") PrivilegeAd pojo);
 
     int insertSelective(@Param("pojo") PrivilegeAd pojo);

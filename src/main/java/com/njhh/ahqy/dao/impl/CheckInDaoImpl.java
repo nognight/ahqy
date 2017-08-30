@@ -10,7 +10,9 @@ import com.njhh.ahqy.entity.CheckIn;
 import com.njhh.ahqy.dao.impl.mapper.CheckInMapper;
 
 @Service
-public class CheckInDaoImpl{
+public
+class
+CheckInDaoImpl{
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 

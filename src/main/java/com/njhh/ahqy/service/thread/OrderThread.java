@@ -195,11 +195,11 @@ public class OrderThread implements Runnable {
 
                     if ("0000".equals(productOrderResp.getRespCode())) {
                         countTemp = countTemp + 1;
-                        orderMap.put(userOrder.getId()+ "=>" + userOrder.getCode(), 0);
+                        orderMap.put("orderId:"+userOrder.getId()+ "=>" + userOrder.getCode(), 0);
                         resultCode = 0;
 
                     } else {
-                        orderMap.put(userOrder.getId()+ "=>" +userOrder.getCode(), 1);
+                        orderMap.put("orderId:"+userOrder.getId()+ "=>" +userOrder.getCode(), 1);
                         resultCode = 1;
                     }
                     userOrder.setBackCode(productOrderResp.getRespCode());

@@ -1,6 +1,6 @@
 package com.njhh.ahqy.service.thread.OrderCallback;
 
-import org.springframework.stereotype.Service;
+
 
 /**
  * Created by HiWin10 on 2017/7/2.
