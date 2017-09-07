@@ -1,6 +1,7 @@
 package com.njhh.ahqy.service;
 
 import com.njhh.ahqy.entity.Coupon;
+import com.njhh.ahqy.entity.UserCoupon;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -11,19 +12,49 @@ import java.util.List;
 public interface CouponService {
     /**
      * 获得券列表
+     *
      * @param httpSession
      * @return
      */
-    List<Coupon> getCouponList(int type,HttpSession httpSession);
+    List<Coupon> getCouponList(int type, HttpSession httpSession);
 
     /**
      * 获得用户卡券表
+     *
      * @param type
      * @param httpSession
      * @return
      */
-    List<Coupon> getUserCouponList(int type , HttpSession httpSession);
+    List<UserCoupon> getUserCouponList(int type, HttpSession httpSession);
 
+
+    /**
+     * 使用卡券
+     *
+     * @param id
+     * @param httpSession
+     * @return
+     */
+    int useUserCoupon(int id, HttpSession httpSession);
+
+
+    /**
+     *
+     * @param couponId
+     * @param privilegeId
+     * @param httpSession
+     * @return
+     */
+    int addUserCoupon(int couponId,  int privilegeId, String startTime ,HttpSession httpSession);
+
+    /**
+     * 用户更新卡券
+     *
+     * @param id
+     * @param httpSession
+     * @return
+     */
+    int updateUserCoupon(int id, HttpSession httpSession);
 
 
 }

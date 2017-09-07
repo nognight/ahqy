@@ -38,15 +38,6 @@ public class UserController {
         return apiBean;
     }
 
-    @RequestMapping("/api/user/useCoupon")
-    private ApiBean useUserCoupon(HttpSession httpSession,
-                                  Integer couponId,
-                                  String authCode) {
-        ApiBean apiBean = new ApiBean();
-        userService.useUserCoupon(couponId, httpSession);
-        return apiBean;
-    }
-
     @RequestMapping("/api/user/authCode")
     private ApiBean sendAuthCode(HttpSession httpSession,
                                  String type,

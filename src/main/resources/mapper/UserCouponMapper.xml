@@ -125,7 +125,11 @@
         WHERE id = #{pojo.id}
     </update>
     <select id="getUserCouponList" resultMap="AllColumnMap">
-        SELECT * from t_user_coupon where id = #{userId}
+        SELECT * from t_user_coupon where user_id = #{userId}
+    </select>
+
+    <select id="getUserCouponById" resultMap="AllColumnMap">
+        SELECT * from t_user_coupon where user_id = #{userId} and id = #{id}
     </select>
 </mapper>
 

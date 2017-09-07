@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+
 import com.njhh.ahqy.entity.UserCoupon;
 
 @Mapper
@@ -16,5 +17,7 @@ public interface UserCouponMapper {
 
     int update(@Param("pojo") UserCoupon pojo);
 
-    List<UserCoupon> getUserCouponList(@Param("userId") String userId);
+    List<UserCoupon> getUserCouponList(@Param("userId") int userId);
+
+    UserCoupon getUserCouponById(@Param("id") int id, @Param("userId") int userId);
 }

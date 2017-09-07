@@ -49,6 +49,7 @@ public class UserCouponDaoImpl implements UserCouponDao {
 
     }
 
+    @Override
     public int update(UserCoupon pojo) {
         try {
             return userCouponMapper.update(pojo);
@@ -60,8 +61,8 @@ public class UserCouponDaoImpl implements UserCouponDao {
     }
 
     @Override
-    public List<Coupon> getUserCouponList() {
-        return null;
+    public List<UserCoupon> getUserCouponList(int userId) {
+        return userCouponMapper.getUserCouponList(userId);
     }
 
     @Override
@@ -73,6 +74,12 @@ public class UserCouponDaoImpl implements UserCouponDao {
             logger.warn("err addUserCoupon");
             return -1;
         }
+
+    }
+
+    @Override
+    public UserCoupon getUserCouponById(int id, int userId){
+        return userCouponMapper.getUserCouponById(id,userId);
 
     }
 }

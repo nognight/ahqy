@@ -14,7 +14,7 @@ public class Privilege {
     private Date onlineDate;
     private Date offlineDate;
     private String picUrl;
-    private Integer type;//权益类型  1是订购送  2是打折  4是首月免费
+    private Integer type;//权益类型  1是订购送  2是打折  3是直接领取卡券  4是首月免费
     private Integer category;//种类，即类型的子分类  1视频 2英语，3阅读 4游戏
     private String couponIds;//如果是卡券 卡券id | 分割 多个就是组合订购
     private String productIds;//如果是流量包  产品id | 分割

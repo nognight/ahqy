@@ -67,39 +67,6 @@ public class UserServiceImpl implements UserService {
         return ResultCode.ERROR;
     }
 
-    @Override
-    public int addUserCoupon(int id, HttpSession httpSession) {
-        User user = (User) httpSession.getAttribute(SESSION_USER);
-        UserCoupon userCoupon = new UserCoupon();
-        userCoupon.setCouponId(id);
-        userCoupon.setUserId(user.getId());
-        userCoupon.setStatus(0);
-        userCoupon.setGetTime(new Date());
-        userCoupon.setStartTime(new Date());
-
-        userCouponDao.addUserCoupon(userCoupon);
-
-        return ResultCode.SUCCESS;
-    }
-
-    @Override
-    public int useUserCoupon(int id, HttpSession httpSession) {
-
-        // TODO: 2017/6/27 往网关发订购消息
-        // InCommUri.USER_ORDER_PRODUCT;
-        return 0;
-    }
-
-    @Override
-    public int addUserPrivilege(int id) {
-        return 0;
-    }
-
-    @Override
-    public int useUserPrivilege(int id) {
-        return 0;
-    }
-
 
     @Override
     public int orderProducts(String[] productIds, HttpSession httpSession, OrderCallback orderCallback, int type, String smsCode) {

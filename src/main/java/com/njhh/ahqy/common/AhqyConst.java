@@ -55,8 +55,11 @@ public class AhqyConst {
 
 
 
+    //领取卡券
+    public static final int PRIVILEGE_TYPE_LQKQ = 3;
+
     //首月免费
-    public static final int PRIVILEGE_TYPE_SYMF= 4;
+    public static final int PRIVILEGE_TYPE_SYMF = 4;
 
 
 

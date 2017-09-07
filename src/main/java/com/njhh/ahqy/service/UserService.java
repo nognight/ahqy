@@ -27,20 +27,9 @@ public interface UserService {
      */
     int updateUser(HttpSession httpSession);
 
-    /**
-     * 增加卡券
-     * @param id
-     * @return
-     */
-    int addUserCoupon(int id,HttpSession httpSession);
 
 
-    /**
-     * 使用卡券
-     * @param id
-     * @return
-     */
-    int useUserCoupon(int id, HttpSession httpSession);
+
 
     /**
      *订购
@@ -56,19 +45,7 @@ public interface UserService {
     int orderProducts(String[] ids , User user ,OrderCallback orderCallback,int type,String smsCode);
 
 
-    /**
-     * 增加权益
-     * @param id
-     * @return
-     */
-    int addUserPrivilege(int id);
 
-    /**
-     * 使用权益
-     * @param id
-     * @return
-     */
-    int useUserPrivilege(int id);
 
     /**
      * 验证码
