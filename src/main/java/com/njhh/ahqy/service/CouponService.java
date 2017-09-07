@@ -10,6 +10,13 @@ import java.util.List;
  * Created by HiWin10 on 2017/6/27.
  */
 public interface CouponService {
+
+    /**
+     * getCouponById
+     * @param id
+     * @return
+     */
+    Coupon getCouponById(int id);
     /**
      * 获得券列表
      *

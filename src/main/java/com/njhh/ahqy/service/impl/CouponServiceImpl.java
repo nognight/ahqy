@@ -37,6 +37,15 @@ public class CouponServiceImpl implements CouponService {
     @Autowired
     private PrivilegeDao privilegeDao;
 
+
+    @Override
+    public Coupon getCouponById(int id) {
+
+        Coupon coupon = new Coupon();
+        coupon.setId(id);
+        return couponDao.getCouponList(coupon).get(0);
+    }
+
     @Override
     public List<Coupon> getCouponList(int type, HttpSession httpSession) {
         Coupon coupon = new Coupon();
@@ -54,19 +63,19 @@ public class CouponServiceImpl implements CouponService {
 
 
     @Override
-    public int addUserCoupon(int couponId, int privilgeId, String startTime ,HttpSession httpSession) {
+    public int addUserCoupon(int couponId, int privilgeId, String startTime, HttpSession httpSession) {
 
         Privilege privilege = new Privilege();
         privilege.setId(privilgeId);
         privilege = privilegeDao.getPrivilege(privilege);
         //判断权益是否是领取卡券
         if (privilege.getType() != AhqyConst.PRIVILEGE_TYPE_LQKQ) {
-            return -1;
+            return ResultCode.ERROR;
         }
         String[] couponIds = StringUtil.splitBy(privilege.getCouponIds());
         //判断卡券id是否在权益里
         if (!ArrayUtil.contains(couponIds, "" + couponId)) {
-            return -1;
+            return ResultCode.ERROR;
         }
 
         User user = (User) httpSession.getAttribute(SESSION_USER);
@@ -76,8 +85,8 @@ public class CouponServiceImpl implements CouponService {
         userCoupon.setStatus(0);
         userCoupon.setGetTime(new Date());
         Date startDate = new Date();
-        if( null != startTime){
-            DateTime  dateTime = new DateTime(startTime,DatePattern.NORM_DATETIME_FORMAT);
+        if (null != startTime) {
+            DateTime dateTime = new DateTime(startTime, DatePattern.NORM_DATETIME_FORMAT);
             startDate = dateTime;
         }
         userCoupon.setStartTime(startDate);
