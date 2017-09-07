@@ -10,7 +10,6 @@ import com.njhh.ahqy.entity.Privilege;
 import com.njhh.ahqy.entity.User;
 import com.njhh.ahqy.entity.UserCoupon;
 import com.njhh.ahqy.service.CouponService;
-import com.njhh.ahqy.util.DateUtil;
 import com.njhh.ahqy.util.StringUtil;
 import com.xiaoleilu.hutool.date.DatePattern;
 import com.xiaoleilu.hutool.date.DateTime;
