@@ -154,7 +154,6 @@ public class CouponServiceImpl implements CouponService {
         User user = (User) httpSession.getAttribute("user");
         UserCoupon userCoupon = userCouponDao.getUserCouponById(id, user.getId());
 
-
         Coupon coupon = couponDao.getCouponById(userCoupon.getCouponId());
         //流量券
         if (AhqyConst.COUPON_TYPE_LLQ == coupon.getType()) {
