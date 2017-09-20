@@ -106,7 +106,6 @@ public class CouponServiceImpl implements CouponService {
         Long expireTime = startDate.getTime() + expire * 3600000L;
         DateTime expireDateTime = new DateTime(expireTime);
         userCoupon.setExpireTime(expireDateTime);
-
         userCouponDao.addUserCoupon(userCoupon);
         return ResultCode.SUCCESS;
     }
