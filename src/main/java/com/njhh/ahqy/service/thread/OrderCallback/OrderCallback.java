@@ -6,7 +6,9 @@ package com.njhh.ahqy.service.thread.OrderCallback;
  * Created by HiWin10 on 2017/7/2.
  */
 
-public class OrderCallback {
+public class
+
+OrderCallback {
     private int resultCode;
     private String msg;
 

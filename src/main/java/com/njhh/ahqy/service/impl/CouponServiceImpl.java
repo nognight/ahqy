@@ -5,15 +5,17 @@ import com.njhh.ahqy.common.ResultCode;
 import com.njhh.ahqy.dao.CouponDao;
 import com.njhh.ahqy.dao.PrivilegeDao;
 import com.njhh.ahqy.dao.UserCouponDao;
-import com.njhh.ahqy.entity.Coupon;
-import com.njhh.ahqy.entity.Privilege;
-import com.njhh.ahqy.entity.User;
-import com.njhh.ahqy.entity.UserCoupon;
+import com.njhh.ahqy.dao.UserPrivilegeDao;
+import com.njhh.ahqy.entity.*;
 import com.njhh.ahqy.service.CouponService;
+import com.njhh.ahqy.service.UserService;
+import com.njhh.ahqy.service.thread.OrderCallback.CouponCallback;
 import com.njhh.ahqy.util.StringUtil;
 import com.xiaoleilu.hutool.date.DatePattern;
 import com.xiaoleilu.hutool.date.DateTime;
 import com.xiaoleilu.hutool.util.ArrayUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +31,18 @@ import static com.njhh.ahqy.common.AhqyConst.SESSION_USER;
  */
 @Service
 public class CouponServiceImpl implements CouponService {
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private CouponDao couponDao;
+    @Autowired
+    private UserService userService;
     @Autowired
     private UserCouponDao userCouponDao;
     @Autowired
     private PrivilegeDao privilegeDao;
+    @Autowired
+    private UserPrivilegeDao userPrivilegeDao;
 
 
     @Override
@@ -53,19 +61,27 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<UserCoupon> getUserCouponList(int type, HttpSession httpSession) {
-
+    public List<UserCoupon> getUserCouponList(int type, int source, int status, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
-        return userCouponDao.getUserCouponList(user.getId());
+        return userCouponDao.getUserCouponList(user.getId(), source, status, type);
 
     }
 
 
     @Override
-    public int addUserCoupon(int couponId, int privilgeId, String startTime, HttpSession httpSession) {
+    public int addUserCoupon(int couponId, int privilegeId, int source, String startTime, int expire, HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute(SESSION_USER);
+        UserPrivilege userPrivilege = new UserPrivilege();
+        userPrivilege.setPrivilegeId(privilegeId);
+        userPrivilege.setUserId(user.getId());
+        List<UserPrivilege> userPrivilegeList = userPrivilegeDao.getUserPrivilegeList(userPrivilege);
+        if(null == userPrivilegeList ||  userPrivilegeList.isEmpty()){
+                logger.info(" userPrivilegeList is null or empty");
+                return ResultCode.ERROR;
+        }
 
         Privilege privilege = new Privilege();
-        privilege.setId(privilgeId);
+        privilege.setId(privilegeId);
         privilege = privilegeDao.getPrivilege(privilege);
         //判断权益是否是领取卡券
         if (privilege.getType() != AhqyConst.PRIVILEGE_TYPE_LQKQ) {
@@ -77,20 +93,60 @@ public class CouponServiceImpl implements CouponService {
             return ResultCode.ERROR;
         }
 
-        User user = (User) httpSession.getAttribute(SESSION_USER);
+
         UserCoupon userCoupon = new UserCoupon();
         userCoupon.setCouponId(couponId);
         userCoupon.setUserId(user.getId());
+        userCoupon.setSource(source);
         userCoupon.setStatus(0);
-        userCoupon.setGetTime(new Date());
-        Date startDate = new Date();
-        if (null != startTime) {
-            DateTime dateTime = new DateTime(startTime, DatePattern.NORM_DATETIME_FORMAT);
-            startDate = dateTime;
-        }
+        userCoupon.setGetTime(new DateTime());
+        DateTime startDate = new DateTime(startTime, DatePattern.NORM_DATETIME_FORMAT);
         userCoupon.setStartTime(startDate);
 
+        Long expireTime = startDate.getTime() + expire * 3600000L;
+        DateTime expireDateTime = new DateTime(expireTime);
+        userCoupon.setExpireTime(expireDateTime);
+
         userCouponDao.addUserCoupon(userCoupon);
+        return ResultCode.SUCCESS;
+    }
+
+    @Override
+    public int addUserCoupons(int privilegeId, int source, String startTime, int expire, HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute(SESSION_USER);
+        UserPrivilege userPrivilege = new UserPrivilege();
+        userPrivilege.setPrivilegeId(privilegeId);
+        userPrivilege.setUserId(user.getId());
+        List<UserPrivilege> userPrivilegeList = userPrivilegeDao.getUserPrivilegeList(userPrivilege);
+        if(null == userPrivilegeList ||  userPrivilegeList.isEmpty()){
+            logger.info(" userPrivilegeList is null or empty");
+            return ResultCode.ERROR;
+        }
+
+        Privilege privilege = new Privilege();
+        privilege.setId(privilegeId);
+        privilege = privilegeDao.getPrivilege(privilege);
+        if (privilege.getType() != AhqyConst.PRIVILEGE_TYPE_LQKQ) {
+            return ResultCode.ERROR;
+        }
+        String[] couponIds = StringUtil.splitBy(privilege.getCouponIds());
+        for (String couponId : couponIds) {
+            int cid = Integer.valueOf(couponId);
+            UserCoupon userCoupon = new UserCoupon();
+            userCoupon.setCouponId(cid);
+            userCoupon.setUserId(user.getId());
+            userCoupon.setSource(source);
+            userCoupon.setStatus(0);
+            userCoupon.setGetTime(new DateTime());
+            DateTime startDate = new DateTime(startTime, DatePattern.NORM_DATETIME_FORMAT);
+            userCoupon.setStartTime(startDate);
+
+            Long expireTime = startDate.getTime() + expire * 3600000L;
+            DateTime expireDateTime = new DateTime(expireTime);
+            userCoupon.setExpireTime(expireDateTime);
+
+            userCouponDao.addUserCoupon(userCoupon);
+        }
         return ResultCode.SUCCESS;
     }
 
@@ -99,7 +155,21 @@ public class CouponServiceImpl implements CouponService {
         User user = (User) httpSession.getAttribute("user");
         UserCoupon userCoupon = userCouponDao.getUserCouponById(id, user.getId());
 
-        // TODO: 2017/9/7  使用卡券，进行订购等，之后更新卡券状态 考虑到异步订购，所以需要给出订购回调，更新卡券状态
+
+        Coupon coupon = couponDao.getCouponById(userCoupon.getCouponId());
+        //流量券
+        if (AhqyConst.COUPON_TYPE_LLQ == coupon.getType()) {
+
+            CouponCallback couponCallback = new CouponCallback();
+            couponCallback.setUser(user);
+            couponCallback.setUserCoupon(userCoupon);
+            couponCallback.setPhoneNum(user.getPhoneNum());
+            userService.orderProducts(StringUtil.splitBy(coupon.getProductIds()),user,couponCallback,AhqyConst.ORDER_COUPON, AhqyConst.AUTHCODE_PRIVILEGE);
+
+            //折扣券
+        } else if (AhqyConst.COUPON_TYPE_ZKQ == coupon.getType()) {
+
+        }
 
         userCouponDao.update(userCoupon);
         return 0;

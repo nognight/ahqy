@@ -54,12 +54,20 @@ public class AhqyConst {
     public static final int PRIVILEGE_TYPE_DGS = 1;
 
 
-
     //领取卡券
     public static final int PRIVILEGE_TYPE_LQKQ = 3;
 
     //首月免费
     public static final int PRIVILEGE_TYPE_SYMF = 4;
+
+
+    /**
+     * COUPON_TYPE
+     */
+    //流量券
+    public static final int COUPON_TYPE_LLQ = 1;
+    //折扣券
+    public static final int COUPON_TYPE_ZKQ = 2;
 
 
 
@@ -97,10 +105,14 @@ public class AhqyConst {
     public static final int MB_STATUS_ORDER_CANCEL_MONTH = 5;
 
 
-    //业务订购类型
+    //业务订购类型权益
     public static final int ORDER_PRIVILEGE = 1;
     //业务订购类型权益回调订购
     public static final int ORDER_PRIVILEGE_CALLBACK = 2;
+    //业务订购类型卡券
+    public static final int ORDER_COUPON = 3;
+
+
 
     // 返回 KEY
     public static final String K_RET = "ret";

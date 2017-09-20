@@ -17,7 +17,7 @@ public interface UserCouponMapper {
 
     int update(@Param("pojo") UserCoupon pojo);
 
-    List<UserCoupon> getUserCouponList(@Param("userId") int userId);
+    List<UserCoupon> getUserCouponList(@Param("userId") int userId,@Param("source") int source ,@Param("status") int status , @Param("type") int type);
 
     UserCoupon getUserCouponById(@Param("id") int id, @Param("userId") int userId);
 }

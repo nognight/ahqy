@@ -15,11 +15,11 @@ public class PrivilegeCallback extends OrderCallback {
     private String phoneNum;
 
 
-
-
     public UserPrivilege getUserPrivilege() {
         return userPrivilege;
     }
+
+
 
     public void setUserPrivilege(UserPrivilege userPrivilege) {
         this.userPrivilege = userPrivilege;

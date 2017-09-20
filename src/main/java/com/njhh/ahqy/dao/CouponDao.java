@@ -14,4 +14,11 @@ public interface CouponDao {
      * @return
      */
     List<Coupon> getCouponList(Coupon pojo);
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    Coupon getCouponById(int id);
 }

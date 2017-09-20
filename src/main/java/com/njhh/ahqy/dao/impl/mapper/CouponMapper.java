@@ -17,4 +17,6 @@ public interface CouponMapper {
     int update(@Param("pojo") Coupon pojo);
 
     List<Coupon> getCouponList(@Param("pojo") Coupon pojo);
+
+    Coupon getCouponById(@Param("id") int id);
 }

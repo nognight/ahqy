@@ -16,11 +16,16 @@ public interface UserCouponDao {
      * @return
      */
     int update(UserCoupon pojo);
+
     /**
      * 获得用户卡券列表
+     * @param userId
+     * @param source
+     * @param status
+     * @param type
      * @return
      */
-    List<UserCoupon> getUserCouponList(int userId);
+    List<UserCoupon> getUserCouponList(int userId,int source ,int status ,int type);
 
     /**
      * 添加用户卡券

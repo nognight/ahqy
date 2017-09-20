@@ -4,16 +4,14 @@ package com.njhh.ahqy.service.thread;
 import cn.njhanhong.gateway.in.common.InCommParam;
 import cn.njhanhong.gateway.in.common.InCommUri;
 import com.njhh.ahqy.common.AhqyConst;
-import com.njhh.ahqy.dao.SmsRecordDao;
-import com.njhh.ahqy.dao.UserDao;
-import com.njhh.ahqy.dao.UserOrderDao;
-import com.njhh.ahqy.dao.UserPrivilegeDao;
+import com.njhh.ahqy.dao.*;
 import com.njhh.ahqy.entity.*;
 import com.njhh.ahqy.httpclient.HttpConstants;
 import com.njhh.ahqy.httpclient.RestHttpClient;
 import com.njhh.ahqy.httpclient.bean.GateWayApi;
 import com.njhh.ahqy.httpclient.bean.ProductOrderResp;
 import com.njhh.ahqy.service.UserService;
+import com.njhh.ahqy.service.thread.OrderCallback.CouponCallback;
 import com.njhh.ahqy.service.thread.OrderCallback.OrderCallback;
 import com.njhh.ahqy.service.thread.OrderCallback.PrivilegeCallback;
 import com.njhh.ahqy.sms.SmsClient;
@@ -49,6 +47,8 @@ public class OrderThread implements Runnable {
     private UserPrivilegeDao userPrivilegeDao;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserCouponDao userCouponDao;
 
     private OrderCallback orderCallback;
     private int type;
@@ -117,8 +117,8 @@ public class OrderThread implements Runnable {
 
             for (Product product : productList) {
 
-                int resultCode= -2;
-                String resultMsg="";
+                int resultCode = -2;
+                String resultMsg = "";
 
                 logger.info("OrderStart phoneNum:" + user.getPhoneNum() + "  product:" + product.getCode() + " | " + product.getName());
                 UserOrder userOrder = new UserOrder();
@@ -195,11 +195,11 @@ public class OrderThread implements Runnable {
 
                     if ("0000".equals(productOrderResp.getRespCode())) {
                         countTemp = countTemp + 1;
-                        orderMap.put("orderId:"+userOrder.getId()+ "=>" + userOrder.getCode(), 0);
+                        orderMap.put("orderId:" + userOrder.getId() + "=>" + userOrder.getCode(), 0);
                         resultCode = 0;
 
                     } else {
-                        orderMap.put("orderId:"+userOrder.getId()+ "=>" +userOrder.getCode(), 1);
+                        orderMap.put("orderId:" + userOrder.getId() + "=>" + userOrder.getCode(), 1);
                         resultCode = 1;
                     }
                     userOrder.setBackCode(productOrderResp.getRespCode());
@@ -215,13 +215,14 @@ public class OrderThread implements Runnable {
                     resultMsg = "订购系统维护";
                 }
                 userOrderDao.updateUserOrder(userOrder);
-                sendProductSms(product,resultCode,resultMsg);
+                sendProductSms(product, resultCode, resultMsg);
 
             }
 
-            // TODO: 2017/7/2 判断订购结果
 
-
+            /**
+             * 订购结果
+             */
             if (count == countTemp) {
                 //批量订购都成功
                 callbackCode = 0;
@@ -280,6 +281,7 @@ public class OrderThread implements Runnable {
 
         }
 
+        //订购类型，权益订购
         if (AhqyConst.ORDER_PRIVILEGE == type) {
 
             PrivilegeCallback privilegeCallback = (PrivilegeCallback) orderCallback;
@@ -304,14 +306,14 @@ public class OrderThread implements Runnable {
 
                 }
                 //赠品是流量包
-                else if (2 == privilege.getGiftType()) {
+                else if (3 == privilege.getGiftType()) {
                     logger.info("privilegeGift :  gift Type is product");
 
                     String[] giftIds = StringUtil.splitBy(privilege.getGiftId());
-                    if(null != giftIds || !"".equals(giftIds)){
+                    if (null != giftIds || !"".equals(giftIds)) {
                         logger.info("privilegeGift : has gift ");
-                        userService.orderProducts(giftIds, user, privilegeCallback, AhqyConst.ORDER_PRIVILEGE_CALLBACK, AhqyConst.AUTHCODE_PRIVILEGE);
-                    }else {
+                        userService.orderProducts(giftIds, user, privilegeCallback, AhqyConst.ORDER_PRIVILEGE_CALLBACK, AhqyConst.AUTHCODE_COUPON);
+                    } else {
                         logger.info("privilegeGift : no gift ");
                     }
 
@@ -319,11 +321,33 @@ public class OrderThread implements Runnable {
                 //赠品是卡券
                 else if (1 == privilege.getGiftType()) {
                     logger.info("privilegeGift :  gift Type is coupon");
+                    String[] couponIds = StringUtil.splitBy(privilege.getGiftId());
+                    for(String couponId : couponIds){
+                        int cid = Integer.valueOf(couponId);
+                        UserCoupon userCoupon = new UserCoupon();
+                        userCoupon.setUserId(user.getId());
+                        userCoupon.setCouponId(cid);
+                        userCoupon.setStatus(0);
+                        userCouponDao.addUserCoupon(userCoupon);
+
+                    }
 
 
                 }
+                //赠品是激活卡券
+                else if (2 == privilege.getGiftType()) {
+                    logger.info("privilegeGift :  gift Type is active coupon");
+                    String[] couponIds = StringUtil.splitBy(privilege.getGiftId());
+                    for(String couponId : couponIds){
+                        int cid = Integer.valueOf(couponId);
+                        UserCoupon userCoupon = userCouponDao.getUserCouponById(cid,user.getId());
+                        userCoupon.setStatus(0);
+                        userCouponDao.update(userCoupon);
+                    }
+                }
 
             }
+            //订购类型，权益订购回调
         } else if (AhqyConst.ORDER_PRIVILEGE_CALLBACK == type) {
             logger.info("PrivilegeCallback :callbackCode = " + callbackCode);
             PrivilegeCallback privilegeCallback = (PrivilegeCallback) orderCallback;
@@ -336,48 +360,40 @@ public class OrderThread implements Runnable {
             userPrivilege.setRemark(userPrivilege.getRemark() + "giftResult：" + orderMap.toString());
             userPrivilegeDao.updatePrivilege(userPrivilege);
 
+            //订购类型卡券订购
+        } else if (AhqyConst.ORDER_COUPON == type) {
+            CouponCallback couponCallback = (CouponCallback) orderCallback;
+            UserCoupon userCoupon = couponCallback.getUserCoupon();
+            if (0 == callbackCode) {
+                userCoupon.setStatus(1);
+
+            } else if (1 == callbackCode) {
+                userCoupon.setStatus(3);
+            }
+            userCoupon.setUsedTime(new Date());
+
+            userCouponDao.update(userCoupon);
+
         }
 
-
-    }
-
-    private int order(User user, Product product) {
-        // TODO: 2017/7/2 发消息给gatwaye
-        StringBuffer sbufUrl = new StringBuffer();
-        sbufUrl.append(AhqyConst.GATEWAY)
-                .append(InCommUri.USER_ORDER_PRODUCT)
-                .append("?")
-                .append(InCommParam.USER_NUMBER).append("=").append(user.getPhoneNum())
-                .append("&")
-                .append(InCommParam.PRODUCT_CODE).append("=").append(product.getCode())
-                .append("&")
-                .append(InCommParam.SUB_TYPE).append("=").append(subType)
-                .append("&")
-                .append(InCommParam.REGION).append("=").append(userDao.getUserRegion(user))
-                .append("&p=").append(AhqyConst.INCOMM_REQ_PRIO_HIGH)
-                .append("&")
-                .append(InCommParam.ORDER_CHANNEL).append("=").append(product.getSource());
-
-        return 0;
 
     }
 
 
     private void sendProductSms(Product product, int resultCode, String resultMsg) {
 
-
         StringBuilder content = new StringBuilder();
 
         //0元赠送型
         if (-1 == product.getRetailType()) {
 
-            if(0  == resultCode){
+            if (0 == resultCode) {
                 content.append("尊敬的用户，您已成功获得“安徽联通”微信公众号权益平台赠送的");
                 content.append(product.getName());
                 content.append(",有效期到本月底，流量不结转。");
             }
 
-        //收费
+            //收费
         } else {
 
             content.append("您本次订购的");
@@ -393,7 +409,6 @@ public class OrderThread implements Runnable {
                 logger.info(content.toString());
             }
         }
-
 
         SmsRecord smsRecord = new SmsRecord();
         smsRecord.setSendDate(new Date());

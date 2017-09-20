@@ -162,10 +162,15 @@
 
     <select id="getCouponList" resultMap="AllColumnMap">
         SELECT * FROM t_coupon
-            where status = ${pojo.status}
+            where status = #{pojo.status}
         AND online_date &lt; now()
         AND offline_date &gt; now()
         ORDER BY online_date DESC
+    </select>
+
+    <select id="getCouponById" resultMap="AllColumnMap">
+        SELECT * FROM t_coupon
+        where id = #{id}
     </select>
 </mapper>
 

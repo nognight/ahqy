@@ -125,11 +125,11 @@
         WHERE id = #{pojo.id}
     </update>
     <select id="getUserCouponList" resultMap="AllColumnMap">
-        SELECT * from t_user_coupon where user_id = #{userId}
+        SELECT t_user_coupon.* from t_user_coupon INNER JOIN  t_coupon on t_user_coupon.coupon_id = t_coupon.id where user_id = #{userId} and source = #{source} and status = #{status} and t_coupon.type = #{type}
     </select>
 
     <select id="getUserCouponById" resultMap="AllColumnMap">
-        SELECT * from t_user_coupon where user_id = #{userId} and id = #{id}
+        SELECT t_user_coupon.* from t_user_coupon where user_id = #{userId} and id = #{id}
     </select>
 </mapper>
 
