@@ -53,10 +53,10 @@ public class LoginServiceImpl implements LoginService {
 
             String s = restHttpClient.getHttpResponse("http://192.168.100.28:9090/new/user/getPhoneNum?weCode=" + weCode, HttpConstants.Method.HTTP_METHOD_GET, headers, null);
             Map map = JacksonUtil.returnMap(s);
-            logger.info(" getNumberFromWeCode "+map.toString());
+            logger.info(" getNumberFromWeCode " + map.toString());
             User user = new User();
             String phoneNum = map.get("phone").toString();
-            if(null == phoneNum || "".equals(phoneNum)){
+            if (null == phoneNum || "".equals(phoneNum)) {
                 logger.info("weCode has no Number");
                 return ResultCode.ERROR;
 
@@ -112,7 +112,7 @@ public class LoginServiceImpl implements LoginService {
             }
             httpSession.setAttribute("user", user);
         } catch (Exception e) {
-            logger.info("Exception : "+e.getMessage());
+            logger.info("Exception : " + e.getMessage());
         }
 
         return 0;
@@ -136,7 +136,7 @@ public class LoginServiceImpl implements LoginService {
         try {
             user = userDao.getUser(user);
         } catch (Exception e) {
-            logger.warn("Exception" + e.getMessage());
+            logger.warn("Exception userDao.getUser " + e.getMessage());
             return ResultCode.DB_EXCEPTION;
         }
         if (null != user) {
@@ -166,7 +166,7 @@ public class LoginServiceImpl implements LoginService {
             user.setLastLogin(new Date());
             userDao.addUser(user);
         } catch (Exception e) {
-            logger.warn(e.getMessage());
+            logger.warn("Exception userDao.addUser " + e.getMessage());
 
         }
 
@@ -199,7 +199,7 @@ public class LoginServiceImpl implements LoginService {
             SmsClient.getInstance().sendSms(phoneNum, content.toString());
             return ResultCode.SUCCESS;
         } catch (Exception e) {
-            logger.warn(e.getMessage());
+            logger.warn("Exception sendSms " + e.getMessage());
         }
         return ResultCode.ERROR;
     }
@@ -248,7 +248,7 @@ public class LoginServiceImpl implements LoginService {
                     null);
             logger.info(s);
         } catch (Exception e) {
-            logger.warn(e.getMessage());
+            logger.warn("getUserInfo getHttpResponse " + e.getMessage());
             return null;
         }
 

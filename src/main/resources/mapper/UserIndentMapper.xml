@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.njhh.ahqy.dao.impl.mapper.UserIndentMapper">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.njhh.ahqy.entity.UserIndent">
+        <result column="id" property="id"/>
+        <result column="use_id" property="useId"/>
+        <result column="indent_id" property="indentId"/>
+        <result column="time" property="time"/>
+        <result column="type" property="type"/>
+        <result column="goods_ids" property="goodsIds"/>
+        <result column="total_price" property="totalPrice"/>
+        <result column="discount_type" property="discountType"/>
+        <result column="discount_price" property="discountPrice"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="all_column">
+        `id`,
+        `use_id`,
+        `indent_id`,
+        `time`,
+        `type`,
+        `goods_ids`,
+        `total_price`,
+        `discount_type`,
+        `discount_price`,
+        `status`
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO user_indent (
+            `id`,
+            `use_id`,
+            `indent_id`,
+            `time`,
+            `type`,
+            `goods_ids`,
+            `total_price`,
+            `discount_type`,
+            `discount_price`,
+            `status`
+        ) VALUES (
+            #{pojo.id},
+            #{pojo.useId},
+            #{pojo.indentId},
+            #{pojo.time},
+            #{pojo.type},
+            #{pojo.goodsIds},
+            #{pojo.totalPrice},
+            #{pojo.discountType},
+            #{pojo.discountPrice},
+            #{pojo.status}
+        )
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO user_indent
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null"> `id`,</if>
+            <if test="pojo.useId!=null"> `use_id`,</if>
+            <if test="pojo.indentId!=null"> `indent_id`,</if>
+            <if test="pojo.time!=null"> `time`,</if>
+            <if test="pojo.type!=null"> `type`,</if>
+            <if test="pojo.goodsIds!=null"> `goods_ids`,</if>
+            <if test="pojo.totalPrice!=null"> `total_price`,</if>
+            <if test="pojo.discountType!=null"> `discount_type`,</if>
+            <if test="pojo.discountPrice!=null"> `discount_price`,</if>
+            <if test="pojo.status!=null"> `status`,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null">#{pojo.id},</if>
+            <if test="pojo.useId!=null">#{pojo.useId},</if>
+            <if test="pojo.indentId!=null">#{pojo.indentId},</if>
+            <if test="pojo.time!=null">#{pojo.time},</if>
+            <if test="pojo.type!=null">#{pojo.type},</if>
+            <if test="pojo.goodsIds!=null">#{pojo.goodsIds},</if>
+            <if test="pojo.totalPrice!=null">#{pojo.totalPrice},</if>
+            <if test="pojo.discountType!=null">#{pojo.discountType},</if>
+            <if test="pojo.discountPrice!=null">#{pojo.discountPrice},</if>
+            <if test="pojo.status!=null">#{pojo.status},</if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO user_indent (
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.id},
+            #{pojo.useId},
+            #{pojo.indentId},
+            #{pojo.time},
+            #{pojo.type},
+            #{pojo.goodsIds},
+            #{pojo.totalPrice},
+            #{pojo.discountType},
+            #{pojo.discountPrice},
+            #{pojo.status}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE user_indent
+        <set>
+            <if test="pojo.id != null"> `id` = #{pojo.id}, </if>
+            <if test="pojo.useId != null"> `use_id` = #{pojo.useId}, </if>
+            <if test="pojo.indentId != null"> `indent_id` = #{pojo.indentId}, </if>
+            <if test="pojo.time != null"> `time` = #{pojo.time}, </if>
+            <if test="pojo.type != null"> `type` = #{pojo.type}, </if>
+            <if test="pojo.goodsIds != null"> `goods_ids` = #{pojo.goodsIds}, </if>
+            <if test="pojo.totalPrice != null"> `total_price` = #{pojo.totalPrice}, </if>
+            <if test="pojo.discountType != null"> `discount_type` = #{pojo.discountType}, </if>
+            <if test="pojo.discountPrice != null"> `discount_price` = #{pojo.discountPrice}, </if>
+            <if test="pojo.status != null"> `status` = #{pojo.status} </if>
+        </set>
+        WHERE id = #{pojo.id}
+    </update>
+</mapper>
+

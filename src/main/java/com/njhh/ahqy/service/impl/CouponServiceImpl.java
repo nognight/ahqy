@@ -11,6 +11,7 @@ import com.njhh.ahqy.service.CouponService;
 import com.njhh.ahqy.service.UserService;
 import com.njhh.ahqy.service.thread.OrderCallback.CouponCallback;
 import com.njhh.ahqy.util.StringUtil;
+import com.xiaoleilu.hutool.date.DateField;
 import com.xiaoleilu.hutool.date.DatePattern;
 import com.xiaoleilu.hutool.date.DateTime;
 import com.xiaoleilu.hutool.util.ArrayUtil;
@@ -75,9 +76,9 @@ public class CouponServiceImpl implements CouponService {
         userPrivilege.setPrivilegeId(privilegeId);
         userPrivilege.setUserId(user.getId());
         List<UserPrivilege> userPrivilegeList = userPrivilegeDao.getUserPrivilegeList(userPrivilege);
-        if(null == userPrivilegeList ||  userPrivilegeList.isEmpty()){
-                logger.info(" userPrivilegeList is null or empty");
-                return ResultCode.ERROR;
+        if (null == userPrivilegeList || userPrivilegeList.isEmpty()) {
+            logger.info(" userPrivilegeList is null or empty");
+            return ResultCode.ERROR;
         }
 
         Privilege privilege = new Privilege();
@@ -116,19 +117,28 @@ public class CouponServiceImpl implements CouponService {
         UserPrivilege userPrivilege = new UserPrivilege();
         userPrivilege.setPrivilegeId(privilegeId);
         userPrivilege.setUserId(user.getId());
+        userPrivilege.setStatus(0);
         List<UserPrivilege> userPrivilegeList = userPrivilegeDao.getUserPrivilegeList(userPrivilege);
-        if(null == userPrivilegeList ||  userPrivilegeList.isEmpty()){
+        if (null == userPrivilegeList || userPrivilegeList.isEmpty()) {
             logger.info(" userPrivilegeList is null or empty");
             return ResultCode.ERROR;
         }
-
         Privilege privilege = new Privilege();
         privilege.setId(privilegeId);
         privilege = privilegeDao.getPrivilege(privilege);
-        if (privilege.getType() != AhqyConst.PRIVILEGE_TYPE_LQKQ) {
+        if (null == privilege) {
+            logger.info("privilege id " + privilegeId + " is null");
             return ResultCode.ERROR;
+        } else {
+            if (privilege.getType() != AhqyConst.PRIVILEGE_TYPE_LQKQ) {
+                return ResultCode.ERROR;
+            }
         }
+
         String[] couponIds = StringUtil.splitBy(privilege.getCouponIds());
+        logger.info("addUserCoupons" + privilege.getCouponIds());
+        userPrivilege.setStatus(3);
+        userPrivilege.setRemark("addUserCoupons:");
         for (String couponId : couponIds) {
             int cid = Integer.valueOf(couponId);
             UserCoupon userCoupon = new UserCoupon();
@@ -137,15 +147,25 @@ public class CouponServiceImpl implements CouponService {
             userCoupon.setSource(source);
             userCoupon.setStatus(0);
             userCoupon.setGetTime(new DateTime());
-            DateTime startDate = new DateTime(startTime, DatePattern.NORM_DATETIME_FORMAT);
+            DateTime startDate = new DateTime(startTime, DatePattern.NORM_DATETIME_PATTERN);
+            if (AhqyConst.INITAL_TIME.equals(startTime)) {
+                startDate = new DateTime();
+            }
             userCoupon.setStartTime(startDate);
-
             Long expireTime = startDate.getTime() + expire * 3600000L;
             DateTime expireDateTime = new DateTime(expireTime);
-            userCoupon.setExpireTime(expireDateTime);
+            //默认一个月
+            if (0 == expire) {
+                expireDateTime = startDate.offsetNew(DateField.MONTH, 1);
+            }
 
+            userCoupon.setExpireTime(expireDateTime);
             userCouponDao.addUserCoupon(userCoupon);
+            userPrivilege.setRemark(userPrivilege.getRemark()+userCoupon.getCouponId()+"|" );
+            userPrivilegeDao.updatePrivilege(userPrivilege);
         }
+        userPrivilege.setStatus(1);
+        userPrivilegeDao.updatePrivilege(userPrivilege);
         return ResultCode.SUCCESS;
     }
 
@@ -162,7 +182,7 @@ public class CouponServiceImpl implements CouponService {
             couponCallback.setUser(user);
             couponCallback.setUserCoupon(userCoupon);
             couponCallback.setPhoneNum(user.getPhoneNum());
-            userService.orderProducts(StringUtil.splitBy(coupon.getProductIds()),user,couponCallback,AhqyConst.ORDER_COUPON, AhqyConst.AUTHCODE_PRIVILEGE);
+            userService.orderProducts(StringUtil.splitBy(coupon.getProductIds()), user, couponCallback, AhqyConst.ORDER_COUPON, AhqyConst.AUTHCODE_PRIVILEGE);
 
             //折扣券
         } else if (AhqyConst.COUPON_TYPE_ZKQ == coupon.getType()) {

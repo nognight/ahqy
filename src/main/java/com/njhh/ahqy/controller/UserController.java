@@ -31,8 +31,8 @@ public class UserController {
 
     @RequestMapping("/api/user/order")
     private ApiBean userOrder(HttpSession httpSession,
-                              Integer productId,
-                              String authCode) {
+                              @RequestParam(defaultValue = "0") Integer productId,
+                              @RequestParam(defaultValue = "0") String authCode) {
         ApiBean apiBean = new ApiBean();
         userService.orderByProductId(productId, authCode, httpSession);
         return apiBean;
@@ -40,10 +40,10 @@ public class UserController {
 
     @RequestMapping("/api/user/authCode")
     private ApiBean sendAuthCode(HttpSession httpSession,
-                                 String type,
-                                 Integer id) {
+                                 @RequestParam(defaultValue = "0") String type,
+                                 @RequestParam(defaultValue = "0") Integer id) {
         ApiBean apiBean = new ApiBean();
-        userService.sendAuthCode(type,id,httpSession);
+        userService.sendAuthCode(type, id, httpSession);
         return apiBean;
     }
 }

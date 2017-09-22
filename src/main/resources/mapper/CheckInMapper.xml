@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.njhh.ahqy.dao.impl.mapper.CheckInMapper">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.njhh.ahqy.entity.CheckIn">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="check_in_date" property="checkInDate"/>
+        <result column="get_score" property="getScore"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="all_column">
+        `id`,
+        `user_id`,
+        `check_in_date`,
+        `get_score`
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO check_in (
+            `id`,
+            `user_id`,
+            `check_in_date`,
+            `get_score`
+        ) VALUES (
+            #{pojo.id},
+            #{pojo.userId},
+            #{pojo.checkInDate},
+            #{pojo.getScore}
+        )
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO check_in
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null"> `id`,</if>
+            <if test="pojo.userId!=null"> `user_id`,</if>
+            <if test="pojo.checkInDate!=null"> `check_in_date`,</if>
+            <if test="pojo.getScore!=null"> `get_score`,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null">#{pojo.id},</if>
+            <if test="pojo.userId!=null">#{pojo.userId},</if>
+            <if test="pojo.checkInDate!=null">#{pojo.checkInDate},</if>
+            <if test="pojo.getScore!=null">#{pojo.getScore},</if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO check_in (
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.id},
+            #{pojo.userId},
+            #{pojo.checkInDate},
+            #{pojo.getScore}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE check_in
+        <set>
+            <if test="pojo.id != null"> `id` = #{pojo.id}, </if>
+            <if test="pojo.userId != null"> `user_id` = #{pojo.userId}, </if>
+            <if test="pojo.checkInDate != null"> `check_in_date` = #{pojo.checkInDate}, </if>
+            <if test="pojo.getScore != null"> `get_score` = #{pojo.getScore} </if>
+        </set>
+        WHERE id = #{pojo.id}
+    </update>
+</mapper>
+

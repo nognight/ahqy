@@ -54,6 +54,16 @@ public interface PrivilegeService {
 
     int usePrivilege(int id, String authCode, int source ,HttpSession httpSession);
 
+
+    /**
+     * 增加权益
+     * @param id
+     * @param source
+     * @param httpSession
+     * @return
+     */
+    int addUserPrivilege(int id, int source ,HttpSession httpSession);
+
     /**
      * 凭id使用权益
      * @param id

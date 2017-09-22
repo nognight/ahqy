@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.njhh.ahqy.dao.impl.mapper.UserPrivilegeMapper">
+
+    <resultMap id="AllColumnMap" type="com.njhh.ahqy.entity.UserPrivilege">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="privilege_id" property="privilegeId"/>
+        <result column="source" property="source"/>
+        <result column="status" property="status"/>
+        <result column="get_time" property="getTime"/>
+        <result column="start_time" property="startTime"/>
+        <result column="expire_time" property="expireTime"/>
+        <result column="used_time" property="usedTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <sql id="all_column">
+        `id`,
+        `user_id`,
+        `privilege_id`,
+        `source`,
+        `status`,
+        `get_time`,
+        `start_time`,
+        `expire_time`,
+        `used_time`,
+        `remark`
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO t_user_privilege (
+        `id`,
+        `user_id`,
+        `privilege_id`,
+        `source`,
+        `status`,
+        `get_time`,
+        `start_time`,
+        `expire_time`,
+        `used_time`,
+        `remark`
+        ) VALUES (
+        #{pojo.id},
+        #{pojo.userId},
+        #{pojo.privilegeId},
+        #{pojo.source},
+        #{pojo.status},
+        #{pojo.getTime},
+        #{pojo.startTime},
+        #{pojo.expireTime},
+        #{pojo.usedTime},
+        #{pojo.remark}
+        )
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO t_user_privilege
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null"> `id`,</if>
+            <if test="pojo.userId!=null"> `user_id`,</if>
+            <if test="pojo.privilegeId!=null"> `privilege_id`,</if>
+            <if test="pojo.source!=null"> `source`,</if>
+            <if test="pojo.status!=null"> `status`,</if>
+            <if test="pojo.getTime!=null"> `get_time`,</if>
+            <if test="pojo.startTime!=null"> `start_time`,</if>
+            <if test="pojo.expireTime!=null"> `expire_time`,</if>
+            <if test="pojo.usedTime!=null"> `used_time`,</if>
+            <if test="pojo.remark!=null"> `remark`,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null">#{pojo.id},</if>
+            <if test="pojo.userId!=null">#{pojo.userId},</if>
+            <if test="pojo.privilegeId!=null">#{pojo.privilegeId},</if>
+            <if test="pojo.source!=null">#{pojo.source},</if>
+            <if test="pojo.status!=null">#{pojo.status},</if>
+            <if test="pojo.getTime!=null">#{pojo.getTime},</if>
+            <if test="pojo.startTime!=null">#{pojo.startTime},</if>
+            <if test="pojo.expireTime!=null">#{pojo.expireTime},</if>
+            <if test="pojo.usedTime!=null">#{pojo.usedTime},</if>
+            <if test="pojo.remark!=null">#{pojo.remark},</if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO t_user_privilege (
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.id},
+            #{pojo.userId},
+            #{pojo.privilegeId},
+            #{pojo.source},
+            #{pojo.status},
+            #{pojo.getTime},
+            #{pojo.startTime},
+            #{pojo.expireTime},
+            #{pojo.usedTime},
+            #{pojo.remark}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE t_user_privilege
+        <set>
+            <if test="pojo.id != null"> `id` = #{pojo.id}, </if>
+            <if test="pojo.userId != null"> `user_id` = #{pojo.userId}, </if>
+            <if test="pojo.privilegeId != null"> `privilege_id` = #{pojo.privilegeId}, </if>
+            <if test="pojo.source != null"> `source` = #{pojo.source}, </if>
+            <if test="pojo.status != null"> `status` = #{pojo.status}, </if>
+            <if test="pojo.getTime != null"> `get_time` = #{pojo.getTime}, </if>
+            <if test="pojo.startTime != null"> `start_time` = #{pojo.startTime}, </if>
+            <if test="pojo.expireTime != null"> `expire_time` = #{pojo.expireTime}, </if>
+            <if test="pojo.usedTime != null"> `used_time` = #{pojo.usedTime}, </if>
+            <if test="pojo.remark != null"> `remark` = #{pojo.remark} </if>
+        </set>
+        WHERE id = #{pojo.id}
+    </update>
+
+
+    <select id="getUserPrivilegeList" resultMap="AllColumnMap">
+        SELECT * from t_user_privilege
+        WHERE  user_id = #{pojo.userId}
+        <if test="pojo.expireTime != null">
+        AND expire_time &gt; #{pojo.expireTime}
+        </if>
+        ORDER by start_time DESC
+    </select>
+</mapper>
+

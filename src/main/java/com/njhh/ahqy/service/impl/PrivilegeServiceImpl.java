@@ -211,6 +211,38 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     }
 
     @Override
+    public int addUserPrivilege(int id, int source, HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+        Privilege privilege = new Privilege();
+        privilege.setId(id);
+        privilege = privilegeDao.getPrivilege(privilege);
+        //直接领取卡券
+        if (3 != privilege.getType()) {
+            return ResultCode.ERROR;
+        }
+
+        // TODO: 2017/9/21 不可重复添加
+        UserPrivilege userPrivilege = new UserPrivilege();
+        userPrivilege.setPrivilegeId(id);
+        userPrivilege.setUserId(user.getId());
+        userPrivilege.setStatus(0);
+        userPrivilege.setSource(source);
+        List<UserPrivilege> userPrivilegeList = userPrivilegeDao.getUserPrivilegeList(userPrivilege);
+        if (null != userPrivilegeList && !userPrivilegeList.isEmpty()) {
+            for (UserPrivilege up : userPrivilegeList) {
+                if (up.getExpireTime().after(new Date())) {
+                    logger.info("privilege has exist");
+                    return ResultCode.ERROR;
+                }
+            }
+        }
+
+        userPrivilegeDao.addUserPrivilege(userPrivilege);
+
+        return 0;
+    }
+
+    @Override
     public int usePrivilegeById(String channel, int id, String phoneNum, String timestamp, String sign, HttpSession httpSession) {
 
 

@@ -21,20 +21,20 @@ public class ProductController {
 
     @RequestMapping("/api/product/getList")
     private ApiBean getProductList(HttpSession httpSession,
-                                         @RequestParam(value = "type", defaultValue = "0")int type){
+                                   @RequestParam(value = "type", defaultValue = "0") int type) {
 
         ApiBean apiBean = new ApiBean();
-        apiBean.setContent(new ObjBean(productService.getProductList(type,httpSession)));
+        apiBean.setContent(new ObjBean(productService.getProductList(type, httpSession)));
         apiBean.setRet(0);
         return apiBean;
     }
 
     @RequestMapping("/api/product/getInfo")
     private ApiBean getProductInfo(HttpSession httpSession,
-                                   @RequestParam(value = "id", defaultValue = "0")int id){
+                                   @RequestParam(value = "id", defaultValue = "0") int id) {
 
         ApiBean apiBean = new ApiBean();
-        apiBean.setContent(new ObjBean(productService.getProductInfo(id,httpSession)));
+        apiBean.setContent(new ObjBean(productService.getProductInfo(id, httpSession)));
         apiBean.setRet(0);
         return apiBean;
     }

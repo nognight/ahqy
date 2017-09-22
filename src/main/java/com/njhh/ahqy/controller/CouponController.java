@@ -1,5 +1,6 @@
 package com.njhh.ahqy.controller;
 
+import com.njhh.ahqy.common.AhqyConst;
 import com.njhh.ahqy.controller.restfulBeans.ApiBean;
 import com.njhh.ahqy.controller.restfulBeans.ObjBean;
 import com.njhh.ahqy.service.CouponService;
@@ -22,46 +23,49 @@ public class CouponController {
 
     @RequestMapping("getList")
     private ApiBean getCouponList(HttpSession httpSession,
-                                  @RequestParam (value="type" , defaultValue="0")int type){
+                                  @RequestParam(value = "type", defaultValue = "0") int type) {
         ApiBean apiBean = new ApiBean();
-        apiBean.setContent(new ObjBean(couponService.getCouponList(type,httpSession)));
+        apiBean.setContent(new ObjBean(couponService.getCouponList(type, httpSession)));
         apiBean.setRet(0);
         return apiBean;
 
     }
+
     @RequestMapping("getUserList")
     private ApiBean getUserList(HttpSession httpSession,
-                                int type,
-                                int source,
-                                int status){
+                                @RequestParam(value = "type", defaultValue = "0") int type,
+                                @RequestParam(value = "source", defaultValue = "0") int source,
+                                @RequestParam(value = "status", defaultValue = "0") int status) {
 
         ApiBean apiBean = new ApiBean();
-        apiBean.setContent(new ObjBean(couponService.getUserCouponList(type,source,status,httpSession)));
+        apiBean.setContent(new ObjBean(couponService.getUserCouponList(type, source, status, httpSession)));
         apiBean.setRet(0);
         return apiBean;
 
     }
+
     @RequestMapping("addUserCoupon")
     private ApiBean addUserCoupon(HttpSession httpSession,
-                                  int couponId,
-                                  int privilegeId,
-                                  int source,
-                                  String startTime,
-                                  int expire){
+                                  @RequestParam(defaultValue = "0") int couponId,
+                                  @RequestParam(defaultValue = "0") int privilegeId,
+                                  @RequestParam(defaultValue = "0") int source,
+                                  @RequestParam(defaultValue = AhqyConst.INITAL_TIME) String startTime,
+                                  @RequestParam(defaultValue = "0") int expire) {
         ApiBean apiBean = new ApiBean();
-        apiBean.setContent(new ObjBean(couponService.addUserCoupon(couponId,privilegeId,source ,startTime,expire,httpSession)));
+        apiBean.setContent(new ObjBean(couponService.addUserCoupon(couponId, privilegeId, source, startTime, expire, httpSession)));
         apiBean.setRet(0);
         return apiBean;
 
     }
+
     @RequestMapping("addUserCoupons")
     private ApiBean addUserCoupons(HttpSession httpSession,
-                                   int privilegeId,
-                                   int source,
-                                   String startTime,
-                                   int expire){
+                                   @RequestParam(defaultValue = "0") int privilegeId,
+                                   @RequestParam(defaultValue = "0") int source,
+                                   @RequestParam(defaultValue = AhqyConst.INITAL_TIME) String startTime,
+                                   @RequestParam(defaultValue = "0") int expire) {
         ApiBean apiBean = new ApiBean();
-        apiBean.setContent(new ObjBean(couponService.addUserCoupons(privilegeId,source ,startTime,expire,httpSession)));
+        apiBean.setContent(new ObjBean(couponService.addUserCoupons(privilegeId, source, startTime, expire, httpSession)));
         apiBean.setRet(0);
         return apiBean;
 

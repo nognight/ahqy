@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.njhh.ahqy.dao.impl.mapper.UserCouponMapper">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.njhh.ahqy.entity.UserCoupon">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="coupon_id" property="couponId"/>
+        <result column="source" property="source"/>
+        <result column="status" property="status"/>
+        <result column="get_time" property="getTime"/>
+        <result column="start_time" property="startTime"/>
+        <result column="expire_time" property="expireTime"/>
+        <result column="used_time" property="usedTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="all_column">
+        `id`,
+        `user_id`,
+        `coupon_id`,
+        `source`,
+        `status`,
+        `get_time`,
+        `start_time`,
+        `expire_time`,
+        `used_time`,
+        `remark`
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO t_user_coupon (
+            `id`,
+            `user_id`,
+            `coupon_id`,
+            `source`,
+            `status`,
+            `get_time`,
+            `start_time`,
+            `expire_time`,
+            `used_time`,
+            `remark`
+        ) VALUES (
+            #{pojo.id},
+            #{pojo.userId},
+            #{pojo.couponId},
+            #{pojo.source},
+            #{pojo.status},
+            #{pojo.getTime},
+            #{pojo.startTime},
+            #{pojo.expireTime},
+            #{pojo.usedTime},
+            #{pojo.remark}
+        )
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO t_user_coupon
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null"> `id`,</if>
+            <if test="pojo.userId!=null"> `user_id`,</if>
+            <if test="pojo.couponId!=null"> `coupon_id`,</if>
+            <if test="pojo.source!=null"> `source`,</if>
+            <if test="pojo.status!=null"> `status`,</if>
+            <if test="pojo.getTime!=null"> `get_time`,</if>
+            <if test="pojo.startTime!=null"> `start_time`,</if>
+            <if test="pojo.expireTime!=null"> `expire_time`,</if>
+            <if test="pojo.usedTime!=null"> `used_time`,</if>
+            <if test="pojo.remark!=null"> `remark`,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null">#{pojo.id},</if>
+            <if test="pojo.userId!=null">#{pojo.userId},</if>
+            <if test="pojo.couponId!=null">#{pojo.couponId},</if>
+            <if test="pojo.source!=null">#{pojo.source},</if>
+            <if test="pojo.status!=null">#{pojo.status},</if>
+            <if test="pojo.getTime!=null">#{pojo.getTime},</if>
+            <if test="pojo.startTime!=null">#{pojo.startTime},</if>
+            <if test="pojo.expireTime!=null">#{pojo.expireTime},</if>
+            <if test="pojo.usedTime!=null">#{pojo.usedTime},</if>
+            <if test="pojo.remark!=null">#{pojo.remark},</if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO t_user_coupon (
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.id},
+            #{pojo.userId},
+            #{pojo.couponId},
+            #{pojo.source},
+            #{pojo.status},
+            #{pojo.getTime},
+            #{pojo.startTime},
+            #{pojo.expireTime},
+            #{pojo.usedTime},
+            #{pojo.remark}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE t_user_coupon
+        <set>
+            <if test="pojo.id != null"> `id` = #{pojo.id}, </if>
+            <if test="pojo.userId != null"> `user_id` = #{pojo.userId}, </if>
+            <if test="pojo.couponId != null"> `coupon_id` = #{pojo.couponId}, </if>
+            <if test="pojo.source != null"> `source` = #{pojo.source}, </if>
+            <if test="pojo.status != null"> `status` = #{pojo.status}, </if>
+            <if test="pojo.getTime != null"> `get_time` = #{pojo.getTime}, </if>
+            <if test="pojo.startTime != null"> `start_time` = #{pojo.startTime}, </if>
+            <if test="pojo.expireTime != null"> `expire_time` = #{pojo.expireTime}, </if>
+            <if test="pojo.usedTime != null"> `used_time` = #{pojo.usedTime}, </if>
+            <if test="pojo.remark != null"> `remark` = #{pojo.remark} </if>
+        </set>
+        WHERE id = #{pojo.id}
+    </update>
+    <select id="getUserCouponList" resultMap="AllColumnMap">
+        SELECT t_user_coupon.* from t_user_coupon INNER JOIN  t_coupon on t_user_coupon.coupon_id = t_coupon.id where user_id = #{userId} and source = #{source} and status = #{status} and t_coupon.type = #{type}
+    </select>
+
+    <select id="getUserCouponById" resultMap="AllColumnMap">
+        SELECT t_user_coupon.* from t_user_coupon where user_id = #{userId} and id = #{id}
+    </select>
+</mapper>
+
