@@ -78,8 +78,16 @@ public class UserCouponDaoImpl implements UserCouponDao {
     }
 
     @Override
-    public UserCoupon getUserCouponById(int id, int userId){
-        return userCouponMapper.getUserCouponById(id,userId);
+    public UserCoupon getUserCouponByCid(int cid, int userId,int status){
+        return userCouponMapper.getUserCouponByCid(cid,userId,status);
+
+    }
+
+    @Override
+    public UserCoupon getUserCouponById(int cid, int userId){
+        return userCouponMapper.getUserCouponById(cid,userId);
 
     }
 }
+
+

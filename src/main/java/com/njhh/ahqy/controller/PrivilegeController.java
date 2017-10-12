@@ -22,10 +22,11 @@ public class PrivilegeController {
     @RequestMapping("/api/privilege/getList")
     private ApiBean getPrivilegeList(HttpSession httpSession,
                                      @RequestParam(defaultValue = "0") int type,
-                                     @RequestParam(defaultValue = "0") int category) {
+                                     @RequestParam(defaultValue = "0") int category,
+                                     @RequestParam(defaultValue = "0") int giftType) {
         ApiBean apiBean = new ApiBean();
         apiBean.setRet(0);
-        apiBean.setContent(new ObjBean(privilegeService.getPrivilegeList(type, category, httpSession)));
+        apiBean.setContent(new ObjBean(privilegeService.getPrivilegeList(type, category,giftType ,httpSession)));
         return apiBean;
 
     }
@@ -47,18 +48,28 @@ public class PrivilegeController {
                                 @RequestParam(defaultValue = "0") int type) {
         ApiBean apiBean = new ApiBean();
         apiBean.setRet(0);
-        apiBean.setContent(new ObjBean(privilegeService.getUserPrivilegeList(httpSession)));
+        apiBean.setContent(new ObjBean(privilegeService.getUserPrivilegeList(httpSession, type)));
         return apiBean;
 
     }
 
 
     @RequestMapping("/api/privilege/getInfo")
-    private ApiBean getPrivilegeList(HttpSession httpSession,
+    private ApiBean getPrivilegeInfo(HttpSession httpSession,
                                      @RequestParam(defaultValue = "0") int id) {
         ApiBean apiBean = new ApiBean();
         apiBean.setRet(0);
         apiBean.setContent(new ObjBean(privilegeService.getPrivilegeInfo(id, httpSession)));
+        return apiBean;
+
+    }
+
+    @RequestMapping("/api/privilege/getName")
+    private ApiBean getPrivilegeName(HttpSession httpSession,
+                                     @RequestParam(defaultValue = "0") int id) {
+        ApiBean apiBean = new ApiBean();
+        apiBean.setRet(0);
+        apiBean.setContent(new ObjBean(privilegeService.getPrivilegeName(id, httpSession)));
         return apiBean;
 
     }
@@ -77,8 +88,8 @@ public class PrivilegeController {
 
     @RequestMapping("/api/privilege/addUserPrivilege")
     private ApiBean addUserPrivilege(HttpSession httpSession,
-                                 @RequestParam(defaultValue = "0") int id,
-                                 String authCode) {
+                                     @RequestParam(defaultValue = "0") int id,
+                                     String authCode) {
         ApiBean apiBean = new ApiBean();
         apiBean.setRet(0);
         apiBean.setContent(new CodeBean(privilegeService.addUserPrivilege(id, 0, httpSession)));

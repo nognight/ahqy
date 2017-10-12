@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
 
         Thread thread = new Thread(orderThread);
         thread.start();
-        logger.info("StartOrderThread:" + thread.getId() + "  phoneNum:"+user.getPhoneNum());
+        logger.info("StartOrderThread:" + thread.getId() + "  phoneNum:" + user.getPhoneNum());
 
         return 0;
     }
@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
 
         Thread thread = new Thread(orderThread);
         thread.start();
-        logger.info("StartOrderThread:" + thread.getId() + "  phoneNum:"+user.getPhoneNum());
+        logger.info("StartOrderThread:" + thread.getId() + "  phoneNum:" + user.getPhoneNum());
 
         return 0;
     }
@@ -240,7 +240,17 @@ public class UserServiceImpl implements UserService {
                 }
             }
             return productList;
+        } else {
+            logger.warn("can not get user ordered try to order");
+            Product product = new Product();
+            for (String productId : productIds) {
+                product.setId(Integer.valueOf(productId));
+                product = productDao.getProductById(product);
+                productList.add(product);
+            }
         }
+
+
         return productList;
     }
 }

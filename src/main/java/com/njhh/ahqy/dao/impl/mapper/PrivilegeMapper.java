@@ -19,4 +19,7 @@ public interface PrivilegeMapper {
 
     List<Privilege> getPrivilegeList(@Param("pojo") Privilege pojo);
     Privilege getPrivilege(@Param("pojo") Privilege pojo);
+
+
+    Privilege getPrivilegeName(@Param("id") int id);
 }

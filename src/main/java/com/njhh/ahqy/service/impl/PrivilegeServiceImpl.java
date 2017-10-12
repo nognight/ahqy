@@ -11,6 +11,7 @@ import com.njhh.ahqy.service.thread.OrderCallback.PrivilegeCallback;
 import com.njhh.ahqy.sms.SmsClient;
 import com.njhh.ahqy.util.MD5Util;
 import com.njhh.ahqy.util.StringUtil;
+import com.xiaoleilu.hutool.date.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 
 
     @Override
-    public List<Privilege> getPrivilegeList(int type, int category, HttpSession httpSession) {
+    public List<Privilege> getPrivilegeList(int type, int category,int giftType, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
         if (null == user) {
             return null;
@@ -55,6 +56,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         privilege.setStatus(0);
         privilege.setType(type);
         privilege.setCategory(category);
+        privilege.setGiftType(giftType);
         privilege.setNetType(user.getNetType());
         privilege.setPayType(user.getPayType());
         return privilegeDao.getPrivilegeList(privilege);
@@ -90,16 +92,23 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     }
 
     @Override
-    public List<UserPrivilege> getUserPrivilegeList(HttpSession httpSession) {
+    public Privilege getPrivilegeName(int id, HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+        if (null == user) {
+            return null;
+        }
+        return privilegeDao.getPrivilegeName(id);
+    }
+
+    @Override
+    public List<UserPrivilege> getUserPrivilegeList(HttpSession httpSession,int type) {
         User user = (User) httpSession.getAttribute("user");
         if (null == user) {
             return null;
         }
         UserPrivilege userPrivilege = new UserPrivilege();
         userPrivilege.setUserId(user.getId());
-
-
-        return userPrivilegeDao.getUserPrivilegeList(userPrivilege);
+        return userPrivilegeDao.getUserPrivilegeList(userPrivilege,type);
     }
 
     @Override
@@ -161,10 +170,10 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         }
 
         //订购送
-        if (AhqyConst.PRIVILEGE_TYPE_DGS == privilege.getType()) {
+        if (AhqyConst.PRIVILEGE_TYPE_DG == privilege.getType()) {
             String[] productIds = StringUtil.splitBy(privilege.getProductIds());
-            int gitType = privilege.getGiftType();//礼物类型 1是卡券，2是产品
-            String[] giftIds = StringUtil.splitBy(privilege.getGiftId());
+//            int gitType = privilege.getGiftType();//礼物类型 1是卡券，2是产品
+//            String[] giftIds = StringUtil.splitBy(privilege.getGiftId());
 
 //            StringBuilder content = new StringBuilder("您本次订购的权益是[");
 //            content.append(privilege.getName());
@@ -185,7 +194,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
             userPrivilege.setGetTime(new Date());
             userPrivilege.setStatus(-1);
             userPrivilege.setSource(source);
-            userPrivilege.setRemark("prililege:start:");
+            userPrivilege.setRemark("privilegeOrder:start:");
 
             userPrivilegeDao.addUserPrivilege(userPrivilege);
 
@@ -199,12 +208,10 @@ public class PrivilegeServiceImpl implements PrivilegeService {
             userService.orderProducts(productIds, httpSession, privilegeCallback, AhqyConst.ORDER_PRIVILEGE, authCode);
 
         }
-        //首月免费
-        if (AhqyConst.PRIVILEGE_TYPE_SYMF == privilege.getType()) {
-            // TODO: 2017/6/28 订购 然后判断回调
 
 
-        }
+
+
 
 
         return ResultCode.ERROR;
@@ -213,11 +220,16 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     @Override
     public int addUserPrivilege(int id, int source, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
+        if (null == user) {
+            return ResultCode.ERROR;
+        }
+        logger.info("addUserPrivilege " + " id " + id + " source " + source);
         Privilege privilege = new Privilege();
         privilege.setId(id);
         privilege = privilegeDao.getPrivilege(privilege);
         //直接领取卡券
-        if (3 != privilege.getType()) {
+        if (3 != privilege.getType() && 4 != privilege.getType()) {
+            logger.info("addUserPrivilege privilege.getType() addUserPrivilege is not allow");
             return ResultCode.ERROR;
         }
 
@@ -225,18 +237,22 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         UserPrivilege userPrivilege = new UserPrivilege();
         userPrivilege.setPrivilegeId(id);
         userPrivilege.setUserId(user.getId());
-        userPrivilege.setStatus(0);
         userPrivilege.setSource(source);
-        List<UserPrivilege> userPrivilegeList = userPrivilegeDao.getUserPrivilegeList(userPrivilege);
-        if (null != userPrivilegeList && !userPrivilegeList.isEmpty()) {
-            for (UserPrivilege up : userPrivilegeList) {
-                if (up.getExpireTime().after(new Date())) {
-                    logger.info("privilege has exist");
-                    return ResultCode.ERROR;
-                }
+        userPrivilege.setExpireTime(new Date());
+        List<UserPrivilege> userPrivilegeList = userPrivilegeDao.getUserPrivilegeList(userPrivilege,0);
+        if (null != userPrivilegeList) {
+            if(userPrivilegeList.isEmpty()){
+                logger.info("userPrivilege has not exist");
+            }else {
+                logger.info("userPrivilege has  exist");
+                return  -1;
             }
+        }else {
+            return -1;
         }
-
+        userPrivilege.setGetTime(new Date());
+        userPrivilege.setStatus(0);
+        userPrivilege.setExpireTime(DateUtil.endOfMonth(new Date()));
         userPrivilegeDao.addUserPrivilege(userPrivilege);
 
         return 0;
@@ -276,7 +292,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
             return ResultCode.ERROR;
         }
 
-        loginService.webLogin(phoneNum, "debug123", timestamp, sign, httpSession);
+        loginService.webLogin(phoneNum, "debug123", "0", "0", "0", timestamp, sign, httpSession);
 
         return usePrivilege(id, AhqyConst.AUTHCODE_SMS, 1, httpSession);
 

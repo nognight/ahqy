@@ -82,11 +82,11 @@ public class UserPrivilegeDaoImpl implements UserPrivilegeDao{
     }
 
     @Override
-    public  List<UserPrivilege> getUserPrivilegeList(UserPrivilege userPrivilege){
+    public  List<UserPrivilege> getUserPrivilegeList(UserPrivilege userPrivilege,int type){
         
         try
         {
-            return  userPrivilegeMapper.getUserPrivilegeList(userPrivilege); 
+            return  userPrivilegeMapper.getUserPrivilegeList(userPrivilege,type);
         } catch (Exception e)
         {
             logger.warn("err getUserPrivilegeList");
@@ -99,6 +99,8 @@ public class UserPrivilegeDaoImpl implements UserPrivilegeDao{
     public  int updatePrivilege(UserPrivilege userPrivilege){
         try
         {
+
+            logger.info(userPrivilege.toString());
             return userPrivilegeMapper.update(userPrivilege);
         } catch (Exception e)
         {

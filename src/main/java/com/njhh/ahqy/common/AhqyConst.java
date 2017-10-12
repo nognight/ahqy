@@ -53,15 +53,17 @@ public class AhqyConst {
      * PRIVILEGE_TYPE
      */
 
-    //订购送
-    public static final int PRIVILEGE_TYPE_DGS = 1;
+    //订购类
+    public static final int PRIVILEGE_TYPE_DG = 1;
 
 
     //领取卡券
     public static final int PRIVILEGE_TYPE_LQKQ = 3;
 
-    //首月免费
-    public static final int PRIVILEGE_TYPE_SYMF = 4;
+    //激活卡券
+    public static final int PRIVILEGE_TYPE_JHKQ = 4;
+
+
 
 
     /**

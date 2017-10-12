@@ -2,6 +2,7 @@ package com.njhh.ahqy.controller;
 
 import com.njhh.ahqy.common.AhqyConst;
 import com.njhh.ahqy.controller.restfulBeans.ApiBean;
+import com.njhh.ahqy.controller.restfulBeans.CodeBean;
 import com.njhh.ahqy.controller.restfulBeans.ObjBean;
 import com.njhh.ahqy.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,25 @@ public class CouponController {
     @Autowired
     private CouponService couponService;
 
+    @RequestMapping("getName")
+    private ApiBean getCouponName(HttpSession httpSession,
+                                  @RequestParam(value = "id", defaultValue = "0") int id) {
+        ApiBean apiBean = new ApiBean();
+        apiBean.setContent(new ObjBean(couponService.getCouponNameById(id, httpSession)));
+        apiBean.setRet(0);
+        return apiBean;
+
+    }
+
+    @RequestMapping("getInfo")
+    private ApiBean getCouponInfo(HttpSession httpSession,
+                                  @RequestParam(value = "id", defaultValue = "0") int id) {
+        ApiBean apiBean = new ApiBean();
+        apiBean.setContent(new ObjBean(couponService.getCouponById(id, httpSession)));
+        apiBean.setRet(0);
+        return apiBean;
+
+    }
 
     @RequestMapping("getList")
     private ApiBean getCouponList(HttpSession httpSession,
@@ -52,7 +72,7 @@ public class CouponController {
                                   @RequestParam(defaultValue = AhqyConst.INITAL_TIME) String startTime,
                                   @RequestParam(defaultValue = "0") int expire) {
         ApiBean apiBean = new ApiBean();
-        apiBean.setContent(new ObjBean(couponService.addUserCoupon(couponId, privilegeId, source, startTime, expire, httpSession)));
+        apiBean.setContent(new CodeBean(couponService.addUserCoupon(couponId, privilegeId, source, startTime, expire, httpSession)));
         apiBean.setRet(0);
         return apiBean;
 
@@ -65,7 +85,17 @@ public class CouponController {
                                    @RequestParam(defaultValue = AhqyConst.INITAL_TIME) String startTime,
                                    @RequestParam(defaultValue = "0") int expire) {
         ApiBean apiBean = new ApiBean();
-        apiBean.setContent(new ObjBean(couponService.addUserCoupons(privilegeId, source, startTime, expire, httpSession)));
+        apiBean.setContent(new CodeBean(couponService.addUserCoupons(privilegeId, source, startTime, expire, httpSession)));
+        apiBean.setRet(0);
+        return apiBean;
+
+    }
+
+    @RequestMapping("useUserCoupon")
+    private ApiBean useUserCoupon(HttpSession httpSession,
+                                   @RequestParam(defaultValue = "0") int id) {
+        ApiBean apiBean = new ApiBean();
+        apiBean.setContent(new CodeBean(couponService.useUserCoupon(id,httpSession)));
         apiBean.setRet(0);
         return apiBean;
 

@@ -125,11 +125,15 @@
         WHERE id = #{pojo.id}
     </update>
     <select id="getUserCouponList" resultMap="AllColumnMap">
-        SELECT t_user_coupon.* from t_user_coupon INNER JOIN  t_coupon on t_user_coupon.coupon_id = t_coupon.id where user_id = #{userId} and source = #{source} and status = #{status} and t_coupon.type = #{type}
+        SELECT t_user_coupon.* from t_user_coupon INNER JOIN  t_coupon on t_user_coupon.coupon_id = t_coupon.id where t_user_coupon.user_id = #{userId} and t_user_coupon.source = #{source} and t_user_coupon.status = #{status} and t_coupon.type = #{type}
+    </select>
+
+    <select id="getUserCouponByCid" resultMap="AllColumnMap">
+        SELECT t_user_coupon.* from t_user_coupon where user_id = #{userId} and coupon_id = #{cid} and status = #{status};
     </select>
 
     <select id="getUserCouponById" resultMap="AllColumnMap">
-        SELECT t_user_coupon.* from t_user_coupon where user_id = #{userId} and id = #{id}
+        SELECT t_user_coupon.* from t_user_coupon where user_id = #{userId} and id = #{id};
     </select>
 </mapper>
 

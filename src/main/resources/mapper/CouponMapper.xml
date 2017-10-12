@@ -172,5 +172,9 @@
         SELECT * FROM t_coupon
         where id = #{id}
     </select>
+    <select id="getCouponNameById" resultMap="AllColumnMap">
+        SELECT id,type,name,status,pic_url FROM t_coupon
+        where id = #{id}
+    </select>
 </mapper>
 

@@ -16,5 +16,5 @@ public interface UserPrivilegeMapper {
 
     int update(@Param("pojo") UserPrivilege pojo);
 
-    List<UserPrivilege> getUserPrivilegeList(@Param("pojo") UserPrivilege pojo);
+    List<UserPrivilege> getUserPrivilegeList(@Param("pojo") UserPrivilege pojo ,@Param("type") int type);
 }

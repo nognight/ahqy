@@ -14,7 +14,7 @@ public interface UserPrivilegeDao {
      * @param userPrivilege
      * @return
      */
-    List<UserPrivilege> getUserPrivilegeList(UserPrivilege userPrivilege);
+    List<UserPrivilege> getUserPrivilegeList(UserPrivilege userPrivilege,int type);
 
     /**
      * 增加用户权益

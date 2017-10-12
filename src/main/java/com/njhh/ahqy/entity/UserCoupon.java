@@ -10,7 +10,7 @@ public class UserCoupon {
     private Integer userId;
     private Integer couponId;
     private Integer source;//来源
-    private Integer status;//-1 失效 0可用 1已经使用 2未激活,3部分使用
+    private Integer status;//-1 失效 0可用 1已经使用 2未激活,3部分使用，99过期
     private Date getTime;
     private Date startTime;
     private Date expireTime;

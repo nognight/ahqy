@@ -21,4 +21,6 @@ public interface CouponDao {
      * @return
      */
     Coupon getCouponById(int id);
+
+    Coupon getCouponNameById(int id);
 }

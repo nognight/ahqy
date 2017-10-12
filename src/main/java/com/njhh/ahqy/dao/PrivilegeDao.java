@@ -23,4 +23,11 @@ public interface PrivilegeDao {
      */
 
     Privilege getPrivilege(Privilege pojo);
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    Privilege getPrivilegeName(int id);
 }

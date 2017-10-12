@@ -45,6 +45,9 @@ public class LoginController {
                          @RequestParam(value = "weCode", defaultValue = "0") String weCode,
                          @RequestParam(value = "phoneNum", defaultValue = "0") String phoneNum,
                          @RequestParam(value = "authCode", defaultValue = "0") String authCode,
+                         @RequestParam(value = "userName", defaultValue = "0") String userName,
+                         @RequestParam(value = "passWord", defaultValue = "0") String passWord,
+                         @RequestParam(value = "picCode", defaultValue = "0") String picCode,
                          @RequestParam(value = "sign", defaultValue = "0") String sign,
                          @RequestParam(value = "time", defaultValue = "0") String time) {
 
@@ -63,7 +66,7 @@ public class LoginController {
                 apiBean.setRet(ResultCode.SUCCESS);
                 return apiBean;
             case AhqyConst.LOGIN_WEB:
-                apiBean.setContent(new LoginBean(loginService.webLogin(phoneNum, authCode, time, sign, httpSession)));
+                apiBean.setContent(new LoginBean(loginService.webLogin(phoneNum, authCode,userName,passWord ,picCode,time, sign, httpSession)));
                 apiBean.setRet(ResultCode.SUCCESS);
                 return apiBean;
             case AhqyConst.LOGIN_NET:

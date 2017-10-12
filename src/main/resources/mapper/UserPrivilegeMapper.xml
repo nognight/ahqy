@@ -126,12 +126,19 @@
 
 
     <select id="getUserPrivilegeList" resultMap="AllColumnMap">
-        SELECT * from t_user_privilege
-        WHERE  user_id = #{pojo.userId}
+        SELECT t_user_privilege.* from t_user_privilege
+        INNER JOIN  t_privilege on t_user_privilege.privilege_id = t_privilege.id
+        WHERE  t_user_privilege.user_id = #{pojo.userId}
         <if test="pojo.expireTime != null">
-        AND expire_time &gt; #{pojo.expireTime}
+        AND t_user_privilege.expire_time &gt; #{pojo.expireTime}
         </if>
-        ORDER by start_time DESC
+        <if test="pojo.status != null">
+            AND t_user_privilege.status = #{pojo.status}
+        </if>
+        <if test="type != 0">
+            AND t_privilege.type = #{type}
+        </if>
+        ORDER by t_user_privilege.start_time DESC
     </select>
 </mapper>
 

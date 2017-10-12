@@ -186,6 +186,11 @@
         where id = #{pojo.id}
     </select>
 
+    <select id="getPrivilegeName" resultMap="AllColumnMap">
+        SELECT id,name,status,pic_url,type from t_privilege
+        where id = #{id}
+    </select>
+
     <select id="getPrivilegeList" resultMap="AllColumnMap">
         SELECT * from t_privilege
         where status = #{pojo.status}
@@ -203,6 +208,9 @@
         </if>
         <if test="pojo.category != null">
             AND category = #{pojo.category}
+        </if>
+        <if test="pojo.giftType != 0">
+            AND gift_type = #{pojo.giftType}
         </if>
 
         ORDER by online_date DESC

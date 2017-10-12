@@ -29,12 +29,12 @@ public class InitServiceImpl implements InitService {
     }
 
     @Override
-    public ValidateCode getValidateCode(String type, String phoneNum, HttpSession session){
+    public ValidateCode getValidateCode(String type, String phoneNum, HttpSession httpSession){
         if(null == phoneNum || "".equals(phoneNum)){
             return null;
         }
         ValidateCode vCode = new ValidateCode(120,40,4,100);
-        session.setAttribute(type+"Code", vCode.getCode());
+        httpSession.setAttribute(type+"PicCode", vCode.getCode());
         return vCode;
     }
 }

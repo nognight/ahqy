@@ -161,10 +161,24 @@ public class OrderThread implements Runnable {
                             HttpConstants.Method.HTTP_METHOD_GET,
                             headers,
                             null);
-                    logger.info(s);
+                    logger.info("getHttpResponse: " + s);
                     if (null == s) {
                         return;
+
+//伪造消息
+//                        s = "{\n" +
+//                                "    \"ret\": 0,\n" +
+//                                "    \"data\": {\n" +
+//                                "        \"orderResp\": {\n" +
+//                                "            \"returnCode\": \"0000\",\n" +
+//                                "            \"returnDesc\": \"0000\"\n" +
+//                                "        }\n" +
+//                                "    },\n" +
+//                                "    \"msg\": \"123\"\n" +
+//                                "}";
                     }
+
+
                 } catch (Exception e) {
                     logger.warn(e.getMessage());
                     countTemp = -1;
@@ -197,7 +211,6 @@ public class OrderThread implements Runnable {
                         countTemp = countTemp + 1;
                         orderMap.put("orderId:" + userOrder.getId() + "=>" + userOrder.getCode(), 0);
                         resultCode = 0;
-
                     } else {
                         orderMap.put("orderId:" + userOrder.getId() + "=>" + userOrder.getCode(), 1);
                         resultCode = 1;
@@ -216,9 +229,7 @@ public class OrderThread implements Runnable {
                 }
                 userOrderDao.updateUserOrder(userOrder);
                 sendProductSms(product, resultCode, resultMsg);
-
             }
-
 
             /**
              * 订购结果
@@ -226,7 +237,6 @@ public class OrderThread implements Runnable {
             if (count == countTemp) {
                 //批量订购都成功
                 callbackCode = 0;
-
 
             } else if (0 == countTemp) {
                 //全失败
@@ -240,7 +250,6 @@ public class OrderThread implements Runnable {
                 //批量部分成功
                 callbackCode = 1;
             }
-
 
 //            //批量短信
 //
@@ -258,7 +267,6 @@ public class OrderThread implements Runnable {
 //                content.append("部分产品订购成功，我们将及时为您处理。");
 //
 //            }
-//
 //
 //            SmsRecord smsRecord = new SmsRecord();
 //            smsRecord.setSendDate(new Date());
@@ -283,7 +291,7 @@ public class OrderThread implements Runnable {
 
         //订购类型，权益订购
         if (AhqyConst.ORDER_PRIVILEGE == type) {
-
+            logger.info(" type ORDER_PRIVILEGE :callbackCode = " + callbackCode);
             PrivilegeCallback privilegeCallback = (PrivilegeCallback) orderCallback;
             UserPrivilege userPrivilege = privilegeCallback.getUserPrivilege();
             userPrivilege.setStatus(-2);            //设置为增加权益失败
@@ -302,6 +310,7 @@ public class OrderThread implements Runnable {
                 //无赠品
                 if (-1 == privilege.getGiftType()) {
                     logger.info("privilegeGift : no gift");
+                    userPrivilege.setStatus(1);//设置为已经使用
 
 
                 }
@@ -322,13 +331,14 @@ public class OrderThread implements Runnable {
                 else if (1 == privilege.getGiftType()) {
                     logger.info("privilegeGift :  gift Type is coupon");
                     String[] couponIds = StringUtil.splitBy(privilege.getGiftId());
-                    for(String couponId : couponIds){
+                    for (String couponId : couponIds) {
                         int cid = Integer.valueOf(couponId);
                         UserCoupon userCoupon = new UserCoupon();
                         userCoupon.setUserId(user.getId());
                         userCoupon.setCouponId(cid);
                         userCoupon.setStatus(0);
                         userCouponDao.addUserCoupon(userCoupon);
+                        userPrivilege.setStatus(1);//设置为已经使用
 
                     }
 
@@ -338,16 +348,27 @@ public class OrderThread implements Runnable {
                 else if (2 == privilege.getGiftType()) {
                     logger.info("privilegeGift :  gift Type is active coupon");
                     String[] couponIds = StringUtil.splitBy(privilege.getGiftId());
-                    for(String couponId : couponIds){
+                    userPrivilege.setRemark(userPrivilege.getRemark()+"active couponId:{");
+                    for (String couponId : couponIds) {
                         int cid = Integer.valueOf(couponId);
-                        UserCoupon userCoupon = userCouponDao.getUserCouponById(cid,user.getId());
-                        userCoupon.setStatus(0);
-                        userCouponDao.update(userCoupon);
+                        UserCoupon userCoupon = userCouponDao.getUserCouponByCid(cid, user.getId(), 2);
+                        if (null != userCoupon) {
+                            userCoupon.setStatus(0);
+                            userCoupon.setStartTime(new Date());
+                            userCouponDao.update(userCoupon);
+                            userPrivilege.setStatus(1);//设置为已经使用
+                            userPrivilege.setRemark(userPrivilege.getRemark()+"|"+userCoupon.getId());
+                        }else {
+                            logger.info("userCoupon not exsit " + userCoupon.toString());
+                        }
                     }
+                    userPrivilege.setUsedTime(new Date());
+                    userPrivilege.setRemark(userPrivilege.getRemark()+"}");
                 }
-
             }
-            //订购类型，权益订购回调
+            userPrivilegeDao.updatePrivilege(userPrivilege);
+
+            //订购类型，权益订购回调订购
         } else if (AhqyConst.ORDER_PRIVILEGE_CALLBACK == type) {
             logger.info("PrivilegeCallback :callbackCode = " + callbackCode);
             PrivilegeCallback privilegeCallback = (PrivilegeCallback) orderCallback;
@@ -362,6 +383,7 @@ public class OrderThread implements Runnable {
 
             //订购类型卡券订购
         } else if (AhqyConst.ORDER_COUPON == type) {
+            logger.info(" type ORDER_COUPON :callbackCode = " + callbackCode);
             CouponCallback couponCallback = (CouponCallback) orderCallback;
             UserCoupon userCoupon = couponCallback.getUserCoupon();
             if (0 == callbackCode) {
@@ -371,17 +393,13 @@ public class OrderThread implements Runnable {
                 userCoupon.setStatus(3);
             }
             userCoupon.setUsedTime(new Date());
-
             userCouponDao.update(userCoupon);
 
         }
 
-
     }
 
-
     private void sendProductSms(Product product, int resultCode, String resultMsg) {
-
         StringBuilder content = new StringBuilder();
 
         //0元赠送型
@@ -424,6 +442,5 @@ public class OrderThread implements Runnable {
             e.printStackTrace();
         }
         smsRecordDao.addRecord(smsRecord);
-
     }
 }

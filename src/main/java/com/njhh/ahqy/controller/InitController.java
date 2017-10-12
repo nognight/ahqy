@@ -36,7 +36,7 @@ public class InitController {
     }
 
     /**
-     * 响应验证码页面
+     * 图形验证码
      * @return
      */
     @RequestMapping(value="/api/validateCode")

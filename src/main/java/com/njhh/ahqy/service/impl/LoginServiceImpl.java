@@ -18,6 +18,8 @@ import com.njhh.ahqy.service.LoginService;
 import com.njhh.ahqy.sms.SmsClient;
 import com.njhh.ahqy.util.DateUtil;
 import com.njhh.ahqy.util.JacksonUtil;
+import com.xiaoleilu.hutool.Hutool;
+import com.xiaoleilu.hutool.crypto.SecureUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,28 +121,58 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public int webLogin(String phoneNum, String authCode, String time, String sign, HttpSession httpSession) {
+    public int webLogin(String phoneNum, String authCode, String userName, String passWord, String picCode, String time, String sign, HttpSession httpSession) {
         if (null == authCode) {
             return ResultCode.ERROR;
         }
-        if (!"debug123".equals(authCode)) {
-            if (!authCode.equals(cacheDao.getAuthCode(AhqyConst.AUTHCODE_LOGIN, 0, 0, phoneNum, ""))) {
+
+        if ("0".equals(authCode)) {
+            //非短信验证码，即图形验证码登陆
+            if (null == httpSession.getAttribute("loginPicCode") || !picCode.equals(httpSession.getAttribute("loginPicCode"))) {
                 return ResultCode.ERROR;
+            }
+
+        } else {
+            if (!"debug123".equals(authCode)) {
+                if (!authCode.equals(cacheDao.getAuthCode(AhqyConst.AUTHCODE_LOGIN, 0, 0, phoneNum, ""))) {
+                    return ResultCode.ERROR;
+                }
             }
         }
 
         User user = new User();
-        user.setPhoneNum(phoneNum);
+        if (!"0".equals(phoneNum)) {
+            user.setPhoneNum(phoneNum);
+        }
+        if (!"0".equals(userName)) {
+            user.setName(userName);
+        }
 
+        if ("0".equals(userName) && "0".equals(phoneNum)) {
+            return ResultCode.ERROR;
+        }
 
         try {
             user = userDao.getUser(user);
+
+            if (!"0".equals(passWord)) {
+                if (null == user) {
+                    logger.info("not found user");
+                    return ResultCode.ERROR;
+                } else {
+                    if (!SecureUtil.md5(passWord).equals(user.getPasswd())) {
+                        logger.info("passWord error");
+                        return ResultCode.ERROR;
+                    }
+                }
+            }
+
+
         } catch (Exception e) {
             logger.warn("Exception userDao.getUser " + e.getMessage());
             return ResultCode.DB_EXCEPTION;
         }
         if (null != user) {
-
             httpSession.setAttribute("user", user);
             return ResultCode.SUCCESS;
         }

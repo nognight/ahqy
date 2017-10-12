@@ -35,6 +35,14 @@ public interface UserCouponDao {
     int addUserCoupon(UserCoupon userCoupon);
 
     /**
+     * 通过cid获得用户某个卡券
+     * @param id
+     * @param userId
+     * @return
+     */
+    UserCoupon getUserCouponByCid(int id , int userId,int status);
+
+    /**
      * 通过id获得用户某个卡券
      * @param id
      * @param userId

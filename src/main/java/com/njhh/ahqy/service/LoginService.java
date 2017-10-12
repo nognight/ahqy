@@ -19,15 +19,19 @@ public interface LoginService {
     int wxLogin(String weCode, String time, String sign, HttpSession httpSession);
 
     /**
-     * web登陆
+     *  web登陆
+     *
      * @param phoneNum
      * @param authCode
+     * @param userName
+     * @param passWord
+     * @param picCode
      * @param time
      * @param sign
      * @param httpSession
      * @return
      */
-    int webLogin(String phoneNum, String authCode, String time, String sign, HttpSession httpSession);
+    int webLogin(String phoneNum, String authCode,String userName,String passWord ,String picCode ,String time, String sign, HttpSession httpSession);
 
     /**
      * net取号

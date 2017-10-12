@@ -66,12 +66,23 @@ public class CouponDaoImpl implements CouponDao {
         }
 
     }
+
     @Override
-    public Coupon getCouponById(int id){
+    public Coupon getCouponById(int id) {
         try {
             return couponMapper.getCouponById(id);
         } catch (Exception e) {
             logger.warn("err getCouponById");
+            return null;
+        }
+    }
+
+    @Override
+    public Coupon getCouponNameById(int id) {
+        try {
+            return couponMapper.getCouponNameById(id);
+        } catch (Exception e) {
+            logger.warn("err getCouponNameById");
             return null;
         }
     }
