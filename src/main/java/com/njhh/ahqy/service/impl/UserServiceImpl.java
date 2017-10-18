@@ -11,7 +11,6 @@ import com.njhh.ahqy.dao.UserCouponDao;
 import com.njhh.ahqy.dao.UserDao;
 import com.njhh.ahqy.entity.Product;
 import com.njhh.ahqy.entity.User;
-import com.njhh.ahqy.entity.UserCoupon;
 import com.njhh.ahqy.httpclient.HttpConstants;
 import com.njhh.ahqy.httpclient.RestHttpClient;
 import com.njhh.ahqy.httpclient.bean.GateWayApi;
@@ -28,7 +27,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
