@@ -50,9 +50,9 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public int wxLogin(String weCode, String time, String sign, HttpSession httpSession) {
 
+        logger.info("wxLogin" + " weCode:" + weCode);
         HashMap<String, String> headers = getHeaders();
         try {
-
             String s = restHttpClient.getHttpResponse("http://192.168.100.28:9090/new/user/getPhoneNum?weCode=" + weCode, HttpConstants.Method.HTTP_METHOD_GET, headers, null);
             Map map = JacksonUtil.returnMap(s);
             logger.info(" getNumberFromWeCode " + map.toString());
@@ -122,6 +122,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public int webLogin(String phoneNum, String authCode, String userName, String passWord, String picCode, String time, String sign, HttpSession httpSession) {
+        logger.info("webLogin" + " phoneNum:" + phoneNum + " authCode:" + authCode + " userName:" + userName + " passWord:" + passWord + " picCode:" + picCode);
         if (null == authCode) {
             return ResultCode.ERROR;
         }
@@ -258,6 +259,7 @@ public class LoginServiceImpl implements LoginService {
      */
     private UserInfo getUserInfo(String phoneNum) {
 
+        logger.info("start to getUserInfo phoneNum:" + phoneNum);
         HashMap<String, String> headers = getHeaders();
         User user = new User();
         user.setPhoneNum(phoneNum);
@@ -272,7 +274,7 @@ public class LoginServiceImpl implements LoginService {
                 .append("&")
                 .append(InCommParam.REGION).append("=").append(region.getCity())
                 .append("&p=").append(GatewayConst.INCOMM_REQ_PRIO_HIGH);
-
+        logger.info(sbufUrl.toString());
         try {
             s = restHttpClient.getHttpResponse(sbufUrl.toString(),
                     HttpConstants.Method.HTTP_METHOD_GET,

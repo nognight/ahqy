@@ -33,21 +33,19 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     private PrivilegeAdDao privilegeAdDao;
     @Autowired
     private CacheDao cacheDao;
-
     @Autowired
     private UserService userService;
     @Autowired
     private LoginService loginService;
     @Autowired
     private SmsRecordDao smsRecordDao;
-
-
     @Autowired
     private UserPrivilegeDao userPrivilegeDao;
 
 
     @Override
-    public List<Privilege> getPrivilegeList(int type, int category,int giftType, HttpSession httpSession) {
+    public List<Privilege> getPrivilegeList(int type, int category, int giftType, HttpSession httpSession) {
+        logger.info("getPrivilegeAdList type:" + type + " category:" + category + " giftType:" + giftType);
         User user = (User) httpSession.getAttribute("user");
         if (null == user) {
             return null;
@@ -64,6 +62,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 
     @Override
     public List<PrivilegeAd> getPrivilegeAdList(int type, int source, int id, HttpSession httpSession) {
+        logger.info("getPrivilegeAdList type:" + type + " source:" + source + " id:" + id);
         User user = (User) httpSession.getAttribute("user");
         PrivilegeAd privilegeAd = new PrivilegeAd();
 
@@ -101,14 +100,15 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     }
 
     @Override
-    public List<UserPrivilege> getUserPrivilegeList(HttpSession httpSession,int type) {
+    public List<UserPrivilege> getUserPrivilegeList(HttpSession httpSession, int type) {
+        logger.info("getUserPrivilegeList type:" + type);
         User user = (User) httpSession.getAttribute("user");
         if (null == user) {
             return null;
         }
         UserPrivilege userPrivilege = new UserPrivilege();
         userPrivilege.setUserId(user.getId());
-        return userPrivilegeDao.getUserPrivilegeList(userPrivilege,type);
+        return userPrivilegeDao.getUserPrivilegeList(userPrivilege, type);
     }
 
     @Override
@@ -147,7 +147,6 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 
     @Override
     public int usePrivilege(int id, String authCode, int source, HttpSession httpSession) {
-
 
         if (null == authCode) {
             return ResultCode.ERROR;
@@ -210,10 +209,6 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         }
 
 
-
-
-
-
         return ResultCode.ERROR;
     }
 
@@ -223,7 +218,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         if (null == user) {
             return ResultCode.ERROR;
         }
-        logger.info("addUserPrivilege " + " id " + id + " source " + source);
+        logger.info("addUserPrivilege " + " id " + id + " source " + source + " user.getPhoneNum:" + user.getPhoneNum());
         Privilege privilege = new Privilege();
         privilege.setId(id);
         privilege = privilegeDao.getPrivilege(privilege);
@@ -233,21 +228,20 @@ public class PrivilegeServiceImpl implements PrivilegeService {
             return ResultCode.ERROR;
         }
 
-        // TODO: 2017/9/21 不可重复添加
         UserPrivilege userPrivilege = new UserPrivilege();
         userPrivilege.setPrivilegeId(id);
         userPrivilege.setUserId(user.getId());
         userPrivilege.setSource(source);
         userPrivilege.setExpireTime(new Date());
-        List<UserPrivilege> userPrivilegeList = userPrivilegeDao.getUserPrivilegeList(userPrivilege,0);
+        List<UserPrivilege> userPrivilegeList = userPrivilegeDao.getUserPrivilegeList(userPrivilege, 0);
         if (null != userPrivilegeList) {
-            if(userPrivilegeList.isEmpty()){
+            if (userPrivilegeList.isEmpty()) {
                 logger.info("userPrivilege has not exist");
-            }else {
+            } else {
                 logger.info("userPrivilege has  exist");
-                return  -1;
+                return -1;
             }
-        }else {
+        } else {
             return -1;
         }
         userPrivilege.setGetTime(new Date());
@@ -268,6 +262,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         //channel = smsPrivilege   key = sp123456
         //例如  md5（smsPrivilege123186516144821501054645sp123456）
 
+        logger.info("start usePrivilegeById " + " channel:" + channel + " id:" + id + " phoneNum:" + phoneNum + " timestamp:" + timestamp + " sign:" + sign);
 
         try {
             long timeNow = System.currentTimeMillis() / 1000;

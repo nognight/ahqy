@@ -70,25 +70,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int orderProducts(String[] productIds, HttpSession httpSession, OrderCallback orderCallback, int type, String smsCode) {
-
+        logger.info("orderProducts httpSession" + " productIds:" + productIds.toString() + " orderCallback:" + orderCallback.toString() + " type:" + type + " smsCode:" + smsCode);
         if (0 == productIds.length) {
-            logger.warn("无产品id");
+            logger.warn("orderProducts无产品id");
             return 0;
         }
 
         List<Product> productList = new ArrayList<>();
         User user = (User) httpSession.getAttribute(SESSION_USER);
         productList = getProductList(productIds, user);
-        logger.info(productList.toString());
+        logger.info("getProductList: " + productList.toString());
         if (0 == productList.size()) {
-            logger.warn("无产品id");
+            logger.warn("getProductList无产品id");
             return 0;
         }
         orderThread.setUser(user);
         orderThread.setProductList(productList);
         orderThread.setOrderCallback(orderCallback);
         orderThread.setType(type);
-
         orderThread.setSubType(AhqyConst.SUBTYPE_ORDER);
         orderThread.setSmsCode(smsCode);
 
@@ -102,8 +101,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int orderProducts(String[] productIds, User user, OrderCallback orderCallback, int type, String smsCode) {
-
-
+        logger.info("orderProducts user" + " productIds:" + productIds.toString() + " orderCallback:" + orderCallback.toString() + " type:" + type + " smsCode:" + smsCode);
         if (0 == productIds.length) {
             logger.warn("无产品id");
             return 0;
@@ -149,6 +147,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int updateUser(HttpSession httpSession) {
+        logger.info("updateUser");
         User user = new User();
         userDao.updateUser(user);
         return 0;
@@ -208,9 +207,10 @@ public class UserServiceImpl implements UserService {
     }
 
     private List<Product> getProductList(String[] productIds, User user) {
+        logger.info("start to getProductList");
         List<Product> productList = new ArrayList<>();
-
         List<String> orderedCodeList = getUserOrdered(user);
+        logger.info("orderedCodeList" + orderedCodeList.toString());
         if (null != orderedCodeList) {
             Product product = new Product();
             for (String productId : productIds) {
@@ -249,8 +249,6 @@ public class UserServiceImpl implements UserService {
                 productList.add(product);
             }
         }
-
-
         return productList;
     }
 }

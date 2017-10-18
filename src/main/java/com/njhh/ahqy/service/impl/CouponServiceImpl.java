@@ -74,6 +74,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public List<UserCoupon> getUserCouponList(int type, int source, int status, HttpSession httpSession) {
+        logger.info("getUserCouponList type:" + type + " source:" + source + " status:" + status);
         User user = (User) httpSession.getAttribute("user");
         if (null == user) {
             return null;
@@ -89,11 +90,11 @@ public class CouponServiceImpl implements CouponService {
         if (null == user) {
             return ResultCode.ERROR;
         }
-        logger.info("addUserCoupon " + " couponId " + couponId + " privilegeId " + privilegeId);
+        logger.info("addUserCoupon " + " couponId " + couponId + " privilegeId " + privilegeId + " user.getPhoneNum:" + user.getPhoneNum());
         UserPrivilege userPrivilege = new UserPrivilege();
         userPrivilege.setPrivilegeId(privilegeId);
         userPrivilege.setUserId(user.getId());
-        List<UserPrivilege> userPrivilegeList = userPrivilegeDao.getUserPrivilegeList(userPrivilege,0);
+        List<UserPrivilege> userPrivilegeList = userPrivilegeDao.getUserPrivilegeList(userPrivilege, 0);
         if (null == userPrivilegeList || userPrivilegeList.isEmpty()) {
             logger.info(" userPrivilegeList is null or empty");
             return ResultCode.ERROR;
@@ -156,12 +157,13 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public int addUserCoupons(int privilegeId, int source, String startTime, int expire, HttpSession httpSession) {
+        logger.info("start to addUserCoupons privilegeId:" + privilegeId + " source:" + source + " startTime:" + startTime + " expire:" + expire);
         User user = (User) httpSession.getAttribute(SESSION_USER);
         UserPrivilege userPrivilege = new UserPrivilege();
         userPrivilege.setPrivilegeId(privilegeId);
         userPrivilege.setUserId(user.getId());
         userPrivilege.setStatus(0);
-        List<UserPrivilege> userPrivilegeList = userPrivilegeDao.getUserPrivilegeList(userPrivilege,0);
+        List<UserPrivilege> userPrivilegeList = userPrivilegeDao.getUserPrivilegeList(userPrivilege, 0);
         if (null == userPrivilegeList || userPrivilegeList.isEmpty()) {
             logger.info(" userPrivilegeList is null or empty");
             return ResultCode.ERROR;
@@ -193,7 +195,7 @@ public class CouponServiceImpl implements CouponService {
             UserCoupon uCoupon = userCouponDao.getUserCouponByCid(cid, user.getId(), 2);
             if (null != uCoupon) {
                 logger.info("userCouponDao.getUserCouponByCid " + couponId + " is exsit" + " phone : " + user.getPhoneNum());
-                userPrivilege.setRemark(userPrivilege.getRemark() +"addUserCoupons id : " +couponId +" is exsit");
+                userPrivilege.setRemark(userPrivilege.getRemark() + "addUserCoupons id : " + couponId + " is exsit");
                 userPrivilegeDao.updatePrivilege(userPrivilege);
                 return 1;
             }
@@ -240,8 +242,8 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public int useUserCoupon(int id, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
+        logger.info("start to useUserCoupon id:" + id + " user.getPhoneNum:" + user.getPhoneNum());
         UserCoupon userCoupon = userCouponDao.getUserCouponById(id, user.getId());
-
         Coupon coupon = couponDao.getCouponById(userCoupon.getCouponId());
         //流量券
         if (AhqyConst.COUPON_TYPE_LLQ == coupon.getType()) {
@@ -258,13 +260,13 @@ public class CouponServiceImpl implements CouponService {
             logger.info("useUserCoupon COUPON_TYPE_ZKQ");
 
         }
-
         userCouponDao.update(userCoupon);
         return 0;
     }
 
     @Override
     public int updateUserCoupon(int id, HttpSession httpSession) {
+        logger.info("updateUserCoupon id:" + id);
         User user = (User) httpSession.getAttribute("user");
         UserCoupon userCoupon = userCouponDao.getUserCouponById(id, user.getId());
 

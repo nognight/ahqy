@@ -163,6 +163,14 @@ public class OrderThread implements Runnable {
                             null);
                     logger.info("getHttpResponse: " + s);
                     if (null == s) {
+
+                        logger.info("getHttpResponse: null");
+                        userOrder.setState(9);
+                        userOrder.setMessage("getHttpResponse: null");
+                        resultCode = 9;
+                        resultMsg = "订购系统维护";
+                        userOrderDao.updateUserOrder(userOrder);
+                        sendProductSms(product, resultCode, resultMsg);
                         return;
 
 //伪造消息
@@ -185,15 +193,46 @@ public class OrderThread implements Runnable {
                     continue;
                 }
 
-                GateWayApi gateWayApi = (GateWayApi) JacksonUtil.returnObject(s, GateWayApi.class);
-                if (0 != gateWayApi.getRet()) {
-
+                GateWayApi gateWayApi = new GateWayApi();
+                try {
+                    gateWayApi = (GateWayApi) JacksonUtil.returnObject(s, GateWayApi.class);
+                } catch (Exception e) {
+                    logger.info("GateWayApi" + e.getMessage());
+                    userOrder.setMessage("GateWayApi" + e.getMessage());
+                    userOrder.setState(9);
+                    resultCode = 9;
+                    resultMsg = "订购系统维护";
+                    userOrderDao.updateUserOrder(userOrder);
+                    sendProductSms(product, resultCode, resultMsg);
                 }
 
-                String jsonOrderResp = JacksonUtil.objReturnJson(gateWayApi.getData().get(InCommParam.ORDER_RESP));
+
+                if (0 != gateWayApi.getRet()) {
+                    logger.info("gateWayApi.getRet " + gateWayApi.getRet());
+                    userOrder.setMessage("gateWayApi.getRet " + gateWayApi.getRet());
+                    userOrder.setState(9);
+                    resultCode = 9;
+                    resultMsg = "订购系统维护";
+                    userOrderDao.updateUserOrder(userOrder);
+                    sendProductSms(product, resultCode, resultMsg);
+                }
+                String jsonOrderResp = "";
+                try {
+                    jsonOrderResp = JacksonUtil.objReturnJson(gateWayApi.getData().get(InCommParam.ORDER_RESP));
+                } catch (Exception e) {
+                    logger.info("jsonOrderResp" + e.getMessage());
+                    userOrder.setMessage("jsonOrderResp" + e.getMessage());
+                    userOrder.setState(9);
+                    resultCode = 9;
+                    resultMsg = "订购系统维护";
+                    userOrderDao.updateUserOrder(userOrder);
+                    sendProductSms(product, resultCode, resultMsg);
+                }
+
 
                 if (jsonOrderResp.contains("returnCode")) {
                     //"returnCode":"999999","returnDesc":"操作失败"针对xf4接口返回体处理
+                    logger.info("xf4接口");
                     String regex1 = "returnCode";
                     String regex2 = "returnDesc";
                     jsonOrderResp = jsonOrderResp.replaceAll(regex1, "respCode");
@@ -201,7 +240,18 @@ public class OrderThread implements Runnable {
                     String regex3 = "000000";
                     jsonOrderResp = jsonOrderResp.replaceAll(regex3, "0000");
                 }
-                ProductOrderResp productOrderResp = (ProductOrderResp) JacksonUtil.returnObject(jsonOrderResp, ProductOrderResp.class);
+                ProductOrderResp productOrderResp = new ProductOrderResp();
+                try {
+                    productOrderResp = (ProductOrderResp) JacksonUtil.returnObject(jsonOrderResp, ProductOrderResp.class);
+                } catch (Exception e) {
+                    logger.info("ProductOrderResp" + e.getMessage());
+                    userOrder.setMessage("ProductOrderResp" + e.getMessage());
+                    userOrder.setState(9);
+                    resultCode = 9;
+                    resultMsg = "订购系统维护";
+                    userOrderDao.updateUserOrder(userOrder);
+                    sendProductSms(product, resultCode, resultMsg);
+                }
 
                 if (null != productOrderResp) {
 
@@ -311,8 +361,6 @@ public class OrderThread implements Runnable {
                 if (-1 == privilege.getGiftType()) {
                     logger.info("privilegeGift : no gift");
                     userPrivilege.setStatus(1);//设置为已经使用
-
-
                 }
                 //赠品是流量包
                 else if (3 == privilege.getGiftType()) {
@@ -325,7 +373,6 @@ public class OrderThread implements Runnable {
                     } else {
                         logger.info("privilegeGift : no gift ");
                     }
-
                 }
                 //赠品是卡券
                 else if (1 == privilege.getGiftType()) {
@@ -348,7 +395,7 @@ public class OrderThread implements Runnable {
                 else if (2 == privilege.getGiftType()) {
                     logger.info("privilegeGift :  gift Type is active coupon");
                     String[] couponIds = StringUtil.splitBy(privilege.getGiftId());
-                    userPrivilege.setRemark(userPrivilege.getRemark()+"active couponId:{");
+                    userPrivilege.setRemark(userPrivilege.getRemark() + "active couponId:{");
                     for (String couponId : couponIds) {
                         int cid = Integer.valueOf(couponId);
                         UserCoupon userCoupon = userCouponDao.getUserCouponByCid(cid, user.getId(), 2);
@@ -357,13 +404,13 @@ public class OrderThread implements Runnable {
                             userCoupon.setStartTime(new Date());
                             userCouponDao.update(userCoupon);
                             userPrivilege.setStatus(1);//设置为已经使用
-                            userPrivilege.setRemark(userPrivilege.getRemark()+"|"+userCoupon.getId());
-                        }else {
+                            userPrivilege.setRemark(userPrivilege.getRemark() + "|" + userCoupon.getId());
+                        } else {
                             logger.info("userCoupon not exsit " + userCoupon.toString());
                         }
                     }
                     userPrivilege.setUsedTime(new Date());
-                    userPrivilege.setRemark(userPrivilege.getRemark()+"}");
+                    userPrivilege.setRemark(userPrivilege.getRemark() + "}");
                 }
             }
             userPrivilegeDao.updatePrivilege(userPrivilege);
@@ -400,6 +447,7 @@ public class OrderThread implements Runnable {
     }
 
     private void sendProductSms(Product product, int resultCode, String resultMsg) {
+        logger.info("sendProductSms resultCode:"+resultCode+" resultMsg:"+resultMsg);
         StringBuilder content = new StringBuilder();
 
         //0元赠送型
@@ -409,11 +457,18 @@ public class OrderThread implements Runnable {
                 content.append("尊敬的用户，您已成功获得“安徽联通”微信公众号权益平台赠送的");
                 content.append(product.getName());
                 content.append(",有效期到本月底，流量不结转。");
+            }else {
+                content.append("您本次赠送的");
+                content.append(product.getName());
+                content.append(",订购");
+                content.append("失败。");
+                content.append("原因是：");
+                content.append(StringUtil.handOrderMsg(resultMsg));
+                logger.info(content.toString());
             }
 
             //收费
         } else {
-
             content.append("您本次订购的");
             content.append(product.getName());
             content.append(",订购");
@@ -422,9 +477,8 @@ public class OrderThread implements Runnable {
             } else {
                 content.append("失败。");
                 content.append("原因是：");
-
                 content.append(StringUtil.handOrderMsg(resultMsg));
-                logger.info(content.toString());
+                logger.info("sms content:"+content.toString());
             }
         }
 

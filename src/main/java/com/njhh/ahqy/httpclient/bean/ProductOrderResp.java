@@ -19,6 +19,8 @@ public class ProductOrderResp {
 
     private String respDesc;
 
+    private String seq;
+
     // 生效日期
 
     private Date activeDate;
@@ -76,12 +78,21 @@ public class ProductOrderResp {
         this.activeDate = activeDate;
     }
 
+    public String getSeq() {
+        return seq;
+    }
+
+    public void setSeq(String seq) {
+        this.seq = seq;
+    }
+
     @Override
     public String toString() {
         return "ProductOrderResp{" +
                 "result=" + result +
                 ", respCode='" + respCode + '\'' +
                 ", respDesc='" + respDesc + '\'' +
+                ", seq='" + seq + '\'' +
                 ", activeDate=" + activeDate +
                 ", orderLogId=" + orderLogId +
                 '}';
