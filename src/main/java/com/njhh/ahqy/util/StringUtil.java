@@ -13,9 +13,7 @@ public class StringUtil {
 
     public static String handOrderMsg(String s) {
         String msg = s;
-
         if ("{".equals(s.substring(0, 1))) {
-
             msg = "总部接口产品订购失败";
 
         }

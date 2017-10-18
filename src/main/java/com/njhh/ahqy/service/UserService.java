@@ -5,6 +5,7 @@ import com.njhh.ahqy.service.thread.OrderCallback.OrderCallback;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by HiWin10 on 2017/6/14.
@@ -46,7 +47,6 @@ public interface UserService {
 
 
 
-
     /**
      * 验证码
      * @param type
@@ -55,6 +55,15 @@ public interface UserService {
      * @return
      */
     int sendAuthCode(String type,Integer id,HttpSession httpSession);
+
+
+    /**
+     * 获得订购的内容
+     * @param httpSession
+     * @param type 返回类型
+     * @return
+     */
+    List<String> getOrdered(HttpSession httpSession, int type);
 
 
 

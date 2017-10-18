@@ -134,8 +134,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int sendAuthCode(String type, Integer id, HttpSession httpSession) {
-
         User user = (User) httpSession.getAttribute("user");
+        if(null == user){
+            return ResultCode.ERROR;
+        }
         String code = cacheDao.sendAuthCode(type, id, user.getId(), user.getPhoneNum(), "");
         StringBuilder content = new StringBuilder("您本次操作收到的验证码是[");
         content.append(code);
@@ -153,8 +155,23 @@ public class UserServiceImpl implements UserService {
         return 0;
     }
 
+    @Override
+    public List<String> getOrdered(HttpSession httpSession, int type){
+        User user = (User) httpSession.getAttribute("user");
+        if(null == user){
+            return null;
+        }
+        logger.info("getOrdered user:" +user.getPhoneNum());
+        return (List<String>)(List)getUserOrdered(user,type);
+    }
 
-    private List<String> getUserOrdered(User user) {
+    /**
+     *
+     * @param user
+     * @param returnType
+     * @return
+     */
+    private List<Object> getUserOrdered(User user ,int returnType) {
         StringBuffer sbufUrl = new StringBuffer();
         sbufUrl.append(AhqyConst.GATEWAY)
                 .append(InCommUri.USER_ORDER_LIST)
@@ -170,46 +187,43 @@ public class UserServiceImpl implements UserService {
         headers.put("Content-type", "text/x-www-form-urlencoded; charset=UTF-8");
         headers.put("Accept", "application/json");
         String s = null;
-
-
         try {
             logger.info("getUserOrdered :" + sbufUrl.toString());
             s = restHttpClient.getHttpResponse(sbufUrl.toString(),
                     HttpConstants.Method.HTTP_METHOD_GET,
                     headers,
                     null);
-
             logger.info(s);
         } catch (Exception e) {
             logger.warn(e.getMessage());
             return null;
         }
-
         GateWayApi gateWayApi = (GateWayApi) JacksonUtil.returnObject(s, GateWayApi.class);
         if (0 != gateWayApi.getRet()) {
+            logger.warn("gateWayApi.getRet() == 0");
             return null;
         }
         List list = JacksonUtil.returnList(JacksonUtil.objReturnJson(gateWayApi.getData().get(InCommParam.ORDERS)));
-
         if (null != list) {
-            List<String> stringList = new ArrayList<>();
-
+            List<Object> objectList = new ArrayList<>();
             for (Object temp : list) {
                 UserProductOrderInfo info = (UserProductOrderInfo) JacksonUtil.returnObject(JacksonUtil.objReturnJson(temp), UserProductOrderInfo.class);
-                stringList.add(info.getProductId());
+                if(1 == returnType){
+                    objectList.add(info.getProductId());
+                }else if(2 == returnType){
+                    objectList.add(info.getProductName());
+                }
             }
-
-            return stringList;
+            return objectList;
         }
+        logger.warn("list == null");
         return null;
-
-
     }
 
     private List<Product> getProductList(String[] productIds, User user) {
         logger.info("start to getProductList");
         List<Product> productList = new ArrayList<>();
-        List<String> orderedCodeList = getUserOrdered(user);
+        List<String> orderedCodeList = (List<String>)(List)getUserOrdered(user,1);
         logger.info("orderedCodeList" + orderedCodeList.toString());
         if (null != orderedCodeList) {
             Product product = new Product();
@@ -218,7 +232,6 @@ public class UserServiceImpl implements UserService {
                 product = productDao.getProductById(product);
                 if (orderedCodeList.contains(product.getCode())) {
                     logger.info("已经订购code:" + product.getCode());
-
                     //单个code的时候已经订购不剔除，网关取判断逻辑。
 //                    break;
                 }
