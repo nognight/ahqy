@@ -361,6 +361,8 @@ public class OrderThread implements Runnable {
                 if (-1 == privilege.getGiftType()) {
                     logger.info("privilegeGift : no gift");
                     userPrivilege.setStatus(1);//设置为已经使用
+                    userPrivilege.setUsedTime(new Date());
+                    userPrivilege.setRemark(userPrivilege.getRemark() + "{no gift}");
                 }
                 //赠品是流量包
                 else if (3 == privilege.getGiftType()) {
@@ -378,6 +380,7 @@ public class OrderThread implements Runnable {
                 else if (1 == privilege.getGiftType()) {
                     logger.info("privilegeGift :  gift Type is coupon");
                     String[] couponIds = StringUtil.splitBy(privilege.getGiftId());
+                    userPrivilege.setRemark(userPrivilege.getRemark() + "add couponId:{");
                     for (String couponId : couponIds) {
                         int cid = Integer.valueOf(couponId);
                         UserCoupon userCoupon = new UserCoupon();
@@ -386,10 +389,10 @@ public class OrderThread implements Runnable {
                         userCoupon.setStatus(0);
                         userCouponDao.addUserCoupon(userCoupon);
                         userPrivilege.setStatus(1);//设置为已经使用
-
+                        userPrivilege.setRemark(userPrivilege.getRemark() + "|" + userCoupon.getId());
                     }
-
-
+                    userPrivilege.setUsedTime(new Date());
+                    userPrivilege.setRemark(userPrivilege.getRemark() + "}");
                 }
                 //赠品是激活卡券
                 else if (2 == privilege.getGiftType()) {

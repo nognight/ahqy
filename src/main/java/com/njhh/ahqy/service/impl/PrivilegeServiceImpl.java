@@ -193,6 +193,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
             userPrivilege.setGetTime(new Date());
             userPrivilege.setStatus(-1);
             userPrivilege.setSource(source);
+            userPrivilege.setExpireTime(DateUtil.endOfMonth(new Date()));
             userPrivilege.setRemark("privilegeOrder:start:");
 
             userPrivilegeDao.addUserPrivilege(userPrivilege);
@@ -222,6 +223,10 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         Privilege privilege = new Privilege();
         privilege.setId(id);
         privilege = privilegeDao.getPrivilege(privilege);
+        if(null == privilege){
+            logger.info("no  privilege  id" + id);
+            return ResultCode.ERROR;
+        }
         //直接领取卡券
         if (3 != privilege.getType() && 4 != privilege.getType()) {
             logger.info("addUserPrivilege privilege.getType() addUserPrivilege is not allow");

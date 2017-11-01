@@ -191,20 +191,23 @@ public class CouponServiceImpl implements CouponService {
         userPrivilege.setRemark("addUserCoupons:");
         for (String couponId : couponIds) {
             int cid = Integer.valueOf(couponId);
-            //取状态2的卡券
-            UserCoupon uCoupon = userCouponDao.getUserCouponByCid(cid, user.getId(), 2);
-            if (null != uCoupon) {
-                logger.info("userCouponDao.getUserCouponByCid " + couponId + " is exsit" + " phone : " + user.getPhoneNum());
-                userPrivilege.setRemark(userPrivilege.getRemark() + "addUserCoupons id : " + couponId + " is exsit");
-                userPrivilegeDao.updatePrivilege(userPrivilege);
-                return 1;
-            }
+
             UserCoupon userCoupon = new UserCoupon();
             userCoupon.setCouponId(cid);
             userCoupon.setUserId(user.getId());
             userCoupon.setSource(source);
             if (4 == privilege.getType()) {
                 logger.info("addUserCoupons  privilege.getType() = 4" + " phone : " + user.getPhoneNum());
+
+                //取状态2的卡券
+                UserCoupon uCoupon = userCouponDao.getUserCouponByCid(cid, user.getId(), 2);
+                if (null != uCoupon) {
+                    logger.info("userCouponDao.getUserCouponByCid " + couponId + " is exsit" + " phone : " + user.getPhoneNum());
+                    userPrivilege.setRemark(userPrivilege.getRemark() + "addUserCoupons id : " + couponId + " is exsit");
+                    userPrivilegeDao.updatePrivilege(userPrivilege);
+                    return 1;
+                }
+
                 userCoupon.setStatus(2);
             } else if (3 == privilege.getType()) {
                 logger.info("addUserCoupons  privilege.getType() = 3 " + " phone : " + user.getPhoneNum());
