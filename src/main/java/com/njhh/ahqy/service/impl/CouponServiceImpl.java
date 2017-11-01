@@ -253,7 +253,7 @@ public class CouponServiceImpl implements CouponService {
             couponCallback.setUser(user);
             couponCallback.setUserCoupon(userCoupon);
             couponCallback.setPhoneNum(user.getPhoneNum());
-            userService.orderProducts(StringUtil.splitBy(coupon.getProductIds()), user, couponCallback, AhqyConst.ORDER_COUPON, AhqyConst.AUTHCODE_PRIVILEGE);
+            userService.orderProducts(StringUtil.splitBy(coupon.getProductIds()), user, couponCallback, AhqyConst.ORDER_COUPON, AhqyConst.AUTHCODE_COUPON);
 
             //折扣券
         } else if (AhqyConst.COUPON_TYPE_ZKQ == coupon.getType()) {
