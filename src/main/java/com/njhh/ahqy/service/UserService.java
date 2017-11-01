@@ -14,6 +14,7 @@ public interface UserService {
 
     /**
      * 订购
+     *
      * @param productId
      * @param authCode
      * @return
@@ -23,17 +24,16 @@ public interface UserService {
 
     /**
      * 更新用户信息
+     *
      * @param httpSession
      * @return
      */
     int updateUser(HttpSession httpSession);
 
 
-
-
-
     /**
-     *订购
+     * 订购
+     *
      * @param ids
      * @param httpSession
      * @param orderCallback
@@ -41,30 +41,30 @@ public interface UserService {
      * @param smsCode
      * @return
      */
-    int orderProducts(String[] ids , HttpSession httpSession, OrderCallback orderCallback ,int type,String smsCode);
+    int orderProducts(String[] ids, HttpSession httpSession, OrderCallback orderCallback, int type, String smsCode);
 
-    int orderProducts(String[] ids , User user ,OrderCallback orderCallback,int type,String smsCode);
-
+    int orderProducts(String[] ids, User user, OrderCallback orderCallback, int type, String smsCode);
 
 
     /**
      * 验证码
+     *
      * @param type
      * @param id
      * @param httpSession
      * @return
      */
-    int sendAuthCode(String type,Integer id,HttpSession httpSession);
+    int sendAuthCode(String type, Integer id, HttpSession httpSession);
 
 
     /**
      * 获得订购的内容
+     *
      * @param httpSession
-     * @param type 返回类型
+     * @param type        返回类型
      * @return
      */
-    List<String> getOrdered(HttpSession httpSession, int type);
-
+    List<String> getOrdered(int type, HttpSession httpSession);
 
 
 }

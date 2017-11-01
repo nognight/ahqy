@@ -248,7 +248,7 @@ public class CouponServiceImpl implements CouponService {
         //流量券
         if (AhqyConst.COUPON_TYPE_LLQ == coupon.getType()) {
             logger.info("useUserCoupon COUPON_TYPE_LLQ");
-
+            userCoupon.setRemark("start order");
             CouponCallback couponCallback = new CouponCallback();
             couponCallback.setUser(user);
             couponCallback.setUserCoupon(userCoupon);
@@ -260,6 +260,7 @@ public class CouponServiceImpl implements CouponService {
             logger.info("useUserCoupon COUPON_TYPE_ZKQ");
 
         }
+        userCoupon.setStatus(4);
         userCouponDao.update(userCoupon);
         return 0;
     }

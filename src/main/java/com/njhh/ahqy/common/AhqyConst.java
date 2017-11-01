@@ -23,7 +23,7 @@ public class AhqyConst {
     public static final String HEADER_REFERER = "referer";
 
     //原始时间
-    public static final String INITAL_TIME= "2000-00-00 00:00:00";
+    public static final String INITAL_TIME= "2000-01-01 00:00:00";
 
     //用户登陆类型
     public static final int LOGIN_NONE = 0;

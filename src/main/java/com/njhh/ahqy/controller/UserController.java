@@ -46,4 +46,13 @@ public class UserController {
         userService.sendAuthCode(type, id, httpSession);
         return apiBean;
     }
+
+    @RequestMapping("/api/user/getOrdered")
+    private ApiBean sendAuthCode(HttpSession httpSession,
+                                 @RequestParam(defaultValue = "0") int type) {
+        ApiBean apiBean = new ApiBean();
+        apiBean.setContent(new ObjBean(userService.getOrdered(type, httpSession)));
+        apiBean.setRet(0);
+        return apiBean;
+    }
 }

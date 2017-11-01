@@ -433,21 +433,22 @@ public class OrderThread implements Runnable {
             logger.info(" type ORDER_COUPON :callbackCode = " + callbackCode);
             CouponCallback couponCallback = (CouponCallback) orderCallback;
             UserCoupon userCoupon = couponCallback.getUserCoupon();
+            userCoupon.setRemark(userCoupon.getRemark() + " orderResult：" + orderMap.toString());
             if (0 == callbackCode) {
                 userCoupon.setStatus(1);
-
             } else if (1 == callbackCode) {
                 userCoupon.setStatus(3);
+            } else if (-1 == callbackCode) {
+                userCoupon.setStatus(4);
             }
             userCoupon.setUsedTime(new Date());
             userCouponDao.update(userCoupon);
-
         }
 
     }
 
     private void sendProductSms(Product product, int resultCode, String resultMsg) {
-        logger.info("sendProductSms resultCode:"+resultCode+" resultMsg:"+resultMsg);
+        logger.info("sendProductSms resultCode:" + resultCode + " resultMsg:" + resultMsg);
         StringBuilder content = new StringBuilder();
 
         //0元赠送型
@@ -457,7 +458,7 @@ public class OrderThread implements Runnable {
                 content.append("尊敬的用户，您已成功获得“安徽联通”微信公众号权益平台赠送的");
                 content.append(product.getName());
                 content.append(",有效期到本月底，流量不结转。");
-            }else {
+            } else {
                 content.append("您本次赠送的");
                 content.append(product.getName());
                 content.append(",订购");
@@ -478,7 +479,7 @@ public class OrderThread implements Runnable {
                 content.append("失败。");
                 content.append("原因是：");
                 content.append(StringUtil.handOrderMsg(resultMsg));
-                logger.info("sms content:"+content.toString());
+                logger.info("sms content:" + content.toString());
             }
         }
 

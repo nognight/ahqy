@@ -184,11 +184,13 @@
     <select id="getPrivilege" resultMap="AllColumnMap">
         SELECT * from t_privilege
         where id = #{pojo.id}
+        and status = 0
     </select>
 
     <select id="getPrivilegeName" resultMap="AllColumnMap">
         SELECT id,name,status,pic_url,type from t_privilege
         where id = #{id}
+        and status = 0
     </select>
 
     <select id="getPrivilegeList" resultMap="AllColumnMap">
@@ -198,7 +200,6 @@
         AND offline_date &gt; now()
         <if test="pojo.payType != null">
             AND ( pay_type = #{pojo.payType} OR pay_type=0 )
-
         </if>
         <if test="pojo.netType != null">
             AND ( net_type = #{pojo.netType} OR net_type=0 )

@@ -105,6 +105,7 @@ public class UserServiceImpl implements UserService {
             return 0;
         }
 
+
         List<Product> productList = new ArrayList<>();
 
         productList = getProductList(productIds, user);
@@ -133,7 +134,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public int sendAuthCode(String type, Integer id, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
-        if(null == user){
+        if (null == user) {
             return ResultCode.ERROR;
         }
         String code = cacheDao.sendAuthCode(type, id, user.getId(), user.getPhoneNum(), "");
@@ -154,22 +155,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> getOrdered(HttpSession httpSession, int type){
+    public List<String> getOrdered(int type, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
-        if(null == user){
+        if (null == user) {
             return null;
         }
-        logger.info("getOrdered user:" +user.getPhoneNum());
-        return (List<String>)(List)getUserOrdered(user,type);
+        logger.info("getOrdered user:" + user.getPhoneNum());
+        return (List<String>) (List) getUserOrdered(user, type);
     }
 
     /**
-     *
      * @param user
      * @param returnType
      * @return
      */
-    private List<Object> getUserOrdered(User user ,int returnType) {
+    private List<Object> getUserOrdered(User user, int returnType) {
         StringBuffer sbufUrl = new StringBuffer();
         sbufUrl.append(AhqyConst.GATEWAY)
                 .append(InCommUri.USER_ORDER_LIST)
@@ -206,9 +206,9 @@ public class UserServiceImpl implements UserService {
             List<Object> objectList = new ArrayList<>();
             for (Object temp : list) {
                 UserProductOrderInfo info = (UserProductOrderInfo) JacksonUtil.returnObject(JacksonUtil.objReturnJson(temp), UserProductOrderInfo.class);
-                if(1 == returnType){
+                if (1 == returnType) {
                     objectList.add(info.getProductId());
-                }else if(2 == returnType){
+                } else if (2 == returnType) {
                     objectList.add(info.getProductName());
                 }
             }
@@ -221,7 +221,7 @@ public class UserServiceImpl implements UserService {
     private List<Product> getProductList(String[] productIds, User user) {
         logger.info("start to getProductList");
         List<Product> productList = new ArrayList<>();
-        List<String> orderedCodeList = (List<String>)(List)getUserOrdered(user,1);
+        List<String> orderedCodeList = (List<String>) (List) getUserOrdered(user, 1);
         logger.info("orderedCodeList" + orderedCodeList.toString());
         if (null != orderedCodeList) {
             Product product = new Product();
