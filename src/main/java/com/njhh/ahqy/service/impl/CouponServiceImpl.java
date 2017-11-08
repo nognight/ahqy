@@ -207,7 +207,6 @@ public class CouponServiceImpl implements CouponService {
                     userPrivilegeDao.updatePrivilege(userPrivilege);
                     return 1;
                 }
-
                 userCoupon.setStatus(2);
             } else if (3 == privilege.getType()) {
                 logger.info("addUserCoupons  privilege.getType() = 3 " + " phone : " + user.getPhoneNum());
@@ -247,6 +246,13 @@ public class CouponServiceImpl implements CouponService {
         User user = (User) httpSession.getAttribute("user");
         logger.info("start to useUserCoupon id:" + id + " user.getPhoneNum:" + user.getPhoneNum());
         UserCoupon userCoupon = userCouponDao.getUserCouponById(id, user.getId());
+        if (null == userCoupon) {
+            logger.info("UserCoupon failed id:" + id + " is null user.getPhoneNum:" + user.getPhoneNum());
+            return -1;
+        } else if (0 != userCoupon.getStatus()) {
+            logger.info("UserCoupon failed id:" + id + " status is " + userCoupon.getStatus() + " user.getPhoneNum:" + user.getPhoneNum());
+            return -1;
+        }
         Coupon coupon = couponDao.getCouponById(userCoupon.getCouponId());
         //流量券
         if (AhqyConst.COUPON_TYPE_LLQ == coupon.getType()) {
