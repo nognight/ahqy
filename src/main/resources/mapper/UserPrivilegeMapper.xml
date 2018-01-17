@@ -129,7 +129,9 @@
         SELECT t_user_privilege.* from t_user_privilege
         INNER JOIN  t_privilege on t_user_privilege.privilege_id = t_privilege.id
         WHERE  t_user_privilege.user_id = #{pojo.userId}
+        <if test="pojo.privilegeId != null">
         AND t_user_privilege.privilege_id =  #{pojo.privilegeId}
+        </if>
         <if test="pojo.expireTime != null">
         AND t_user_privilege.expire_time &gt; #{pojo.expireTime}
         </if>
