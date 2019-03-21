@@ -1,0 +1,101 @@
+body{
+    background-color: #fafafa;
+}
+div.head {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.head>div.userImg>img {
+    margin: 20px 0;
+    height: 25vw;
+}
+
+.head>div.userInfo {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.head>.userInfo>div {
+    padding: 10px 10px;
+}
+
+.head>.userInfo>.userPhone {
+    border-bottom: 1px dashed #999;
+}
+
+div.menus {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+div.menus>.menu {
+    width: 33%;
+    text-align: center;
+    padding: 10px 0;
+    border-bottom: 2px solid #fcc226;
+    font-size: 4.5vw;
+}
+
+div.item {
+    width: 90%;
+    margin: 10px auto;
+    background: url("../images/orderedPrivilegeBg.png") no-repeat center;
+    background-size: 100% 100%;
+    height: 26vw;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+div.itemInfo {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-left: 6vw;
+}
+
+div.itemTag {
+    width: 7vw;
+    font-size: 4.5vw;
+}
+
+div.itemName {
+    color: #fcc226;
+    font-weight: 600;
+    font-size: 5vw;
+}
+
+div.itemMemo {
+    color: #fcc226;
+    font-size: 3vw;
+    height: 9vw;
+}
+
+div.itemDate {
+    padding-right: 2vw;
+    border-top: 1px dashed #999;
+    font-size: 3.5vw;
+}
+
+.active {
+    border: 2px solid #fcc226;
+    border-bottom: none !important;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    color: #fcc226;
+    font-weight: 600;
+}

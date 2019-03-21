@@ -86,6 +86,7 @@ public class UserPrivilegeDaoImpl implements UserPrivilegeDao{
         
         try
         {
+            logger.info(userPrivilege.toString());
             return  userPrivilegeMapper.getUserPrivilegeList(userPrivilege,type);
         } catch (Exception e)
         {

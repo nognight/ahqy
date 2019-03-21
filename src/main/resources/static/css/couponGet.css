@@ -1,0 +1,68 @@
+.head {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 5vw;
+    height: 10vw;
+    border-bottom: 1px solid #bbb;
+}
+
+.head>.title {
+    width: 100vw;
+    /* padding-left: 35vw; */
+    text-align: center;
+}
+
+.body {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.foot {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 4vw;
+}
+
+.foot>div {
+    padding: 0 10vw;
+}
+
+.foot>div:nth-child(1) {
+    border-right: 1px solid #ccc;
+}
+
+.item {
+    width: 90vw;
+    margin: 10px 0;
+    height: 22vw;
+    background: url("../images/couponBg.png") center no-repeat;
+    background-size: 100%;
+    color: #937a3f;
+}
+
+.itemName {
+    margin-left: 40vw;
+    font-size: 5vw;
+    padding-top: 1vw;
+    font-weight: 600;
+}
+
+.itemMemo {
+    margin-left: 40vw;
+    font-size: 3.5vw;
+    height: 8vw;
+}
+
+.itemDate {
+    margin-left: 5vw;
+    font-size: 4vw;
+}

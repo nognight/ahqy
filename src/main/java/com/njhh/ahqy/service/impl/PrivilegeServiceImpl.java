@@ -108,6 +108,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         }
         UserPrivilege userPrivilege = new UserPrivilege();
         userPrivilege.setUserId(user.getId());
+        logger.info(userPrivilege.toString());
         return userPrivilegeDao.getUserPrivilegeList(userPrivilege, type);
     }
 

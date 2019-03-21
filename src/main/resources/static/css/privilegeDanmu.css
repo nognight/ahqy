@@ -1,0 +1,96 @@
+body {
+    background-color: #fef8e7;
+}
+
+.head {
+    background: url('../images/privilegeDanmuTitle.png') no-repeat center;
+    background-size: 100%;
+    padding-top: 45vw;
+}
+
+.type {
+    display: block;
+    margin: 0 auto;
+    height: 60px;
+    padding: 0px;
+    background: url('../images/typeBtn.png') no-repeat center;
+    background-size: 100%;
+    width: 0%;
+}
+
+.type>div {
+    display: block;
+    width: 25%;
+    height: 100%;
+    float: left;
+}
+
+.type>div>a {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.order {
+    margin-top: 20px;
+}
+
+.order>a>img {
+    width: 80%;
+    margin-left: 10%;
+}
+
+.center .imgDiv {
+    transition: all 300ms ease;
+    width: 120px;
+    margin: 60px auto;
+}
+
+.imgDiv img {
+    width: 100%;
+}
+
+.center .slick-center .imgDiv {
+    -moz-transform: scale(1.4);
+    -ms-transform: scale(1.4);
+    -o-transform: scale(1.4);
+    -webkit-transform: scale(1.4);
+    transform: scale(1.4);
+}
+
+.foot>img {
+    width: 100%;
+}
+
+.getDiscount {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.getDiscount>img {
+    width: 100%;
+    height: 100%;
+}
+
+.menu {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    height: 20vw;
+    margin-bottom: 4px;
+}
+
+.menu>div {
+    width: 40%;
+}
+
+.menu>div>img {
+    width: 100%;
+    height: 100%;
+}
+
+.slick-slider {
+    margin-bottom: 0 !important;
+}
